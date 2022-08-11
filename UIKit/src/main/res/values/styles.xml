@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <style name="BaseText">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+    </style>
+
+    <style name="ThemeText" parent="BaseText">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ThemeText.Lesser">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ThemeText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ThemeText.BigTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WhiteText" parent="BaseText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="WhiteText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WhiteText.BigTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WhiteText.Tag">
+        <item name="android:paddingStart">5dp</item>
+        <item name="android:paddingEnd">5dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="WhiteText.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="WhiteText.Salary">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+
+    <style name="WhiteText.Title.SingleLine">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="WhiteText.Lesser">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BlackText" parent="BaseText">
+        <item name="android:textColor">@color/common_text_black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BlackText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BlackText.SingleLine">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="BlackText.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BlackText.BigTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BlackText.Title.SingleLine">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="BlackText.Lesser">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BlackText.Lesser.SingleLine">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="DarkGreyText" parent="BaseText">
+        <item name="android:textColor">@color/grey_333</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DarkGreyText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DarkGreyText.BigTitle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GreyText" parent="BaseText">
+        <item name="android:textColor">@color/grey_666</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="GreyText.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="GreyText.Lesser">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="GreyText.Small">
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="TintGreyText" parent="BaseText">
+        <item name="android:textColor">@color/grey_999</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TintGreyText.SingleLine" parent="BaseText">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="TintGreyText.Lesser">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="styleButton" parent="BaseText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_button_height</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:textAppearance">@android:style/TextAppearance</item>
+    </style>
+
+    <style name="styleButton.1stRectangle">
+        <item name="android:background">@drawable/selector_theme_color_5r</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="styleButton.1stOval">
+        <item name="android:background">@drawable/selector_theme_color_oval</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="styleButton.AccentOval">
+        <item name="android:background">@drawable/selector_accent_color_oval</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="styleButton.1stOval.CommonBottom">
+        <item name="android:layout_marginStart">20dp</item>
+        <item name="android:layout_marginEnd">20dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <style name="styleButton.2ndRectangle">
+        <item name="android:background">@drawable/selector_style_button_2nd_rectangle</item>
+        <item name="android:textColor">@color/selector_text_disable_grey_normal_theme</item>
+    </style>
+
+    <style name="styleButton.2ndOval">
+        <item name="android:background">@drawable/selector_grey_stroke_oval</item>
+        <item name="android:textColor">@color/selector_text_disable_grey_normal_black</item>
+    </style>
+
+    <style name="styleButton.whiteOval">
+        <item name="android:background">@drawable/selector_white_oval</item>
+        <item name="android:textColor">@color/theme_color</item>
+    </style>
+
+    <style name="styleButton.3rdOval">
+        <item name="android:background">@drawable/selector_grey_stroke_oval</item>
+        <item name="android:textColor">@color/grey_999</item>
+    </style>
+
+    <style name="styleButton.strokeRed">
+        <item name="android:background">@drawable/selector_red_stroke_oval</item>
+        <item name="android:textColor">@color/selector_text_disable_red_normal_red</item>
+    </style>
+
+    <style name="styleButton.strokeTheme">
+        <item name="android:background">@drawable/selector_theme_oval</item>
+        <item name="android:textColor">@color/selector_text_disable_blue_normal_theme</item>
+    </style>
+
+    <style name="styleButton.strokeWhite">
+        <item name="android:background">@drawable/selector_stroke_white_oval</item>
+        <item name="android:textColor">@color/color_white</item>
+    </style>
+
+    <style name="styleButton.strokeBlack">
+        <item name="android:background">@drawable/selector_stroke_black_oval</item>
+        <item name="android:textColor">@color/selector_enable_black_disable_ccc</item>
+    </style>
+
+    <style name="styleButton.follow">
+        <item name="android:background">@drawable/selector_oval_selected_stroke_black_normal_black</item>
+        <item name="android:textColor">@color/selector_selected_black_normal_white</item>
+    </style>
+</resources>

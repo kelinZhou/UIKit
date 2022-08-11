@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources> <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#0095B6</color>
+    <color name="color_accent_pressed">#027C97</color>
+    <color name="color_accent_disabled">#C6A7E7F6</color>
+    <color name="theme_color">@color/color_black</color>
+    <color name="theme_color_pressed">#171717</color>
+    <color name="theme_color_disable">#AAAAAA</color>
+
+    <color name="color_style_button_2nd">#00000000</color>
+    <color name="color_style_button_2nd_pressed">#330095B6</color>
+    <color name="color_style_button_2nd_disable">#1E0095B6</color>
+
+    <color name="common_window_background">#FFFFFFFF</color>
+
+
+    <color name="grey_333">#333333</color>
+    <color name="grey_666">#666666</color>
+    <color name="color_ui_kit_parting_line">#EEEEEE</color>
+    <color name="color_white">#FFFFFF</color>
+    <color name="color_ui_kit_touch_ripple">#3000</color>
+    <color name="grey_999">#999999</color>
+    <color name="common_text_black">#333333</color>
+    <color name="color_black">#000000</color>
+    <color name="color_transparent">#00FFFFFF</color>
+    <color name="grey_F3">F3F3F3</color>
+    <color name="grey_ccc">#CCCCCC</color>
+    <color name="red_ea0000">EA0000</color>
+</resources>

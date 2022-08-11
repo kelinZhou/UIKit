@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="common_button_height">45dp</dimen>
+    <dimen name="toastYOffset">0dip</dimen>
+    <dimen name="common_start_end_space">16dp</dimen>
+    <dimen name="common_form_height">54dp</dimen>
+    <dimen name="common_tab_layout_height">40dp</dimen>
+    <dimen name="common_dialog_margin">32dp</dimen>
+</resources>

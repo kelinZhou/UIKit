@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvMenuTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="140dp"
+    android:paddingStart="20dp"
+    android:paddingTop="12dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="12dp"
+    android:textColor="#FF333333"
+    android:drawablePadding="6dp"
+    tools:background="@drawable/selector_white_item_bg_5r"
+    tools:text="我是菜单" />

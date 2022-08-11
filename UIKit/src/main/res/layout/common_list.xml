@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.kelin.uikit.widget.FixedRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/swipe_refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/common_list_no_refresh" />
+</com.kelin.uikit.widget.FixedRefreshLayout>
+
