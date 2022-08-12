@@ -48,9 +48,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     //基础组件
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.recyclerview:recyclerview:1.2.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
+    api 'androidx.recyclerview:recyclerview:1.2.0'
+    api 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     implementation "com.github.kelinZhou:Logger:$logger_version"
 
@@ -63,16 +63,16 @@ dependencies {
     implementation 'com.github.kelinZhou:OkPermission:3.2.2'
 
     //RxJava
-    implementation "io.reactivex.rxjava2:rxjava:2.2.21"
+    api "io.reactivex.rxjava2:rxjava:2.2.21"
 
     //lottie动画库 https://github.com/airbnb/lottie-android
-    implementation 'com.airbnb.android:lottie:4.1.0'
+    api 'com.airbnb.android:lottie:4.1.0'
 
     //事件总线
-    implementation 'org.greenrobot:eventbus:3.1.1'
+    api 'org.greenrobot:eventbus:3.1.1'
 
     //TabLayout控件
-    implementation 'com.github.hackware1993:MagicIndicator:1.6.0'
+    api 'com.github.hackware1993:MagicIndicator:1.6.0'
 }
 
 
