@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_my_awesome_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/my_awesome_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivNavigation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/selector_recycler_item_bg_oval_white"
+                android:scaleType="center"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_navigation_dark"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tvOperation"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/selector_recycler_item_bg_oval_white"
+                android:gravity="center"
+                android:textColor="@color/grey_999"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/cancel" />
+
+            <LinearLayout
+                android:id="@+id/llSearch"
+                android:layout_width="0dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/shape_round_stroke_white_60r"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="false"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/ivNavigation"
+                app:layout_constraintRight_toLeftOf="@id/tvOperation"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_goneMarginStart="@dimen/common_start_end_space">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSearchIcon"
+                    style="@style/DarkGreyText"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:srcCompat="@drawable/ic_search_grey"
+                    tools:text="上海" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="start|center"
+                    android:imeOptions="actionSearch"
+                    android:maxLength="20"
+                    android:singleLine="true"
+                    android:textColor="@color/grey_666"
+                    android:textColorHint="@color/grey_999"
+                    android:textSize="15sp"
+                    tools:hint="请输入搜索内容"
+                    tools:ignore="TextFields" />
+
+                <ImageView
+                    android:id="@+id/ivClear"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:padding="5dp"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_closer_grey"
+                    tools:ignore="ContentDescription"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_my_awesome_toolbar"
+        tools:ignore="UnknownIdInLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
