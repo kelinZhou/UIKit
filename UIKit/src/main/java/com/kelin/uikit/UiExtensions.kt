@@ -1,17 +1,26 @@
 package com.kelin.uikit
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Build
 import android.text.Editable
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
+import androidx.core.util.Pair
 import androidx.core.view.forEach
 import androidx.core.widget.doAfterTextChanged
 import java.io.File
@@ -26,6 +35,121 @@ import java.io.FileOutputStream
  *
  * **版本:** v 1.0.0
  */
+
+fun Any?.getString(@StringRes stringResId: Int, vararg formatArgs: Any): String {
+    return ((this as? Activity)?: UIKit.getContext()).resources.let {
+        if (formatArgs.isEmpty()) {
+            it.getString(stringResId)
+        } else {
+            it.getString(stringResId, *formatArgs)
+        }
+    }
+}
+
+var View.visibleOrGone: Boolean
+    set(value) {
+        visibility = value.toVisibleOrGone()
+    }
+    get() = visibility == View.VISIBLE
+
+var View.visibleOrInvisible: Boolean
+    set(value) {
+        visibility = value.toVisibleOrInvisible()
+    }
+    get() = visibility == View.VISIBLE
+
+//View相关的
+fun Boolean.toVisibleOrGone(): Int {
+    return if (this) View.VISIBLE else View.GONE
+}
+
+fun Boolean.toVisibleOrInvisible(): Int {
+    return if (this) View.VISIBLE else View.INVISIBLE
+}
+
+fun View?.setTransitionName(name: Any): View? {
+    if (this != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        transitionName = name.toString()
+    }
+    return this
+}
+
+//Boolean相关的
+val Boolean.intValue: Int
+    get() = if (this) 1 else 0
+
+val Int.booleanValue: Boolean
+    get() = this == 1
+
+//Activity相关的
+fun Intent.start(context: Context, vararg sharedViews: View?) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val views = sharedViews.filter { !it?.transitionName.isNullOrEmpty() }
+        if (context is Activity && !views.isNullOrEmpty()) {
+            ActivityOptionsCompat.makeSceneTransitionAnimation(context, *views.map { Pair(it, it?.transitionName ?: "") }.toTypedArray()).also {
+                context.startActivity(this, it.toBundle())
+            }
+        } else {
+            context.startActivity(this)
+        }
+    } else {
+        context.startActivity(this)
+    }
+
+}
+
+fun View.switchPswVisibility(pswView: EditText) {
+    isSelected.negation().run {
+        isSelected = this
+        val start = pswView.selectionStart
+        val stop = pswView.selectionEnd
+        pswView.transformationMethod = if (this) {
+            HideReturnsTransformationMethod.getInstance()
+        } else {
+            PasswordTransformationMethod.getInstance()
+        }
+        pswView.setSelection(start, stop)
+    }
+}
+
+fun View.setHeight(height: Int, refresh: Boolean = false) {
+    layoutParams.height = height
+    if (refresh) {
+        layoutParams = layoutParams
+    }
+}
+
+fun View.setMarginStart(start: Int, refresh: Boolean = false) {
+    val lp = layoutParams as? ViewGroup.MarginLayoutParams
+    lp?.leftMargin = start
+    if (refresh && lp != null) {
+        layoutParams = lp
+    }
+}
+
+fun View.setMarginEnd(end: Int, refresh: Boolean = false) {
+    val lp = layoutParams as? ViewGroup.MarginLayoutParams
+    lp?.rightMargin = end
+    if (refresh && lp != null) {
+        layoutParams = lp
+    }
+}
+
+fun View.setMarginTop(top: Int, refresh: Boolean = false) {
+    val lp = layoutParams as? ViewGroup.MarginLayoutParams
+    lp?.topMargin = top
+    if (refresh && lp != null) {
+        layoutParams = lp
+    }
+}
+
+fun View.setMarginBottom(bottom: Int, refresh: Boolean = false) {
+    val lp = layoutParams as? ViewGroup.MarginLayoutParams
+    lp?.bottomMargin = bottom
+    if (refresh && lp != null) {
+        layoutParams = lp
+    }
+}
 
 fun Bitmap.writeToAlbum(targetPath: String, context: Context, finished: (path: String?, uri: Uri?) -> Unit) {
     if (writeToFile(targetPath)) {
@@ -189,3 +313,8 @@ val Int.px2sp: Int
 
 val Float.px2sp: Int
     get() = (this / UIKit.getContext().resources.displayMetrics.scaledDensity + 0.5f).toInt()
+
+//Boolean相关的
+fun Boolean.negation(): Boolean {
+    return !this
+}
