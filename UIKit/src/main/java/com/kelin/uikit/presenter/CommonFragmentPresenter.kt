@@ -322,22 +322,22 @@ abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : Comm
         /**
          * 默认的，只在页面加载时刷新一次页面。
          */
-        internal const val SETUP_DEFAULT = 0x011
+        const val SETUP_DEFAULT = 0x011
 
         /**
          * 实时刷新每次页面由不可见变为可见时都刷新页面。
          */
-        internal const val SETUP_TIMELY = 0x012
+        const val SETUP_TIMELY = 0x012
 
         /**
          * 不需要自动请求网络数据，何时请求数据由子类自己决定。
          */
-        internal const val SETUP_WITHOUT = 0x013
+        const val SETUP_WITHOUT = 0x013
 
         /**
          * 没有网络代理，表示改页面从始至终都不可能请求网络，所以根本不需要创建代理对象。
          */
-        internal const val SETUP_NO_PROXY = 0x014
+        const val SETUP_NO_PROXY = 0x014
 
 
         val defaultAny: Any by lazy { Any() }
