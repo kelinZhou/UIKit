@@ -7,4 +7,6 @@
     <string name="loaded_all_data">我也是有底线的</string>
     <string name="please_input">请输入</string>
     <string name="please_select">请选择</string>
+    <string name="cancel">取消</string>
+    <string name="sure1">确定</string>
 </resources>
