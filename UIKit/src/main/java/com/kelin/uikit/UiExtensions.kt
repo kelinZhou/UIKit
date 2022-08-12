@@ -23,8 +23,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
 import androidx.core.view.forEach
 import androidx.core.widget.doAfterTextChanged
+import com.kelin.uikit.tools.DateHelper
 import java.io.File
 import java.io.FileOutputStream
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * **描述:** 与UI相关的扩展函数。
@@ -317,4 +321,177 @@ val Float.px2sp: Int
 //Boolean相关的
 fun Boolean.negation(): Boolean {
     return !this
+}
+
+
+fun Int.isIn(vararg numbers: Int): Boolean {
+    return numbers.contains(this)
+}
+
+fun Long.isIn(vararg numbers: Long): Boolean {
+    return numbers.contains(this)
+}
+
+fun Long.isNotIn(vararg numbers: Long): Boolean {
+    return !numbers.contains(this)
+}
+
+fun Int.isNotIn(vararg numbers: Int): Boolean {
+    return !numbers.contains(this)
+}
+
+fun Any.toRichText(color: String? = "#F86666", size: Int = 0, bold: Boolean = false): String {
+    return if (this is String && isEmpty()) {
+        ""
+    } else {
+        val c = if (!color.isNullOrEmpty()) "color=${color}" else ""
+        val s = if (size > 0) "size=${size}sp" else ""
+        val b = if (bold) "bold=true" else ""
+        "<rich $c $s $b>${this}</rich>"
+    }
+}
+
+//格式化相关
+
+/**
+ * 格式化小数。
+ * @param decimalDigits 要保留的小数的位数，可以不传，默认保留真实小数最大3位，例如：52 -> "52"; 53.2 -> "53.2"; 53.2421 -> "53.242"。
+ * @param dollarFormat 是否要格式为美元样式(千位分隔样式)，例如：135,435,231.09；可以不传，默认为true。
+ * @return 返回格式化后数字字符串。
+ */
+fun Double.formatToString(decimalDigits: Int = 2, dollarFormat: Boolean = true, unit: String = ""): String {
+    return numberFormat(decimalDigits, dollarFormat, this) + unit
+}
+
+/**
+ * 格式化小数。
+ * @param unit 单位。
+ * @param decimalDigits 要保留的小数的位数，可以不传，默认保留真实小数最大2位，例如：52 -> "52"; 53.2 -> "53.2"; 53.2421 -> "53.242"。
+ * @param dollarFormat 是否要格式为美元样式(千位分隔样式)，例如：135,435,231.09；可以不传，默认为true。
+ * @param ignoreZero 是否将0看成是没有值，如果为true当数据为0时则返回空串。
+ * @return 返回格式化后数字字符串。
+ */
+fun Double.formatToDollar(unit: String = "", decimalDigits: Int = 2, dollarFormat: Boolean = true, ignoreZero: Boolean = false): String {
+    return if (ignoreZero && this == 0.0) "" else numberFormat(decimalDigits, dollarFormat, this) + unit
+}
+
+/**
+ * 格式化小数。
+ * @param ignoreZero 是否忽略0，如果忽略当数值为0是返回空的字符串。
+ * @param unit 单位。
+ * @return 返回格式化后数字字符串。
+ */
+fun Float.formatToReal(ignoreZero: Boolean = false, decimalDigits: Int = -1, unit: String = ""): String {
+    return if (ignoreZero && this == 0F) "" else numberFormat(decimalDigits, false, this) + unit
+}
+
+/**
+ * 格式化小数。
+ * @param ignoreZero 是否忽略0，如果忽略当数值为0是返回空的字符串。
+ * @param unit 单位。
+ * @return 返回格式化后数字字符串。
+ */
+fun Double.formatToReal(ignoreZero: Boolean = false, decimalDigits: Int = -1, unit: String = ""): String {
+    return if (ignoreZero && this == 0.0) "" else numberFormat(decimalDigits, false, this) + unit
+}
+
+/**
+ * 格式化小数。
+ * @param ignoreZero 是否忽略0，如果忽略当数值为0是返回空的字符串。
+ * @param unit 单位。
+ * @return 返回格式化后数字字符串。
+ */
+fun Double.formatToReal(ignoreZero: Boolean = false, unit: String = ""): String {
+    return if (ignoreZero && this == 0.0) "" else numberFormat(-1, false, this) + unit
+}
+
+/**
+ * 格式化金额。该方法会默认会除以100。
+ * @param unit 单位。
+ * @return 返回格式化后数字字符串。
+ */
+fun Long.formatPriceToReal(unit: String = ""): String {
+    return numberFormat(-1, false, this / 100.0) + unit
+}
+
+/**
+ * 格式化小数。
+ * @param unit 单位。
+ * @param dollarFormat 是否要格式为美元样式(千位分隔样式)，例如：135,435,231.09；可以不传，默认为true。
+ * @param ignoreZero 是否忽略0，如果忽略当数值为0是返回空的字符串。
+ * @return 返回格式化后数字字符串。
+ */
+fun Double.formatToRealDollar(unit: String = "", dollarFormat: Boolean = true, ignoreZero: Boolean = true): String {
+    return if (ignoreZero && this == 0.0) "" else numberFormat(-1, dollarFormat, this) + unit
+}
+
+fun Long.formatToDollar(unit: String = "元"): String {
+    return DecimalFormat(",###").format(this) + unit
+}
+
+/**
+ * 将小数格式为为时间格式。
+ */
+fun Long.formatToTime(): String {
+    return (this / 1000F).let { "${formatNumber(it / 3600)}:${formatNumber(it / 60 % 60)}:${formatNumber(it % 60)}" }
+}
+
+@Suppress("SimpleDateFormat")
+fun Long?.formatDate(format: String = DateHelper.YYYY_MM_DD, defString: String? = null): String? {
+    return if (this == null || this == 0L) {
+        defString
+    } else {
+        val f = SimpleDateFormat(format)
+        f.timeZone = TimeZone.getTimeZone("GMT+8")
+        f.format(Date(this))
+    }
+}
+
+/**
+ * 获取两个时间的时间差的可读文本。
+ * @param start 开始时间，较早的时间。
+ * @param end 结束时间，较晚的时间。
+ */
+fun getReadableTimeSpace(start: Long, end: Long): String? {
+    return if (end - start < 61000) {
+        if (start >= end) {
+            null
+        } else {
+            "${(end - start) / 1000}秒"
+        }
+    } else {
+        val duration = (end - start) / 60000  //计算分钟数
+        val days = duration / 1440
+        val hours = duration % 1440 / 60
+        val minute = duration % 86400
+        if (duration == 0L) null else (if (days > 0) "${days}天" else "") + (if (hours > 0) "${hours}小时" else "") + (if (minute > 0) "${minute}分" else "")
+    }
+}
+
+private fun formatNumber(number: Number): String {
+    return String.format("%02d", number.toInt())
+}
+
+private fun numberFormat(decimalDigits: Int, dollarFormat: Boolean, number: Double): String {
+    return if (decimalDigits > 0) {
+        String.format("%${if (dollarFormat) "," else ""}.${decimalDigits}f", number)
+    } else {
+        DecimalFormat(if (decimalDigits < 0) "${if (dollarFormat) ",###" else "0"}.###" else if (dollarFormat) ",###" else "#").format(number)
+    }
+}
+
+private fun numberFormat(decimalDigits: Int, dollarFormat: Boolean, number: Float): String {
+    return if (decimalDigits > 0) {
+        String.format("%${if (dollarFormat) "," else ""}.${decimalDigits}f", number)
+    } else {
+        DecimalFormat(if (decimalDigits < 0) "${if (dollarFormat) ",###" else "0"}.###" else if (dollarFormat) ",###" else "#").format(number)
+    }
+}
+
+fun Long?.toNoNull(): Long {
+    return this ?: 0
+}
+
+fun Int?.toNoNull(): Int {
+    return this ?: 0
 }
