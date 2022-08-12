@@ -68,7 +68,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
      *
      * @see StatePage.HAVE_LOADING_STATE
      */
-    internal open val pageStateFlags: Int
+    protected open val pageStateFlags: Int
         get() = StatePage.NOTHING_STATE
 
     protected val context: Context
