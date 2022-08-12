@@ -24,7 +24,7 @@
     <color name="common_text_black">#333333</color>
     <color name="color_black">#000000</color>
     <color name="color_transparent">#00FFFFFF</color>
-    <color name="grey_F3">F3F3F3</color>
+    <color name="grey_F3">#F3F3F3</color>
     <color name="grey_ccc">#CCCCCC</color>
-    <color name="red_ea0000">EA0000</color>
+    <color name="red_ea0000">#EA0000</color>
 </resources>
