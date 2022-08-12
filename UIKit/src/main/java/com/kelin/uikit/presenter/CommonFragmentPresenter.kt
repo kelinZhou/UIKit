@@ -29,8 +29,7 @@ import java.lang.annotation.Inherited
  * **创建时间:** 2019/3/29  1:33 PM
  * **版本:** v 1.0.0
  */
-abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : CommonViewDelegate.CommonViewDelegateCallback, ID, D, VD> :
-    BaseFragmentPresenter<V, VC>() {
+abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : CommonViewDelegate.CommonViewDelegateCallback, ID, D, VD> : BaseFragmentPresenter<V, VC>() {
 
     @Retention(AnnotationRetention.RUNTIME)
     @Target(AnnotationTarget.PROPERTY_GETTER)
@@ -341,6 +340,6 @@ abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : Comm
         internal const val SETUP_NO_PROXY = 0x014
 
 
-        internal val defaultAny: Any by lazy { Any() }
+        val defaultAny: Any by lazy { Any() }
     }
 }
