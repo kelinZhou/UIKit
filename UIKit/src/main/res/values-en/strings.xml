@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="poor_network_environment">The network is unavailable, click retry</string>
+    <string name="load_error_click_retry">Loading failed, click retry</string>
+    <string name="loading_please_wait">Loading…</string>
+    <string name="no_data">No data</string>
+    <string name="loaded_all_data">I also have a bottom line</string>
+    <string name="please_input">Please enter</string>
+    <string name="please_select">Please Select</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+</resources>
