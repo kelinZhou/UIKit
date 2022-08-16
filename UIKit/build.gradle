@@ -58,9 +58,9 @@ dependencies {
     implementation 'com.github.razerdp:BasePopup:2.2.20'
 
     //异步任务代理框架
-    api 'com.github.kelinZhou:ProxyFactory:1.1.0'
+    api 'com.github.kelinZhou:ProxyFactory:1.1.1'
     //ApiException
-    api 'com.github.kelinZhou:ApiException:1.1.0'
+    api 'com.github.kelinZhou:ApiException:1.1.1'
     //动态权限
     implementation 'com.github.kelinZhou:OkPermission:3.2.2'
 
