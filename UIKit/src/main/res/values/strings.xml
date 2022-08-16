@@ -10,8 +10,8 @@
     <string name="cancel">取消</string>
     <string name="confirm">确定</string>
     <string name="just">刚刚</string>
-    <string name="d_mins_ago">%d分钟前</string>
-    <string name="d_hors_ago">%d小时前</string>
+    <string name="d_min_ago">%d分钟前</string>
+    <string name="d_hour_ago">%d小时前</string>
     <string name="today_s">今天 %s</string>
     <string name="yesterday">昨天</string>
     <string name="tomorrow_s">明天 %s</string>

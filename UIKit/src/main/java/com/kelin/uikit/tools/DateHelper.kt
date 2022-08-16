@@ -132,10 +132,10 @@ object DateHelper {
                             defaultValue
                         }
                         interMinute < 60 -> {
-                            getString(R.string.d_mins_ago, interMinute)
+                            getString(R.string.d_min_ago, interMinute)
                         }
                         else -> {
-                            getString(R.string.d_hors_ago, interMinute / 60)
+                            getString(R.string.d_hour_ago, interMinute / 60)
                         }
                     }
                 } else { // 今天的未来时间

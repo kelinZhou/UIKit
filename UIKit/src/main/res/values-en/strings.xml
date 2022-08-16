@@ -9,9 +9,9 @@
     <string name="please_select">Please Select</string>
     <string name="cancel">Cancel</string>
     <string name="confirm">Confirm</string>
-    <string name="just">Just</string>
-    <string name="d_mins_ago">%d mins ago</string>
-    <string name="d_hors_ago">%d hours ago</string>
+    <string name="just">Just now</string>
+    <string name="d_min_ago">%d mins ago</string>
+    <string name="d_hour_ago">%d hours ago</string>
     <string name="today_s">today %s</string>
     <string name="yesterday">yesterday</string>
     <string name="tomorrow_s">tomorrow %s</string>
