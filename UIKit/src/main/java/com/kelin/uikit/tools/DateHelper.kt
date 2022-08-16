@@ -1,5 +1,7 @@
 package com.kelin.uikit.tools
 
+import com.kelin.uikit.R
+import com.kelin.uikit.getString
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -110,7 +112,7 @@ object DateHelper {
         }
     }
 
-    fun formatDayOffsetCommon(time: Long, defaultValue: String? = "刚刚"): String? {
+    fun formatDayOffsetCommon(time: Long, defaultValue: String? = getString(R.string.just)): String? {
         if (time == 0L) {
             return ""
         }
@@ -130,21 +132,21 @@ object DateHelper {
                             defaultValue
                         }
                         interMinute < 60 -> {
-                            "${interMinute}分钟前"
+                            getString(R.string.d_mins_ago, interMinute)
                         }
                         else -> {
-                            "${interMinute / 60}小时前"
+                            getString(R.string.d_hors_ago, interMinute / 60)
                         }
                     }
                 } else { // 今天的未来时间
-                    "今天 " + formatData(HH_MM, cur.time)
+                    getString(R.string.today_s, formatData(HH_MM, cur.time)?:"")
                 }
             } else if (nowDayOfYear > curDayOfYear) { //过去时间
                 val offsetDay = nowDayOfYear - curDayOfYear
-                if (offsetDay == 1) "昨天" else if (offsetDay <= 6) offsetDay.toString() + "天前" else formatData(MM_DD_HH_MM, cur.time)
+                if (offsetDay == 1) getString(R.string.yesterday) else if (offsetDay <= 6) getString(R.string.d_day_ago, offsetDay) else formatData(MM_DD_HH_MM, cur.time)
             } else {  //未来时间
                 val offsetDay = curDayOfYear - nowDayOfYear
-                if (offsetDay == 1) "明天 " + formatData(HH_MM, cur.time) else formatData(MM_DD_HH_MM, cur.time)
+                if (offsetDay == 1) getString(R.string.tomorrow_s, formatData(HH_MM, cur.time)?:"") else formatData(MM_DD_HH_MM, cur.time)
             }
         } else {
             formatData(YYYY_MM_DD_HH_MM_SS, cur.time)
