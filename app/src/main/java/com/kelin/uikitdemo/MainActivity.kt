@@ -10,7 +10,7 @@ import com.kelin.uikit.UIKit
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        UIKit.init(application, MyToaster(), true, UIKit.Locales.CHINA)
+        UIKit.init(application, MyToaster(), true)
         setContentView(R.layout.activity_main)
     }
 
