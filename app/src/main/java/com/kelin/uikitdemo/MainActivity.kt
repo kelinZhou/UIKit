@@ -10,11 +10,11 @@ import com.kelin.uikit.UIKit
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        UIKit.init(application, MyToastor(), true, UIKit.Locales.CHINA)
+        UIKit.init(application, MyToaster(), true, UIKit.Locales.CHINA)
         setContentView(R.layout.activity_main)
     }
 
-    private class MyToastor :Toaster {
+    private class MyToaster :Toaster {
         override fun handError(e: Throwable): ApiException? {
             return e as? ApiException
         }
