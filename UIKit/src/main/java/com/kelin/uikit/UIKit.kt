@@ -6,6 +6,7 @@ import com.kelin.apiexception.ApiException
 import com.kelin.logger.LogOption
 import com.kelin.proxyfactory.ProxyFactory
 import com.kelin.proxyfactory.Toaster
+import java.util.*
 
 /**
  * **描述:** UIKit的核心类。
@@ -21,11 +22,13 @@ object UIKit {
     internal var isDebugMode = false
     private var context: Application? = null
     internal lateinit var toaster: Toaster
+    internal var defaultLocale: Locale? = null
 
-    fun init(context: Application, toaster: Toaster, isDebugMode: Boolean) {
+    fun init(context: Application, toaster: Toaster, isDebugMode: Boolean, defLocale: Locales? = null) {
         this.context = context
         this.toaster = toaster
         this.isDebugMode = isDebugMode
+        this.defaultLocale = defLocale?.locale
         ApiException.init(context)
         ProxyFactory.init(context, toaster)
         LogOption.init("", isDebugMode)
@@ -34,5 +37,10 @@ object UIKit {
     internal fun getContext(): Context {
         return context
             ?: throw NullPointerException("You must call the UIKit.init() Method before use the UIKit")
+    }
+
+    sealed class Locales(val locale: Locale) {
+        object CHINA : Locales(Locale.CHINA)
+        object US : Locales(Locale.US)
     }
 }

@@ -8,6 +8,7 @@ import android.content.pm.ActivityInfo
 import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.os.PersistableBundle
 import android.view.*
 import android.widget.TextView
@@ -24,6 +25,7 @@ import com.kelin.uikit.annotation.SoftInputModeFlags
 import com.kelin.uikit.core.AndroidBug5497Workaround
 import com.kelin.uikit.tools.BackHandlerHelper
 import com.kelin.uikit.tools.statusbar.StatusBarHelper
+import java.util.*
 import kotlin.reflect.KClass
 
 /**
@@ -147,6 +149,20 @@ abstract class BasicActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        UIKit.defaultLocale?.also {
+            //如果是国内APP则禁用国际化。
+            resources.run {
+                updateConfiguration(
+                    configuration.apply {
+                        setLocale(it)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            setLocales(LocaleList(it))
+                        }
+                    },
+                    displayMetrics
+                )
+            }
+        }
         try {
             //Android8.0如果Activity是透明的则会崩溃，但是小米手机上调用这行代码虽然会崩溃但仍然可以实现屏幕锁定。所以这里用try catch。
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
