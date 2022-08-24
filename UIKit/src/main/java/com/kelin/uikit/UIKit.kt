@@ -26,7 +26,6 @@ object UIKit {
         this.context = context
         this.toaster = toaster
         this.isDebugMode = isDebugMode
-        ApiException.init(context)
         ProxyFactory.init(context, toaster)
         LogOption.init("", isDebugMode)
     }

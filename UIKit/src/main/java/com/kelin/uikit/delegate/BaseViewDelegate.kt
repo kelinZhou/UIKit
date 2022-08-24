@@ -19,6 +19,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.OnLifecycleEvent
 import com.kelin.apiexception.ApiException
 import com.kelin.logger.Logger
+import com.kelin.proxyfactory.exception.ProxyLogicError
 import com.kelin.uikit.R
 import com.kelin.uikit.UIKit
 import com.kelin.uikit.presenter.ViewPresenter
@@ -121,7 +122,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
     }
 
     fun showRetryView(e: ApiException? = null) {
-        if (e?.isNetworkError() == true || !NetWorkStateUtil.isConnected) {
+        if (e?.errCode == ProxyLogicError.NETWORK_UNAVAILABLE.code || !NetWorkStateUtil.isConnected) {
             showRetryView(getString(R.string.poor_network_environment), R.drawable.img_network_disable)
         } else {
             showRetryView(e?.displayMessage ?: getString(R.string.load_error_click_retry), R.drawable.img_common_empty)
