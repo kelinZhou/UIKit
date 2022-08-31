@@ -1,6 +1,7 @@
 package com.kelin.uikit
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -18,11 +19,13 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.ContextCompat
 import androidx.core.util.Pair
 import androidx.core.view.forEach
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.Fragment
 import com.kelin.uikit.tools.DateHelper
 import java.io.File
 import java.io.FileOutputStream
@@ -41,11 +44,23 @@ import java.util.*
  */
 
 fun Any?.getString(@StringRes stringResId: Int, vararg formatArgs: Any): String {
-    return ((this as? Activity)?: UIKit.getContext()).resources.let {
-        if (formatArgs.isEmpty()) {
-            it.getString(stringResId)
-        } else {
-            it.getString(stringResId, *formatArgs)
+    return if (this == null) {
+        UIKit.getContext()
+    } else {
+        when (this) {
+            is Context -> this
+            is Fragment -> this.context
+            is Dialog -> this.context
+            is View -> this.context
+            else -> UIKit.getContext()
+        }
+    }.let {
+        (it ?: UIKit.getContext()).resources.let { res ->
+            if (formatArgs.isEmpty()) {
+                res.getString(stringResId)
+            } else {
+                res.getString(stringResId, *formatArgs)
+            }
         }
     }
 }
@@ -279,6 +294,18 @@ fun TextView.checkDecimal(digits: Int, maxLength: Int = 12) {
 fun Editable?.removeLast() {
     if (!isNullOrBlank()) {
         delete(length - 1, length)
+    }
+}
+
+fun Editable?.removeFirst() {
+    if (!isNullOrBlank()) {
+        delete(0, 1)
+    }
+}
+
+fun Editable?.removeAt(i: Int) {
+    if (!isNullOrBlank() && i >= 0 && i < length) {
+        delete(i, i + 1)
     }
 }
 
