@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.TaskStackBuilder
 import androidx.fragment.app.Fragment
 import com.kelin.logger.Logger
-import com.kelin.okpermission.OkActivityResult
 import com.kelin.uikit.annotation.SoftInputModeFlags
 import com.kelin.uikit.core.AndroidBug5497Workaround
 import com.kelin.uikit.tools.BackHandlerHelper
@@ -411,23 +410,6 @@ abstract class BasicActivity : AppCompatActivity() {
 fun Intent.start(context: Context, options: Bundle? = null) {
     context.startActivity(this, options)
 }
-
-fun <D> Intent.startForResult(context: Activity, onResult: (resultCode: Int, data: D?) -> Unit) {
-    startForResult(context, null, onResult)
-}
-
-fun <D> Intent.startForResult(context: Activity, options: Bundle?, onResult: (resultCode: Int, data: D?) -> Unit) {
-    OkActivityResult.startActivity(context, this, onResult = onResult)
-}
-
-fun Intent.startForResult(context: Activity, onResult: (resultCode: Int) -> Unit) {
-    startForResult(context, null, onResult)
-}
-
-fun Intent.startForResult(context: Activity, options: Bundle?, onResult: (resultCode: Int) -> Unit) {
-    OkActivityResult.startActivity(context, this, onResult = onResult)
-}
-
 
 fun KClass<out Fragment>.create(intent: Intent): Fragment {
     return BasicFragment.newInstance(java, intent.extras)
