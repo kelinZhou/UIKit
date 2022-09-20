@@ -55,7 +55,7 @@ abstract class BasicActivity : AppCompatActivity() {
 
     protected open val hasFullScreen: Boolean = true
 
-    private var mTitleCenter = true
+    protected val centerTitle = true
 
     private val statusBarHelper: StatusBarHelper by lazy {
         StatusBarHelper(
@@ -185,7 +185,7 @@ abstract class BasicActivity : AppCompatActivity() {
 
     override fun onTitleChanged(title: CharSequence, color: Int) {
         super.onTitleChanged(title, color)
-        if (mTitleCenter) {
+        if (centerTitle) {
             tvTitle?.text = title
 //            tvTitle?.setTextColor(color)
         } else {
@@ -194,15 +194,11 @@ abstract class BasicActivity : AppCompatActivity() {
         }
     }
 
-    fun setTitle(title: CharSequence?, center: Boolean) {
-        mTitleCenter = center
-        super.setTitle(title)
-    }
 
-    fun setSubTitle(title: CharSequence, center: Boolean) {
+    fun setSubTitle(title: CharSequence) {
         val actionBar = supportActionBar
         if (actionBar != null) {
-            if (center) {
+            if (centerTitle) {
                 if (tvSubtitle != null) {
                     tvSubtitle!!.visibility = View.VISIBLE
                     tvSubtitle!!.text = title
@@ -211,7 +207,6 @@ abstract class BasicActivity : AppCompatActivity() {
                 actionBar.setDisplayShowTitleEnabled(true)
                 actionBar.subtitle = title
             }
-            mTitleCenter = center
         }
     }
 

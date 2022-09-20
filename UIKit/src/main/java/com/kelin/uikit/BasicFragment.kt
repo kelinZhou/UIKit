@@ -181,12 +181,12 @@ abstract class BasicFragment : Fragment() {
         return false
     }
 
-    protected fun setTitle(@StringRes title: Int, center: Boolean = true) {
-        setTitle(context.getString(title), center)
+    protected fun setTitle(@StringRes title: Int) {
+        setTitle(context.getString(title))
     }
 
-    protected fun setTitle(title: CharSequence?, center: Boolean = true) {
-        (activity as? BasicActivity)?.setTitle(title, center)
+    protected fun setTitle(title: CharSequence?) {
+        (activity as? BasicActivity)?.title = title
     }
 
     protected fun getTitle(): CharSequence? {
