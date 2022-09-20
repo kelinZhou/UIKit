@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:textStyle="bold"
                 android:textColor="@color/grey_333"
-                android:textSize="18sp"
+                android:textSize="@dimen/big_title_text_size"
                 tools:text="候选人" />
 
             <TextView

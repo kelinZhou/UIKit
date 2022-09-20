@@ -50,7 +50,7 @@
                 android:background="@drawable/selector_recycler_item_bg_oval_white"
                 android:gravity="center"
                 android:textColor="@color/grey_999"
-                android:textSize="16sp"
+                android:textSize="@dimen/title_text_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="W,1:1"
                 app:layout_constraintRight_toRightOf="parent"

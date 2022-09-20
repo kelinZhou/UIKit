@@ -257,9 +257,7 @@ abstract class BasicActivity : AppCompatActivity() {
             this.tvSubtitle = subtitleView
             setSupportActionBar(toolbar)
 
-            if (titleView != null) {
-                titleView.compoundDrawablePadding = 5f.dp2px
-            }
+            titleView?.compoundDrawablePadding = 5f.dp2px
             val actionBar = supportActionBar
             if (actionBar != null) {
                 actionBar.setDisplayShowTitleEnabled(false)
