@@ -55,7 +55,7 @@ abstract class BasicActivity : AppCompatActivity() {
 
     protected open val hasFullScreen: Boolean = true
 
-    protected val centerTitle = true
+    protected var centerTitle = true
 
     private val statusBarHelper: StatusBarHelper by lazy {
         StatusBarHelper(
@@ -136,8 +136,28 @@ abstract class BasicActivity : AppCompatActivity() {
         return super.dispatchKeyEvent(event)
     }
 
-    override fun setTitle(title: CharSequence?) {
-        super.setTitle(title ?: "")
+    fun setTitle(title: CharSequence?, center: Boolean) {
+        centerTitle = center
+        super.setTitle(title)
+    }
+
+    fun setSubTitle(title: CharSequence, center: Boolean) {
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            if (center) {
+                if (tvSubtitle != null) {
+                    tvSubtitle!!.visibility = View.VISIBLE
+                    tvSubtitle!!.text = title
+                }
+            } else {
+                actionBar.setDisplayShowTitleEnabled(true)
+                actionBar.subtitle = title
+            }
+            if (centerTitle != center) {
+                centerTitle = center
+                setTitle(this.title, center)
+            }
+        }
     }
 
     protected open fun <V : View?> getView(@IdRes viewId: Int): V? {
