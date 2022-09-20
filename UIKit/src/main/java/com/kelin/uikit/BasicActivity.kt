@@ -136,9 +136,13 @@ abstract class BasicActivity : AppCompatActivity() {
         return super.dispatchKeyEvent(event)
     }
 
+    override fun setTitle(title: CharSequence?) {
+        super.setTitle(title ?: "")
+    }
+
     fun setTitle(title: CharSequence?, center: Boolean) {
         centerTitle = center
-        super.setTitle(title)
+        super.setTitle(title ?: "")
     }
 
     fun setSubTitle(title: CharSequence, center: Boolean) {

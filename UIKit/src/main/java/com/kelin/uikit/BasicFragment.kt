@@ -26,6 +26,8 @@ abstract class BasicFragment : Fragment() {
 
     private val handler by lazy { Handler() }
 
+    protected var centerTitleEnable = true
+
     open val isDarkMode: Boolean?
         get() = false
 
@@ -181,11 +183,11 @@ abstract class BasicFragment : Fragment() {
         return false
     }
 
-    protected fun setTitle(@StringRes title: Int, center: Boolean = true) {
+    protected fun setTitle(@StringRes title: Int, center: Boolean = centerTitleEnable) {
         setTitle(context.getString(title), center)
     }
 
-    protected fun setTitle(title: CharSequence?, center: Boolean = true) {
+    protected fun setTitle(title: CharSequence?, center: Boolean = centerTitleEnable) {
         (activity as? BasicActivity)?.setTitle(title, center)
     }
 
