@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.kelin.uikit.BasicFragment
 import com.kelin.uikit.R
 import com.kelin.uikit.core.SystemError
-import kotlinx.android.synthetic.main.state_layout_common.view.*
+import kotlinx.android.synthetic.main.state_layout_retry.view.*
 
 /**
  * **描述:** 通用的错误页面。
@@ -36,7 +36,7 @@ class CommonErrorFragment : BasicFragment() {
 
     @SuppressLint("MissingSuperCall")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.state_layout_common, container, false)
+        val view = inflater.inflate(R.layout.state_layout_retry, container, false)
         view.tvStatePageTitle.text = arguments?.getString(KEY_ERROR_MSG) ?: "系统错误"
         return view
     }

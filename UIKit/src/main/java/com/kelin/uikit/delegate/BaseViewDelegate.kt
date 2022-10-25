@@ -207,8 +207,9 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
         val rootView = inflater.inflate(rootLayoutId, container, false)
         val dataView = rootView.findViewById<View>(dataViewId)
         containerView = if (dataView == null || dataView === rootView) {
-            statePageLayout.init(pageStateFlags, loadingStateLayout, retryStateLayout, emptyStateLayout, rootView)
-            statePageLayout
+            statePageLayout.apply {
+                init(pageStateFlags, loadingStateLayout, retryStateLayout, emptyStateLayout, rootView)
+            }
         } else {
             statePageLayout.init(pageStateFlags, loadingStateLayout, retryStateLayout, emptyStateLayout, dataView)
             rootView
@@ -329,11 +330,11 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
 
     @get:LayoutRes
     protected open val retryStateLayout: Int
-        get() = R.layout.state_layout_common
+        get() = R.layout.state_layout_retry
 
     @get:LayoutRes
     protected open val emptyStateLayout: Int
-        get() = R.layout.state_layout_common
+        get() = R.layout.state_layout_empty
 
 
     fun setDrawableTop(tv: TextView, @DrawableRes drawableRes: Int) {
@@ -382,6 +383,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
                 View.GONE
             } else {
                 iconView?.setImageResource(option.icon)
+                (iconView?.drawable as? AnimationDrawable)?.start()
                 View.VISIBLE
             }
             val titleView = stateView.findViewById<TextView>(R.id.tvStatePageTitle)
@@ -451,7 +453,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
 
     private inner class LoadingStateOption : StateOption {
 
-        override var icon: Int = 0
+        override var icon: Int = R.drawable.anim_common_loading
 
         override var title: String = ""
 

@@ -9,22 +9,18 @@
     android:paddingRight="20dp">
 
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lvLoading"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:lottie_loop="true"
-        app:lottie_autoPlay="true"
-        app:lottie_fileName="lottie_anim_common_loading.json"
-        style="?android:attr/progressBarStyleLarge"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivStatePageIcon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         app:layout_constraintVertical_bias="0.3"
-        app:layout_constraintWidth_percent="0.25"
         app:layout_constraintDimensionRatio="H, 1:1"
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tvStatePageTitle"/>
+        app:layout_constraintBottom_toTopOf="@id/tvStatePageTitle"
+        android:src="@drawable/anim_common_loading"/>
 
 
     <TextView
@@ -39,7 +35,7 @@
         tools:text="我是标题"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lvLoading"
+        app:layout_constraintTop_toBottomOf="@id/ivStatePageIcon"
         app:layout_constraintBottom_toTopOf="@id/tvStatePageSubTitle"/>
 
     <TextView
