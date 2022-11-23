@@ -294,6 +294,7 @@ abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : Comm
 
         override fun onRefreshFailed(id: ID, e: ApiException) {
             onLoadFailed(id, e)
+            viewDelegate?.reSetRefresh()
         }
 
         override fun onRetrySuccess(id: ID, data: D) {

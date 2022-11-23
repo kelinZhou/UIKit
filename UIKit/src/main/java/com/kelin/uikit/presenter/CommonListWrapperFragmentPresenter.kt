@@ -203,11 +203,6 @@ abstract class CommonListWrapperFragmentPresenter<V : CommonListWrapperDelegate<
             super.onRefreshSuccess(id, data)
         }
 
-        override fun onRefreshFailed(id: ID, e: ApiException) {
-            super.onRefreshFailed(id, e)
-            viewDelegate?.reSetRefresh()
-        }
-
         override fun onLoadMoreSuccess(id: ID, data: W) {
             val vd = viewDelegate
             if (vd != null) {

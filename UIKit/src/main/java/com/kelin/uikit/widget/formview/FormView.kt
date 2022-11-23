@@ -127,7 +127,7 @@ class FormView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 containerView.etFormViewValue.apply {
                     setText(value)
                     if (!value.isNullOrEmpty()) {
-                        setSelection(value.length)
+                        setSelection(text?.length ?: 0)
                     }
                 }
             } else {
