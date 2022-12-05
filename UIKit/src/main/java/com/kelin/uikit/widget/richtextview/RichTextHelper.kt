@@ -34,7 +34,7 @@ internal class RichTextHelper(val paint: TextPaint) : Html.TagHandler {
     }
 
     internal fun fromText(source: String): CharSequence {
-        val ns = source.replace("\n", "<br/>", true)
+        val ns = source.replace("\n", "<br/>", true).replace(" ", "&#160;", true)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(
                 if (ns.startsWith("<html>")) ns else "<html>$ns</html>",
