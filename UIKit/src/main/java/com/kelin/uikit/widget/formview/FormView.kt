@@ -231,6 +231,13 @@ class FormView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
             containerView.rtvFormViewValue.setTextSize(TypedValue.COMPLEX_UNIT_PX, value)
         }
 
+    @ColorInt
+    var fieldNameColor: Int = Color.BLACK
+        set(value) {
+            field = value
+            containerView.rtvFormViewName.setTextColor(value)
+        }
+
     var fieldNameSizeSp: Float = 14F
         set(value) {
             field = value
@@ -355,13 +362,16 @@ class FormView @JvmOverloads constructor(context: Context, attrs: AttributeSet? 
                 containerView.rtvFormViewValue.setTextColor(this)
             }
         }
-
         ta.getDimension(R.styleable.FormView_fieldValueSize, -1F).apply {
             if (this != -1F) {
                 valueTextSizePx = this
             }
         }
-
+        ta.getColor(R.styleable.FormView_fieldNameColor, -1).apply {
+            if (this != -1) {
+                containerView.rtvFormViewName.setTextColor(this)
+            }
+        }
         ta.getDimension(R.styleable.FormView_fieldNameSize, -1F).apply {
             if (this != -1F) {
                 fieldNameSizePx = this

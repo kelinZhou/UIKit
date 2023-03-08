@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:minHeight="?android:attr/actionBarSize"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        tools:showIn="@layout/activity_common_layout">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView
             android:id="@+id/toolbar_title_left_but"

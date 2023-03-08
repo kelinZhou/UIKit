@@ -408,26 +408,4 @@ abstract class BasicActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
-
-
-    protected fun createFragmentByClass(clazz: Class<out Fragment>, intent: Intent) =
-        BasicFragment.newInstance(clazz, intent.extras)
-
-    companion object {
-        fun generateJumpIntent(context: Context, activityClass: Class<out BasicActivity>): Intent {
-            val intent = Intent(context, activityClass)
-            if (context !is Activity) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            return intent
-        }
-    }
-}
-
-fun Intent.start(context: Context, options: Bundle? = null) {
-    context.startActivity(this, options)
-}
-
-fun KClass<out Fragment>.create(intent: Intent): Fragment {
-    return BasicFragment.newInstance(java, intent.extras)
 }

@@ -25,6 +25,8 @@
         <attr name="fieldValueColor" format="color" />
         <!--表单字段值的文字大小-->
         <attr name="fieldValueSize" format="dimension" />
+        <!--表单字段名的文字颜色-->
+        <attr name="fieldNameColor" format="color" />
         <!--表单字段名的文字大小-->
         <attr name="fieldNameSize" format="dimension" />
         <!--表单字段值的单位-->

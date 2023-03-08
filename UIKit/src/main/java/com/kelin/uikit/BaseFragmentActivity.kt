@@ -1,7 +1,5 @@
 package com.kelin.uikit
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -31,11 +29,11 @@ abstract class BaseFragmentActivity : BasicActivity() {
 
     @get:LayoutRes
     protected open val activityRootLayout: Int
-        get() = R.layout.activity_common_layout
+        get() = R.layout.ui_kit_activity_common
 
     @get:IdRes
     protected open val warpFragmentId: Int
-        get() = R.id.fragment_container
+        get() = R.id.flUiKitFragmentContainer
 
     @get:IdRes
     protected open val toolbarId: Int
@@ -52,9 +50,6 @@ abstract class BaseFragmentActivity : BasicActivity() {
     @get:IdRes
     protected open val leftButtonViewId: Int
         get() = R.id.toolbar_title_left_but
-
-    protected val curTarget: Int
-        get() = intent.getIntExtra(KEY_TARGET_PAGE, PAGE_UNKNOWN)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -106,25 +101,16 @@ abstract class BaseFragmentActivity : BasicActivity() {
     }
 
     fun hideToolbarLine() {
-        getView<View>(R.id.vToolbarLine)?.visibility = View.GONE
+        getView<View>(R.id.vUiKitToolbarLine)?.visibility = View.GONE
     }
 
     private fun addInitialFragment(): Fragment {
-        val intent = intent
-        return if (curTarget == PAGE_UNKNOWN) {
-            if (UIKit.isDebugMode) {
-                throw RuntimeException("The target page value is unknown!")
-            } else {
-                val fragment = onJumpError(SystemError.NULL_ARGUMENT, RuntimeException("The target page value is unknown!"))
-                replaceFragment(warpFragmentId, fragment)
-                fragment
-            }
-        } else {
-            val fragment = getCurrentFragment(curTarget, intent)
-            replaceFragment(warpFragmentId, fragment)
-            fragment
+        return getCurrentFragment(intent).also {
+            replaceFragment(warpFragmentId, it)
         }
     }
+
+    protected abstract fun getCurrentFragment(intent: Intent): Fragment
 
     protected open fun onJumpError(systemError: SystemError, exception: Throwable = RuntimeException(systemError.text)): CommonErrorFragment {
         ToastUtil.showShortToast(systemError.text)
@@ -132,29 +118,11 @@ abstract class BaseFragmentActivity : BasicActivity() {
         return CommonErrorFragment.createInstance(systemError)
     }
 
-    protected abstract fun getCurrentFragment(targetPage: Int, intent: Intent): Fragment
-
     companion object {
 
         /**
          * 用来获取目标页面的键。
          */
-        private const val KEY_TARGET_PAGE = "key_target_page"
-        private const val KEY_PAGE_TITLE = "key_page_title"
-
-        /**
-         * 表示当前目标页面为未知的。
-         */
-        private const val PAGE_UNKNOWN = 0
-
-        fun getJumpIntent(context: Context, activityClass: Class<out BaseFragmentActivity>, targetPage: Int, pageTitle: CharSequence = ""): Intent {
-            val intent = generateJumpIntent(context, activityClass)
-            if (context !is Activity) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            }
-            intent.putExtra(KEY_TARGET_PAGE, targetPage)
-            intent.putExtra(KEY_PAGE_TITLE, pageTitle)
-            return intent
-        }
+        internal const val KEY_PAGE_TITLE = "key_page_title"
     }
 }
