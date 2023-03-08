@@ -158,7 +158,7 @@ class CommonActivity : BaseFragmentActivity() {
 
 
     override fun getCurrentFragment(intent: Intent): Fragment {
-        return (intent as? FragmentProvider)?.provideFragment ?: onJumpError(SystemError.TARGET_PAGE_TYPE_NOT_HANDLER)
+        return FragmentProvider.provideFragment(intent) ?: onJumpError(SystemError.TARGET_PAGE_TYPE_NOT_HANDLER)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -184,7 +184,7 @@ class CommonActivity : BaseFragmentActivity() {
         }
     }
 
-    class InnerIntent(context: Context, cls: Class<*>) : Intent(context, cls), FragmentProvider {
+    class InnerIntent(context: Context, cls: Class<*>) : Intent(context, cls) {
         private var context: Context? = context
 
         var launchOptions: Bundle? = null
@@ -204,14 +204,8 @@ class CommonActivity : BaseFragmentActivity() {
             }
 
         fun setTarget(target: Class<out Fragment>) {
-            putExtra("key_target_fragment_class", target)
+            FragmentProvider.setTargetFragment(this, target)
         }
-
-        @Suppress("UNCHECKED_CAST")
-        override val provideFragment: Fragment?
-            get() = (getSerializableExtra("key_target_fragment_class") as? Class<out Fragment>)?.let {
-                BasicFragment.newInstance(it, extras)
-            }
 
         /**
          * 为新的页面设置标题，仅在没有调用immersion或immersionToolbar方法时生效。
