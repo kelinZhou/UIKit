@@ -163,7 +163,7 @@ class CommonActivity : BaseFragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (getView<View>(R.id.fragment_container)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
+        (getView<View>(warpFragmentId)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
             ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
                 if (mode == ImmersionMode.NONE) {
                     lp.topToBottom = R.id.vUiKitToolbarLine
