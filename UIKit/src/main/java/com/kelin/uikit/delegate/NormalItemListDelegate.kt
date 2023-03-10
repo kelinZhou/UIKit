@@ -45,7 +45,7 @@ abstract class NormalItemListDelegate<VC : NormalItemListDelegate.NormalItemList
         get() = R.id.list_view
 
     protected val recyclerView: RecyclerView?
-    get() = containerView?.findViewById(recyclerViewId)
+        get() = containerView?.findViewById(recyclerViewId)
 
     override fun bindView(viewPresenter: ViewPresenter<VC>) {
         super.bindView(viewPresenter)
@@ -54,7 +54,7 @@ abstract class NormalItemListDelegate<VC : NormalItemListDelegate.NormalItemList
         listView?.adapter = adapter
     }
 
-    protected open fun onCreateLayoutManager() = LinearLayoutManager(context)
+    protected open fun onCreateLayoutManager(): RecyclerView.LayoutManager = LinearLayoutManager(context)
 
     open fun setInitData(cells: List<I>) {
         adapter.setData(cells, true)
@@ -104,7 +104,8 @@ abstract class NormalItemListDelegate<VC : NormalItemListDelegate.NormalItemList
         return false
     }
 
-    inner class CommonItemViewHolder internal constructor(parent: ViewGroup, layoutRes: Int, clickableIds: IntArray?, listener: OnItemEventListener<I>?, private var itemModel: I) : AbsItemViewHolder<I>(parent, layoutRes, listener, clickableIds, false), CellOwner {
+    inner class CommonItemViewHolder internal constructor(parent: ViewGroup, layoutRes: Int, clickableIds: IntArray?, listener: OnItemEventListener<I>?, private var itemModel: I) :
+        AbsItemViewHolder<I>(parent, layoutRes, listener, clickableIds, false), CellOwner {
 
         override val itemLongClickable: Boolean
             get() = itemModel.itemLongClickable
@@ -161,19 +162,19 @@ abstract class NormalItemListDelegate<VC : NormalItemListDelegate.NormalItemList
 
     internal inner class CommonOnItemEventListenerImpl : OnItemEventListener<I> {
 
-        override fun onItemClick(itemView:View, position: Int, item: I) {
+        override fun onItemClick(itemView: View, position: Int, item: I) {
             if (!this@NormalItemListDelegate.onItemClick(position, item)) {
                 viewCallback.onListItemClick(position, item)
             }
         }
 
-        override fun onItemLongClick(itemView:View, position: Int, item: I) {
+        override fun onItemLongClick(itemView: View, position: Int, item: I) {
             if (!this@NormalItemListDelegate.onItemLongClick(position, item)) {
                 viewCallback.onListItemLongClick(position, item)
             }
         }
 
-        override fun onItemChildClick(itemView:View, v: View, position: Int, item: I) {
+        override fun onItemChildClick(itemView: View, v: View, position: Int, item: I) {
             if (!this@NormalItemListDelegate.onItemChildClick(position, v, item)) {
                 viewCallback.onListItemChildClick(position, v, item)
             }
