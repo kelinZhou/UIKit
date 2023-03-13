@@ -9,6 +9,7 @@ import com.kelin.uikit.BasicFragment
 import com.kelin.uikit.common.CommonErrorFragment
 import com.kelin.uikit.core.SystemError
 import java.util.*
+import kotlin.reflect.KClass
 
 /**
  * 描述 FragmentPager {ViewPager}的适配器。
@@ -53,6 +54,27 @@ class CommonFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerA
      *
      * @param name 要添加的页面的名字。这个名字将会显示在
      * {TabLayout 页签}中。
+     */
+    inline fun <reified F : BasicFragment> page(name: String) {
+        addPager(name, F::class.java)
+    }
+
+    /**
+     * 添加页面。
+     *
+     * @param name 要添加的页面的名字。这个名字将会显示在
+     * {TabLayout 页签}中。
+     * @param cls  要添加的页面的[Class]对象。
+     */
+    fun page(name: String, cls: Class<out BasicFragment>) {
+        addPager(name, cls)
+    }
+
+    /**
+     * 添加页面。
+     *
+     * @param name 要添加的页面的名字。这个名字将会显示在
+     * {TabLayout 页签}中。
      * @param cls  要添加的页面的[Class]对象。
      */
     fun addPager(name: String, cls: Class<out BasicFragment>) {
@@ -82,10 +104,11 @@ class CommonFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerA
         }
         //健壮性判断，防止添加失败。
         if (mNameList.add(name)) {
+            val index = mClsList.size
             if (!mClsList.add(fragment.javaClass)) {
                 mNameList.remove(name)
             } else {
-                mFragmentMap.put(mFragmentMap.size(), fragment)
+                mFragmentMap.put(index, fragment)
             }
         }
     }
@@ -170,5 +193,13 @@ class CommonFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerA
         if (isRefresh) {
             notifyDataSetChanged()
         }
+    }
+
+    infix fun String.to(cls: KClass<out BasicFragment>) {
+        addPager(this, cls.java)
+    }
+
+    infix fun <F : BasicFragment> String.to(fragment: F) {
+        addPager(this, fragment)
     }
 }

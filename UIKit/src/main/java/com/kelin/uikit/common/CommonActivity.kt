@@ -6,13 +6,20 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.DrawableRes
+import android.widget.RelativeLayout
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import com.kelin.okpermission.OkActivityResult
+import androidx.viewpager.widget.ViewPager
 import com.kelin.uikit.*
+import com.kelin.uikit.common.ImmersionMode.Companion.KEY_IMMERSION_MODE
+import com.kelin.uikit.common.ImmersionMode.Companion.KEY_NAVIGATION_ICON
 import com.kelin.uikit.core.SystemError
+import com.kelin.uikit.flyweight.adapter.CommonFragmentStatePagerAdapter
+import com.kelin.uikit.tools.DeviceUtil
+import com.kelin.uikit.tools.statusbar.StatusBarHelper
+import com.kelin.uikit.widget.MaxSizeRelativeLayout
+import com.kelin.uikit.widget.tablayout.helper.ViewPagerTabLayoutHelper
 
 /**
  * **描述:** 通用的Activity。
@@ -23,20 +30,15 @@ import com.kelin.uikit.core.SystemError
  *
  * **版本:** v 1.0.0
  */
-class CommonActivity : BaseFragmentActivity() {
+class CommonActivity : BasicActivity() {
 
     companion object {
-
-        private const val KEY_IMMERSION_MODE = "key_immersion_mode"
-        private const val KEY_NAVIGATION_ICON = "key_navigation_icon"
-
-
         /**
          * 启动页面，通过泛型指定要启动的页面。
          * @param title 页面的标题。
          */
-        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int) {
-            launch(context, F::class.java, getString(title)) {}
+        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int): Intent {
+            return launch(context, F::class.java, getString(title)) {}
         }
 
         /**
@@ -44,8 +46,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param target 目标Fragment：本次要启动的Fragment。
          * @param title 页面的标题。
          */
-        fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int) {
-            launch(context, target, getString(title)) {}
+        fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int): Intent {
+            return launch(context, target, getString(title)) {}
         }
 
         /**
@@ -53,8 +55,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int, configurator: InnerIntent.() -> Unit) {
-            launch(context, F::class.java, getString(title), configurator)
+        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int, configurator: Intent.() -> Unit): Intent {
+            return launch(context, F::class.java, getString(title), configurator)
         }
 
         /**
@@ -63,24 +65,24 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int, configurator: InnerIntent.() -> Unit) {
-            launch(context, target, getString(title), configurator)
+        inline fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int, configurator: Intent.() -> Unit): Intent {
+            return launch(context, target, getString(title), configurator)
         }
 
         /**
          * 启动页面，通过泛型指定要启动的页面。
          * @param title 页面的标题。
          */
-        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null) {
-            launch(context, F::class.java, title)
+        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null): Intent {
+            return launch(context, F::class.java, title)
         }
 
         /**
          * 启动页面。
          * @param title 页面的标题。
          */
-        fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null) {
-            launch(context, target, title) {}
+        fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null): Intent {
+            return launch(context, target, title) {}
         }
 
         /**
@@ -88,8 +90,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null, configurator: InnerIntent.() -> Unit) {
-            launch(context, F::class.java, title, configurator)
+        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null, configurator: Intent.() -> Unit): Intent {
+            return launch(context, F::class.java, title, configurator)
         }
 
         /**
@@ -98,8 +100,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, configurator: InnerIntent.() -> Unit) {
-            InnerIntent(context, CommonActivity::class.java).apply {
+        inline fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, configurator: Intent.() -> Unit): Intent {
+            return InnerIntent(context, CommonActivity::class.java).apply {
                 if (context !is Activity) {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
@@ -115,8 +117,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun <reified F : Fragment> launchByOption(context: Context, @StringRes title: Int, configurator: InnerIntent.() -> Unit) {
-            launchByOption(context, F::class.java, getString(title), configurator)
+        inline fun <reified F : Fragment> launchByOption(context: Context, @StringRes title: Int, configurator: Intent.() -> Unit): Intent {
+            return launchByOption(context, F::class.java, getString(title), configurator)
         }
 
         /**
@@ -125,8 +127,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun launchByOption(context: Context, target: Class<out Fragment>, @StringRes title: Int, configurator: InnerIntent.() -> Unit) {
-            launchByOption(context, target, getString(title), configurator)
+        inline fun launchByOption(context: Context, target: Class<out Fragment>, @StringRes title: Int, configurator: Intent.() -> Unit): Intent {
+            return launchByOption(context, target, getString(title), configurator)
         }
 
         /**
@@ -134,8 +136,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun <reified F : Fragment> launchByOption(context: Context, title: CharSequence? = null, configurator: InnerIntent.() -> Unit) {
-            launchByOption(context, F::class.java, title, configurator)
+        inline fun <reified F : Fragment> launchByOption(context: Context, title: CharSequence? = null, configurator: Intent.() -> Unit): Intent {
+            return launchByOption(context, F::class.java, title, configurator)
         }
 
         /**
@@ -144,8 +146,8 @@ class CommonActivity : BaseFragmentActivity() {
          * @param title 页面的标题。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun launchByOption(context: Context, target: Class<out Fragment>, title: CharSequence? = null, configurator: InnerIntent.() -> Unit) {
-            InnerIntent(context, CommonActivity::class.java).apply {
+        inline fun launchByOption(context: Context, target: Class<out Fragment>, title: CharSequence? = null, configurator: Intent.() -> Unit): Intent {
+            return InnerIntent(context, CommonActivity::class.java).apply {
                 if (context !is Activity) {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
@@ -154,16 +156,89 @@ class CommonActivity : BaseFragmentActivity() {
                 configurator(this)
             }
         }
+
+        /**
+         * 启动Tab页面。
+         * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
+         */
+        inline fun launchTab(context: Context, configurator: Intent.() -> Unit): Intent {
+            return InnerIntent(context, CommonActivity::class.java).apply {
+                if (context !is Activity) {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                forTab(true)
+                configurator(this)
+                context.startActivity(this, launchOptions)
+            }
+        }
+
+        /**
+         * 通过配置启动Tab页面，改方法不会自动拉起Activity，需要调用者在configurator中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
+         * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
+         */
+        inline fun launchTabByOption(context: Context, configurator: Intent.() -> Unit): Intent {
+            return InnerIntent(context, CommonActivity::class.java).apply {
+                if (context !is Activity) {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                forTab(true)
+                configurator(this)
+            }
+        }
+
+        /**
+         * 启动Tab页面，只启动不配置页面样式。
+         * @param immersion 是否启动沉浸式样式。
+         * @param configuration 页面的适配器配置函数，用于在启动页面后对目标页面配置Tab。
+         */
+        fun launchTabOnly(context: Context, immersion: Boolean = false, configuration: CommonFragmentStatePagerAdapter.() -> Unit): Intent {
+            return InnerIntent(context, CommonActivity::class.java).apply {
+                if (context !is Activity) {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                }
+                forTab(true)
+                if (immersion) {
+                    immersion()
+                }
+                configurePage(configuration)
+                context.startActivity(this, launchOptions)
+            }
+        }
     }
 
 
-    override fun getCurrentFragment(intent: Intent): Fragment {
+    private fun getCurrentFragment(intent: Intent): Fragment {
         return FragmentProvider.provideFragment(intent) ?: onJumpError(SystemError.TARGET_PAGE_TYPE_NOT_HANDLER)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (getView<View>(warpFragmentId)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
+        val isForTab = InnerIntent.isForTab(intent)
+        if (isForTab) {
+            setContentView(R.layout.kelin_ui_kit_activity_tablayout_toolbar)
+            initTitleBar(getView(R.id.my_awesome_toolbar), null, null)
+            setTabLayoutParamsAndAdapter()
+        } else {
+            setContentView(R.layout.kelin_ui_kit_activity_common)
+            initTitleBar(getView(R.id.my_awesome_toolbar), getView(R.id.toolbar_center_title), getView(R.id.toolbar_sub_title))
+            setCommonLayoutParams()
+            title = intent.getCharSequenceExtra(BaseFragmentActivity.KEY_PAGE_TITLE)
+            getCurrentFragment(intent).also {
+                replaceFragment(R.id.flUiKitFragmentContainer, it)
+                (it as? BasicFragment)?.isDarkMode?.also { isDark ->
+                    if (isDark) {
+                        StatusBarHelper.setStatusBarDarkMode(this)
+                    } else {
+                        StatusBarHelper.setStatusBarLightMode(this)
+                    }
+                }
+            }
+            getView<View>(R.id.toolbar_title_left_but)?.setOnClickListener { onBackPressed() }
+        }
+    }
+
+    private fun setCommonLayoutParams() {
+        (getView<View>(R.id.flUiKitFragmentContainer)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
             ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
                 if (mode == ImmersionMode.NONE) {
                     lp.topToBottom = R.id.vUiKitToolbarLine
@@ -178,122 +253,68 @@ class CommonActivity : BaseFragmentActivity() {
                         }
                     }
                     lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
-                    lp.topToTop = 0
+                    lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
             }
         }
     }
 
-    class InnerIntent(context: Context, cls: Class<*>) : Intent(context, cls) {
-        private var context: Context? = context
-
-        var launchOptions: Bundle? = null
-            private set
-
-        private val isFromActivityContext: Boolean
-            get() = context is Activity
-
-        private val useActivity: Activity
-            get() = useContext as Activity
-
-        private val useContext: Context
-            get() {
-                val contextTemp = context
-                context = null
-                return contextTemp ?: throw NullPointerException("The context used early!")
-            }
-
-        fun setTarget(target: Class<out Fragment>) {
-            FragmentProvider.setTargetFragment(this, target)
-        }
-
-        /**
-         * 为新的页面设置标题，仅在没有调用immersion或immersionToolbar方法时生效。
-         * @param title 页面的标题。
-         */
-        fun title(title: CharSequence) {
-            putExtra("key_page_title", title)
-        }
-
-        /**
-         * 为新的页面设置标题，仅在没有调用immersion或immersionToolbar方法时生效。
-         * @param title 页面的标题。
-         * @see immersion
-         * @see immersionToolbar
-         */
-        fun title(@StringRes title: Int) {
-            putExtra("key_page_title", getString(title))
-        }
-
-        /**
-         * 为新的页面设置沉浸式样式，设置沉浸式样式后会隐藏默认的Toolbar。
-         */
-        fun immersion() {
-            putExtra(KEY_IMMERSION_MODE, ImmersionMode.NO_TOOLBAR)
-        }
-
-        /**
-         * 为新的页面设置沉浸式样式，设置沉浸式样式后Toolbar会盖在目标页面上，需要为目标页面设置一定的顶部间距保证Toolbar不会遮挡到目标页面的内容。
-         */
-        fun immersionToolbar(@DrawableRes navigationIcon: Int? = null) {
-            putExtra(KEY_IMMERSION_MODE, ImmersionMode.HAVE_TOOLBAR)
-            putExtra(KEY_NAVIGATION_ICON, navigationIcon)
-        }
-
-        /**
-         * Activity的启动配置。
-         * @param options 配置内容。
-         */
-        fun options(options: Bundle) {
-            launchOptions = options
-        }
-
-        /**
-         * 启动页面。
-         * @param onResult 如果需要从目标页面获取结果则需要传入回调。
-         */
-        fun start(onResult: ((resultCode: Int) -> Unit)?) {
-            (this as? InnerIntent)?.also {
-                if (onResult != null && it.isFromActivityContext) {
-                    OkActivityResult.startActivity(it.useActivity, this, launchOptions, onResult)
-                } else {
-                    it.useContext.startActivity(this, launchOptions)
+    private fun setTabLayoutParamsAndAdapter() {
+        getView<ViewPager>(R.id.uiKitVpPager)?.run {
+            (layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
+                ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
+                    if (mode == ImmersionMode.NONE) {
+                        lp.topToBottom = R.id.uiKitRlToolbarParent
+                        lp.topToTop = ConstraintLayout.LayoutParams.UNSET
+                    } else {
+                        processStatusBar(Color.TRANSPARENT)
+                        intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                            setNavigationIcon(it)
+                        }
+                        lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
+                        lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                    }
                 }
             }
-        }
-
-        /**
-         * 启动页面。
-         * @param onResult 如果需要从目标页面获取结果则需要传入回调。
-         */
-        fun <D> start(onResult: ((resultCode: Int, data: D?) -> Unit)?) {
-            (this as? InnerIntent)?.also {
-                if (onResult != null && it.isFromActivityContext) {
-                    OkActivityResult.startActivity(it.useActivity, this, launchOptions, onResult)
-                } else {
-                    it.useContext.startActivity(this, launchOptions)
-                }
+            val pagerAdapter = CommonFragmentStatePagerAdapter(supportFragmentManager).also {
+                InnerIntent.getTabPageConfig(intent)?.configuration?.invoke(it) ?: NullPointerException("The configurationPage method must called!").printStackTrace()
+                offscreenPageLimit = it.count
             }
+            adapter = pagerAdapter
+            val tabLayout = ViewPagerTabLayoutHelper.createCommonToolbarTabLayout(this)
+            getView<MaxSizeRelativeLayout>(R.id.uiKitLlCustomCenterView)?.run {
+                post {
+                    setMaxWidth(DeviceUtil.getScreenWidth(applicationContext, 1.0) - (left shl 1))
+                }
+                val lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, 55.dp2px)
+                lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                addView(tabLayout, lp)
+            }
+            currentItem = InnerIntent.getTabDefIndex(intent).let { if (it >= pagerAdapter.size) pagerAdapter.size - 1 else it }
+            addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                }
+
+                override fun onPageSelected(position: Int) {
+                    initStatusBarMode(position)
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {
+                }
+            })
+            initStatusBarMode(currentItem)
         }
     }
 
-    /**
-     * 沉浸模式。
-     */
-    private enum class ImmersionMode {
-        /**
-         * 不开启。
-         */
-        NONE,
-
-        /**
-         * 没有Toolbar的。
-         */
-        NO_TOOLBAR,
-
-        /**
-         * 有Toolbar的。
-         */
-        HAVE_TOOLBAR
+    private fun ViewPager.initStatusBarMode(position: Int) {
+        (adapter as? CommonFragmentStatePagerAdapter)?.also {
+            it.getItem(position).isDarkMode?.also { dark ->
+                if (dark) {
+                    StatusBarHelper.setStatusBarDarkMode(this@CommonActivity)
+                } else {
+                    StatusBarHelper.setStatusBarLightMode(this@CommonActivity)
+                }
+            }
+        }
     }
 }

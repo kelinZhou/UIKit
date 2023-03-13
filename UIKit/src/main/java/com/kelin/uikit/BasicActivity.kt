@@ -1,8 +1,6 @@
 package com.kelin.uikit
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.Resources
@@ -19,11 +17,14 @@ import androidx.core.app.TaskStackBuilder
 import androidx.fragment.app.Fragment
 import com.kelin.logger.Logger
 import com.kelin.uikit.annotation.SoftInputModeFlags
+import com.kelin.uikit.common.CommonErrorFragment
 import com.kelin.uikit.core.AndroidBug5497Workaround
+import com.kelin.uikit.core.SystemError
+import com.kelin.uikit.tools.AppLayerErrorCatcher
 import com.kelin.uikit.tools.BackHandlerHelper
+import com.kelin.uikit.tools.ToastUtil
 import com.kelin.uikit.tools.statusbar.StatusBarHelper
 import java.util.*
-import kotlin.reflect.KClass
 
 /**
  * **描述:** 所有Activity的基类。
@@ -312,6 +313,14 @@ abstract class BasicActivity : AppCompatActivity() {
         (toolbar?.parent as? View)?.setBackgroundColor(color)
     }
 
+    /**
+     * 获取当需要跳转到错误页面时的错误页面实例。
+     */
+    protected open fun onJumpError(systemError: SystemError, exception: Throwable = RuntimeException(systemError.text)): CommonErrorFragment {
+        ToastUtil.showShortToast(systemError.text)
+        AppLayerErrorCatcher.throwException(exception)
+        return CommonErrorFragment.createInstance(systemError)
+    }
 
     @JvmOverloads
     protected fun addFragment(containerViewId: Int, fragment: Fragment, tag: String = fragment.javaClass.simpleName) {

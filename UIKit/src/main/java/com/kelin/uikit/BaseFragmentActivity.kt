@@ -10,11 +10,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import com.kelin.uikit.core.SystemError
-import com.kelin.uikit.tools.AppLayerErrorCatcher
-import com.kelin.uikit.tools.ToastUtil
 import com.kelin.uikit.tools.statusbar.StatusBarHelper
-import com.kelin.uikit.common.CommonErrorFragment
 
 /**
  * **描述:** 用来承载Fragment的基类。
@@ -29,7 +25,7 @@ abstract class BaseFragmentActivity : BasicActivity() {
 
     @get:LayoutRes
     protected open val activityRootLayout: Int
-        get() = R.layout.ui_kit_activity_common
+        get() = R.layout.kelin_ui_kit_activity_common
 
     @get:IdRes
     protected open val warpFragmentId: Int
@@ -111,12 +107,6 @@ abstract class BaseFragmentActivity : BasicActivity() {
     }
 
     protected abstract fun getCurrentFragment(intent: Intent): Fragment
-
-    protected open fun onJumpError(systemError: SystemError, exception: Throwable = RuntimeException(systemError.text)): CommonErrorFragment {
-        ToastUtil.showShortToast(systemError.text)
-        AppLayerErrorCatcher.throwException(exception)
-        return CommonErrorFragment.createInstance(systemError)
-    }
 
     companion object {
 

@@ -161,4 +161,9 @@
         <!--状态改变动画差值器-->
         <attr name="android:interpolator" />
     </declare-styleable>
+
+    <declare-styleable name="MaxSizeView">
+        <attr name="android:maxHeight"/>
+        <attr name="android:maxWidth"/>
+    </declare-styleable>
 </resources>
