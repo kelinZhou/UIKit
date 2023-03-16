@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.viewpager.widget.ViewPager
+    <com.kelin.uikit.widget.FixedViewPager
         android:id="@+id/uiKitVpPager"
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import com.kelin.uikit.presenter.ViewPresenter
 import kotlinx.android.extensions.LayoutContainer
@@ -17,7 +18,7 @@ import kotlinx.android.extensions.LayoutContainer
  *
  * **版本:** v 1.0.0
  */
-interface ViewDelegate<P : ViewPresenter<out ViewDelegate.ViewDelegateCallback>> : LayoutContainer, LifecycleObserver {
+interface ViewDelegate<P : ViewPresenter<out ViewDelegate.ViewDelegateCallback>> : LayoutContainer, LifecycleEventObserver {
 
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
 
@@ -34,6 +35,10 @@ interface ViewDelegate<P : ViewPresenter<out ViewDelegate.ViewDelegateCallback>>
     fun presentView(viewPresenter: P, savedInstanceState: Bundle?)
 
     fun postDelayed(delayMillis: Long, runner: () -> Unit)
+
+    fun onRealResume()
+
+    fun onRealPause()
 
     interface ViewDelegateCallback
 }

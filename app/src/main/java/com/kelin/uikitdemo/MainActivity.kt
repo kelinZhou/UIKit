@@ -3,6 +3,7 @@ package com.kelin.uikitdemo
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.kelin.apiexception.ApiException
 import com.kelin.proxyfactory.Toaster
 import com.kelin.uikit.UIKit
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnTabDemo2.setOnClickListener {
-            CommonActivity.launchTabOnly(this, true) {
+            CommonActivity.launchTabOnly(this, immersion = true) {
                 "汽车" to PlaceholderFragment.createInstance("汽车")
                 "生活" to PlaceholderFragment::class
                 "圈子" to PlaceholderFragment.createInstance("圈子")

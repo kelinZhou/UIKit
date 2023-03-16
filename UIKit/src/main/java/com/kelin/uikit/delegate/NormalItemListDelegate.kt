@@ -39,7 +39,7 @@ abstract class NormalItemListDelegate<VC : NormalItemListDelegate.NormalItemList
     }
 
     override val rootLayoutId: Int
-        get() = R.layout.common_list
+        get() = R.layout.common_list_no_refresh
 
     protected open val recyclerViewId: Int
         get() = R.id.list_view

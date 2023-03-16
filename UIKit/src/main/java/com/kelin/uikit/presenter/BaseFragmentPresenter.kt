@@ -58,7 +58,13 @@ abstract class BaseFragmentPresenter<V : BaseViewDelegate<VC>, VC : BaseViewDele
 
     override fun onRealResume() {
         super.onRealResume()
+        viewDelegate?.onRealResume()
         onResumeShowDataView()
+    }
+
+    override fun onRealPause() {
+        super.onRealPause()
+        viewDelegate?.onRealPause()
     }
 
     protected open fun onResumeShowDataView() {

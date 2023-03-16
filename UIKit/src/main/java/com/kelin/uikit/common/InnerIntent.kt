@@ -28,15 +28,23 @@ class InnerIntent(context: Context, cls: Class<*>) : Intent(context, cls) {
 
     companion object {
 
-        private const val KEY_INNER_INTENT_DEF_INDEX = "key_default_index"
-        private const val KEY_INNER_INTENT_ADAPTER_CONFIG = "key_page_adapter_config"
-        private const val KEY_INNER_INTENT_IS_FOR_TAB_MODE = "key_is_for_tab_mode"
+        private const val KEY_INNER_INTENT_DEF_INDEX = "key_inner_intent_def_index"
+        private const val KEY_INNER_INTENT_ADAPTER_CONFIG = "key_inner_intent_adapter_config"
+        private const val KEY_INNER_INTENT_IS_FOR_TAB_MODE = "key_inner_intent_is_for_tab_mode"
+        private const val KEY_INNER_INTENT_IS_FOR_TAB_MODE_SCROLL_ENABLE = "key_inner_intent_is_for_tab_mode_scroll_enable"
 
         /**
          * 判断是否为Tab模式的页面。
          */
         internal fun isForTab(intent: Intent): Boolean {
             return intent.getBooleanExtra(KEY_INNER_INTENT_IS_FOR_TAB_MODE, false)
+        }
+
+        /**
+         * 判断ViewPage的滑动翻页是否可用。
+         */
+        internal fun isTabScrollEnable(intent: Intent): Boolean {
+            return isForTab(intent) && intent.getBooleanExtra(KEY_INNER_INTENT_IS_FOR_TAB_MODE_SCROLL_ENABLE, false)
         }
 
         /**
@@ -72,8 +80,9 @@ class InnerIntent(context: Context, cls: Class<*>) : Intent(context, cls) {
             return contextTemp ?: throw NullPointerException("The context used early!")
         }
 
-    fun forTab(bool: Boolean) {
+    fun forTab(bool: Boolean, scrollEnable: Boolean) {
         putExtra(KEY_INNER_INTENT_IS_FOR_TAB_MODE, bool)
+        putExtra(KEY_INNER_INTENT_IS_FOR_TAB_MODE_SCROLL_ENABLE, scrollEnable)
     }
 
     fun setTarget(target: Class<out Fragment>) {

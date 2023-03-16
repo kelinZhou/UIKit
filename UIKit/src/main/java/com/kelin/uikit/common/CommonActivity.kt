@@ -18,6 +18,7 @@ import com.kelin.uikit.core.SystemError
 import com.kelin.uikit.flyweight.adapter.CommonFragmentStatePagerAdapter
 import com.kelin.uikit.tools.DeviceUtil
 import com.kelin.uikit.tools.statusbar.StatusBarHelper
+import com.kelin.uikit.widget.FixedViewPager
 import com.kelin.uikit.widget.MaxSizeRelativeLayout
 import com.kelin.uikit.widget.tablayout.helper.ViewPagerTabLayoutHelper
 
@@ -159,14 +160,15 @@ class CommonActivity : BasicActivity() {
 
         /**
          * 启动Tab页面。
+         * @param scrollEnable ViewPager是否支持左右滑动翻页，默认为true。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun launchTab(context: Context, configurator: Intent.() -> Unit): Intent {
+        inline fun launchTab(context: Context, scrollEnable: Boolean = true, configurator: Intent.() -> Unit): Intent {
             return InnerIntent(context, CommonActivity::class.java).apply {
                 if (context !is Activity) {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
-                forTab(true)
+                forTab(true, scrollEnable)
                 configurator(this)
                 context.startActivity(this, launchOptions)
             }
@@ -174,14 +176,15 @@ class CommonActivity : BasicActivity() {
 
         /**
          * 通过配置启动Tab页面，改方法不会自动拉起Activity，需要调用者在configurator中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
+         * @param scrollEnable ViewPager是否支持左右滑动翻页，默认为true。
          * @param configurator 页面的配置函数，用于在启动页面前对目标页面传参。
          */
-        inline fun launchTabByOption(context: Context, configurator: Intent.() -> Unit): Intent {
+        inline fun launchTabByOption(context: Context, scrollEnable: Boolean = true, configurator: Intent.() -> Unit): Intent {
             return InnerIntent(context, CommonActivity::class.java).apply {
                 if (context !is Activity) {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
-                forTab(true)
+                forTab(true, scrollEnable)
                 configurator(this)
             }
         }
@@ -189,14 +192,15 @@ class CommonActivity : BasicActivity() {
         /**
          * 启动Tab页面，只启动不配置页面样式。
          * @param immersion 是否启动沉浸式样式。
+         * @param scrollEnable ViewPager是否支持左右滑动翻页，默认为true。
          * @param configuration 页面的适配器配置函数，用于在启动页面后对目标页面配置Tab。
          */
-        fun launchTabOnly(context: Context, immersion: Boolean = false, configuration: CommonFragmentStatePagerAdapter.() -> Unit): Intent {
+        fun launchTabOnly(context: Context, immersion: Boolean = false, scrollEnable: Boolean = true, configuration: CommonFragmentStatePagerAdapter.() -> Unit): Intent {
             return InnerIntent(context, CommonActivity::class.java).apply {
                 if (context !is Activity) {
                     addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 }
-                forTab(true)
+                forTab(true, scrollEnable)
                 if (immersion) {
                     immersion()
                 }
@@ -261,6 +265,7 @@ class CommonActivity : BasicActivity() {
 
     private fun setTabLayoutParamsAndAdapter() {
         getView<ViewPager>(R.id.uiKitVpPager)?.run {
+            (this as? FixedViewPager)?.isUserInputEnable = InnerIntent.isTabScrollEnable(intent)
             (layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
                 ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
                     if (mode == ImmersionMode.NONE) {

@@ -16,6 +16,7 @@ import androidx.annotation.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import com.kelin.apiexception.ApiException
 import com.kelin.logger.Logger
@@ -85,23 +86,29 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
     protected open val dataViewId: Int
         get() = 0
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        when (event) {
+            Lifecycle.Event.ON_START -> onStart()
+            Lifecycle.Event.ON_RESUME -> onResume()
+            Lifecycle.Event.ON_PAUSE -> onPause()
+            Lifecycle.Event.ON_STOP -> onStop()
+            Lifecycle.Event.ON_DESTROY -> onDestroy()
+            else -> {}
+        }
+    }
+
     protected open fun onResume() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
     protected open fun onStart() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     protected open fun onPause() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     protected open fun onStop() {
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     protected open fun onDestroy() {
     }
 
