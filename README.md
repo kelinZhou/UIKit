@@ -77,7 +77,7 @@ CommonActivity.launchTabByOption(this){
     //options { //使用闭包的方式为CommonActivity设置启动参数。
     //    putString("testKey", "testValue")
     //}
-    //defIndex(1) //设置默认打开
+    //defIndex(1) //设置默认打开的页面索引。
     immersionToolbar(R.drawable.ic_navigation_back)  //设置沉浸式Toolbar并未Toolbar设置navigationIcon。
     configurePage {
         "汽车" to PlaceholderFragment.createInstance("汽车")

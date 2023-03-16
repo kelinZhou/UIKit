@@ -35,10 +35,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnTabDemo2.setOnClickListener {
-            CommonActivity.launchTabOnly(this, immersion = true) {
-                "汽车" to PlaceholderFragment.createInstance("汽车")
-                "生活" to PlaceholderFragment::class
-                "圈子" to PlaceholderFragment.createInstance("圈子")
+            CommonActivity.launchTabByOption(this) {
+                immersion()
+                defIndex(1)
+                configurePage {
+                    "生活" to PlaceholderFragment::class
+                    "汽车" to PlaceholderFragment.createInstance("汽车")
+                    "圈子" to PlaceholderFragment.createInstance("圈子")
+                }
+                start(null)
             }
         }
     }
