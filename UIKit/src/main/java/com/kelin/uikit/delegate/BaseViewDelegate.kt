@@ -100,10 +100,16 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
     protected open fun onResume() {
     }
 
+    override fun onRealResume() {
+    }
+
     protected open fun onStart() {
     }
 
     protected open fun onPause() {
+    }
+
+    override fun onRealPause() {
     }
 
     protected open fun onStop() {
