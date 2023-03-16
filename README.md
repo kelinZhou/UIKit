@@ -1,5 +1,4 @@
-# UIKit
-[![](https://jitpack.io/v/kelinZhou/UIKit.svg)](https://jitpack.io/#kelinZhou/UIKit)
+# UIKit [![](https://jitpack.io/v/kelinZhou/UIKit.svg)](https://jitpack.io/#kelinZhou/UIKit)
 
 架构中的UIKit。用于快速搭建App架构。
 
