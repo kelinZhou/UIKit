@@ -3,7 +3,6 @@ package com.kelin.uikitdemo
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.kelin.apiexception.ApiException
 import com.kelin.proxyfactory.Toaster
 import com.kelin.uikit.UIKit
@@ -40,6 +39,16 @@ class MainActivity : AppCompatActivity() {
                 defIndex(1)
                 configurePage {
                     "生活" to PlaceholderFragment::class
+                    "汽车" to PlaceholderFragment.createInstance("汽车")
+                    "圈子" to PlaceholderFragment.createInstance("圈子")
+                }
+                start(null)
+            }
+        }
+        btnTabDemo3.setOnClickListener {
+            CommonActivity.launchTabByOption(this, false) {
+                configurePage {
+                    "轮播图" to BannerShowDemoFragment::class
                     "汽车" to PlaceholderFragment.createInstance("汽车")
                     "圈子" to PlaceholderFragment.createInstance("圈子")
                 }

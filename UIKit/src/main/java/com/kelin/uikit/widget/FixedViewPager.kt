@@ -1,5 +1,6 @@
 package com.kelin.uikit.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -18,6 +19,11 @@ class FixedViewPager @JvmOverloads constructor(context: Context, attrs: Attribut
 
     var isUserInputEnable: Boolean = true
 
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        return isUserInputEnable && super.onInterceptTouchEvent(ev)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
         return isUserInputEnable && super.onTouchEvent(ev)
     }
