@@ -1,4 +1,4 @@
-package com.kelin.uikit.search
+package com.kelin.uikit.common.search
 
 /**
  * **描述: ** 搜索者。

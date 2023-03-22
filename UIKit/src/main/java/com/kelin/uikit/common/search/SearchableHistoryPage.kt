@@ -1,4 +1,6 @@
-package com.kelin.uikit.search
+package com.kelin.uikit.common.search
+
+import java.io.Serializable
 
 
 /**
@@ -7,16 +9,11 @@ package com.kelin.uikit.search
  * 创建时间 2017/2/16  下午6:48
  * 版本 v 1.0.0
  */
-interface SearchablePage {
+interface SearchableHistoryPage : Serializable {
     /**
      * 初始化的对象。该方法的调用时机是对象被new出来以后，onCreate之前。
      */
     fun onInitSearchPage(searcher: Searcher)
-
-    /**
-     * 获取搜索框内显示的提示文字。
-     */
-    val searchHint: String
 
     /**
      * 当需要搜索的时候调用。

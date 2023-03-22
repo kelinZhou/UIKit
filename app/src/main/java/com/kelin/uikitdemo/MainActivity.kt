@@ -15,18 +15,18 @@ class MainActivity : AppCompatActivity() {
         UIKit.init(application, MyToaster(), true)
         setContentView(R.layout.activity_main)
         btnCommonDemo.setOnClickListener {
-            CommonActivity.launch<PlaceholderFragment>(this, "新的页面")
+            Navigation.launch<PlaceholderFragment>(this, "新的页面")
         }
 
         btnCommonDemo2.setOnClickListener {
-            CommonActivity.launch<PlaceholderFragment>(this, "新的页面") {
+            Navigation.launch<PlaceholderFragment>(this, "新的页面") {
                 immersionToolbar()  //设置沉浸式Toolbar。
-                PlaceholderFragment.setName(this, "新的页面")
+                PlaceholderFragment.setName(intent, "新的页面")
             }
         }
 
         btnTabDemo.setOnClickListener {
-            CommonActivity.launchTabOnly(this) {
+            Navigation.launchTabOnly(this) {
                 "生活" to PlaceholderFragment::class
                 "汽车" to PlaceholderFragment.createInstance("汽车")
                 "圈子" to PlaceholderFragment.createInstance("圈子")
@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnTabDemo2.setOnClickListener {
-            CommonActivity.launchTabByOption(this) {
+            Navigation.launchTabByOption(this) {
                 immersion()
-                defIndex(1)
+                defaultIndex(1)
                 configurePage {
                     "生活" to PlaceholderFragment::class
                     "汽车" to PlaceholderFragment.createInstance("汽车")
@@ -46,13 +46,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
         btnTabDemo3.setOnClickListener {
-            CommonActivity.launchTabByOption(this, false) {
+            Navigation.launchTabByOption(this, false) {
                 configurePage {
                     "轮播图" to BannerShowDemoFragment::class
                     "汽车" to PlaceholderFragment.createInstance("汽车")
                     "圈子" to PlaceholderFragment.createInstance("圈子")
                 }
                 start(null)
+            }
+        }
+        btnTabDemo4.setOnClickListener {
+            Navigation.launchSearch<TestSearchFragment>(this)
+        }
+        btnTabDemo5.setOnClickListener {
+            Navigation.launchSearch<TestSearchFragment>(this){
+                immersion()
+                historyPage(TestHistoryFragment::class.java)
             }
         }
     }

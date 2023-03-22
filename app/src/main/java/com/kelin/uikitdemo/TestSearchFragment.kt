@@ -1,6 +1,6 @@
-package com.kelin.uikit.common
+package com.kelin.uikitdemo
 
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.kelin.uikit.BasicFragment
+import com.kelin.uikit.common.search.SearchablePage
+import com.kelin.uikit.common.search.Searcher
 import kotlin.random.Random
 
 /**
@@ -20,31 +22,14 @@ import kotlin.random.Random
  *
  * **版本:** v 1.0.0
  */
-class PlaceholderFragment : BasicFragment() {
+class TestSearchFragment : BasicFragment(), SearchablePage {
 
-    companion object {
-
-        private const val KEY_PLACEHOLDER_NAME = "key_placeholder_name"
-
-        fun createInstance(name: String): PlaceholderFragment {
-            return PlaceholderFragment().apply {
-                arguments = Bundle().apply {
-                    putString(KEY_PLACEHOLDER_NAME, name)
-                }
-            }
-        }
-
-        fun setName(intent: Intent, name: String) {
-            intent.putExtra(KEY_PLACEHOLDER_NAME, name)
-        }
-    }
-
-    private val containerView by lazy {
+    private val contentView: TextView by lazy {
         TextView(context).apply {
             width = ViewGroup.LayoutParams.MATCH_PARENT
             height = ViewGroup.LayoutParams.MATCH_PARENT
             gravity = Gravity.CENTER
-            text = arguments?.getString(KEY_PLACEHOLDER_NAME, "我是占位页面") ?: "我是占位页面"
+            text = "我是搜索页面"
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 setBackgroundColor(Color.rgb(Random.nextDouble(1.0).toFloat(), Random.nextDouble(1.0).toFloat(), Random.nextDouble(1.0).toFloat()))
             }
@@ -52,6 +37,22 @@ class PlaceholderFragment : BasicFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return containerView
+        return contentView
+    }
+
+    override val searchHint: String
+        get() = "测试搜索"
+
+    override fun onInitSearchPage(searcher: Searcher) {
+        contentView.text = "初始化搜索"
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onSearch(searchKey: String) {
+        contentView.text = if (searchKey.isBlank()) "我是搜索页面" else "搜索：${searchKey}"
+    }
+
+    override fun onSearchCancel() {
+        contentView.text = "取消搜索"
     }
 }

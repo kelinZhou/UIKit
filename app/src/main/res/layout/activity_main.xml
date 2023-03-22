@@ -42,6 +42,20 @@
         android:layout_marginTop="10dp"
         android:text="Banner左滑显示更多" />
 
+    <Button
+        android:id="@+id/btnTabDemo4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="启动一个搜索页面" />
+
+    <Button
+        android:id="@+id/btnTabDemo5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="启动一个沉浸式搜索页面" />
+
 
 
 </LinearLayout>

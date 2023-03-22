@@ -46,9 +46,9 @@ abstract class BasicFragment : Fragment() {
         get() = javaClass.simpleName
 
     /**
-     * 获取当前[BasicFragment]的软键盘启动模式。
+     * 获取当前[BasicFragment]的软键盘启动模式，不覆重写该返回值则默认使用Activity的设置。
      *
-     * @return 返回当前 [BasicFragment] 的你所期望的软键盘启动模式。过个启动模式可以使用 "|" (或运算符)连接。
+     * @return 返回当前 [BasicFragment] 的你所期望的软键盘启动模式。多个启动模式可以使用 "|" (或运算符)连接。
      * @see .overrideWindowSoftInputMode
      */
     @get:SoftInputModeFlags
@@ -145,7 +145,7 @@ abstract class BasicFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is BasicActivity) {
+        if (context is BasicActivity && windowSoftInputModeFlags != WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
             overrideWindowSoftInputMode(windowSoftInputModeFlags)
         }
         Logger.system("BasicFragment")?.i("onAttachView")
@@ -165,7 +165,7 @@ abstract class BasicFragment : Fragment() {
      * @see BasicActivity.overrideWindowSoftInputMode(int)
      * @see windowSoftInputModeFlags()
      */
-    fun overrideWindowSoftInputMode(@SoftInputModeFlags flags: Int) {
+    open fun overrideWindowSoftInputMode(@SoftInputModeFlags flags: Int) {
         if (activity != null) {
             if (activity is BasicActivity) {
                 (activity as BasicActivity).overrideWindowSoftInputMode(flags)

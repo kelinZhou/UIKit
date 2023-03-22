@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.kelin.uikit.common.CommonActivity" />
+        <activity android:name="com.kelin.uikit.common.Navigation" />
     </application>
 
 </manifest>

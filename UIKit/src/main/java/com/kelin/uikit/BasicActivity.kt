@@ -288,10 +288,14 @@ abstract class BasicActivity : AppCompatActivity() {
             }
             val parent = toolbar.parent as? View
             if (parent != null) {
-                statusBarHelper.setActionBarView(parent)
+                setActionBarView(parent)
             }
 //            toolbar.setTitleTextAppearance(this, R.style.common_title_text_style)
         }
+    }
+
+    protected fun setActionBarView(view: View?) {
+        statusBarHelper.setActionBarView(view)
     }
 
     protected fun onToolBarLeftClick() {
