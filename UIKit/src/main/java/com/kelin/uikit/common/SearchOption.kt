@@ -39,7 +39,7 @@ interface SearchOption : Option {
         }
 
         internal fun isInstantSearch(intent: Intent): Boolean {
-            return intent.getBooleanExtra(KEY_INSTANT_SEARCH, false)
+            return intent.getBooleanExtra(KEY_INSTANT_SEARCH, intent.getSerializableExtra(KEY_SEARCH_HISTORY_TARGET_PAGE) == null)
         }
 
         private fun <P : SearchableHistoryPage> newInstance(cls: Class<out P>, extras: Bundle?): P {
