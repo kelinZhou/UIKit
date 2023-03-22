@@ -56,6 +56,4 @@
         android:layout_marginTop="10dp"
         android:text="启动一个沉浸式搜索页面" />
 
-
-
 </LinearLayout>

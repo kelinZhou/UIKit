@@ -260,21 +260,12 @@ public final class StatusBarHelper {
     public static int getActionBarSize(Context context) {
         TypedValue tv = new TypedValue();
         context.getTheme().resolveAttribute(androidx.appcompat.R.attr.actionBarSize, tv, true);
-        // context.getTheme().resolveAttribute(R.attr.actionBarSize, tv, true);
-        // TODO: 17/2/10
-        // int offset = context.getResources().getDimensionPixelSize(tv.resourceId); // Error
-        int offset = (int) tv.getDimension(context.getResources().getDisplayMetrics());
-        offset = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
-        // TypedArrayUtils.getBoolean()
+        return TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+    }
 
-        String string = TypedValue.coerceToString(tv.type, tv.data);
 
-        TypedArray typedArray = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
-        // typedArray.getResourceId()
-//        int offsetV2 = typedArray.getDimensionPixelOffset(0, 0);
-        // mSwipeRefreshLayout.setProgressViewOffset(false, 0, context.getResources().getDimensionPixelSize(tv.resourceId));
-        // mSwipeRefreshLayout.setRefreshing(true);
-        return offset;
+    public static int getImmersionOffset(Context context) {
+        return StatusBarHelper.getActionBarSize(context) + StatusBarHelper.getStatusBarOffsetPx(context);
     }
 
     public static void setFitTranslucent(final View v, final int offset, final boolean changeHeight) {

@@ -20,7 +20,7 @@ interface Option {
     companion object {
         internal const val KEY_PAGE_MODE = "key_page_mode"
         internal const val KEY_PAGE_TITLE = "key_page_title"
-        internal const val KEY_TARGET_PAGE ="key_target_fragment_class"
+        internal const val KEY_TARGET_PAGE = "key_target_fragment_class"
 
         @Suppress("UNCHECKED_CAST")
         internal fun getTargetFragment(intent: Intent): Fragment? {

@@ -59,6 +59,10 @@ abstract class BasicFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     protected fun setUseDefaultTransition(use: Boolean) {
         (activity as? BasicActivity)?.useDefaultTransition = use
     }
