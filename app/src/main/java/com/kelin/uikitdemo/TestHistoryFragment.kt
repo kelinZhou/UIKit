@@ -13,6 +13,7 @@ import com.kelin.uikit.BasicFragment
 import com.kelin.uikit.common.search.SearchableHistoryPage
 import com.kelin.uikit.common.search.SearchablePage
 import com.kelin.uikit.common.search.Searcher
+import com.kelin.uikit.setMarginTop
 import kotlin.random.Random
 
 /**
@@ -38,6 +39,10 @@ class TestHistoryFragment : BasicFragment(), SearchableHistoryPage {
             }
         }
     }
+
+//    override fun onImmersion(offset: Int) {
+//        contentView.setMarginTop(offset)
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return contentView

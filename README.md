@@ -31,18 +31,16 @@ Navigation.launch<PlaceholderFragment>(this, "新的页面") {
     //    putString("testKey", "testValue")
     //}
     immersionToolbar(R.drawable.ic_navigation_back)  //设置沉浸式Toolbar并未Toolbar设置navigationIcon。
-}
-```
-启动一个页面并希望得到返回结果：
-```kotlin
-Navigation.launchByOption<PlaceholderFragment>(this) {
-    start<String>{ code, data ->
+
+    //监听返回结果
+    result<String>{ data ->
         if (data != null) {
             Toast.makeText(this@MainActivity, data, Toast.LENGTH_SHORT).show()
         }
     }
 }
 ```
+
 #### 启动一个TabLayout+ViewPager的页面需要调用launchTab方法。
 ```kotlin
 Navigation.launchTabOnly(this) {
@@ -71,7 +69,7 @@ Navigation.launchTabOnly(this, scrollEnable = false) {
 ```
 也可以在启动页面时对Navigation进行配置。
 ```kotlin
-Navigation.launchTabByOption(this){
+Navigation.launchTab(this){
     //immersion()  //设置沉浸式页面并隐藏Toolbar。
     //options(bundle) //为Navigation设置启动参数。
     //options { //使用闭包的方式为Navigation设置启动参数。
@@ -84,7 +82,8 @@ Navigation.launchTabByOption(this){
         "生活" to PlaceholderFragment::class
         "圈子" to PlaceholderFragment.createInstance("圈子")
     }
-    start { resultCode ->
+    //监听返回结果。
+    resultForCode { resultCode ->
         Toast.makeText(this@MainActivity, "操作成功", Toast.LENGTH_SHORT).show()
     }
 }
@@ -105,11 +104,11 @@ Navigation.launchSearch<TestSearchFragment>(this){
 ```
 启动一个搜索页面并希望得到返回结果
 ````kotlin
-Navigation.launchSearchByOption<TestSearchFragment>(this){
-    start<Persion> { resultCode, data -> 
+Navigation.launchSearch<TestSearchFragment>(this){
+    results<Persion> { data -> 
         //do something with data
     }
 }
 ````
 ### 注意：
-**启动页面后如果需要得到页面的返回数据都需要调用`launch***ByOption`方法，并在调用start方法时传入`onResult`回调。还需要在需要返回结果的Fragment中调用`OkActivityResult.setResultData(requireActivity(), data)`方法设置返回结果。**
+**启动页面后如果需要得到页面的返回数据都需要在调用optional函数中调用`results<Data>{}`方法或`resultsForCode<Data>{}`方法。还需要在需要返回结果的Fragment中调用`OkActivityResult.setResultData(requireActivity(), data)`方法设置返回结果。**

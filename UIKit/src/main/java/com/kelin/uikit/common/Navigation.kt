@@ -1,6 +1,5 @@
 package com.kelin.uikit.common
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -107,89 +106,27 @@ class Navigation : BasicActivity() {
          */
         inline fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, optional: Option.() -> Unit): Option {
             return IntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                setTarget(target)
-                title?.also { title(title) }
-                optional(this)
-                context.startActivity(intent, launchOptions)
-            }
-        }
-
-        /**
-         * 通过配置启动页面，该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param title 页面的标题。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun <reified F : Fragment> launchByOption(context: Context, @StringRes title: Int, optional: Option.() -> Unit): Option {
-            return launchByOption(context, F::class.java, getString(title), optional)
-        }
-
-        /**
-         * 通过配置启动页面，该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param target 目标Fragment：本次要启动的Fragment。
-         * @param title 页面的标题。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun launchByOption(context: Context, target: Class<out Fragment>, @StringRes title: Int, optional: Option.() -> Unit): Option {
-            return launchByOption(context, target, getString(title), optional)
-        }
-
-        /**
-         * 通过配置启动页面，该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param title 页面的标题。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun <reified F : Fragment> launchByOption(context: Context, title: CharSequence? = null, optional: Option.() -> Unit): Option {
-            return launchByOption(context, F::class.java, title, optional)
-        }
-
-        /**
-         * 通过配置启动页面，该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param target 目标Fragment：本次要启动的Fragment。
-         * @param title 页面的标题。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun launchByOption(context: Context, target: Class<out Fragment>, title: CharSequence? = null, optional: Option.() -> Unit): Option {
-            return IntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
                 title?.also { title(title) }
                 setTarget(target)
                 optional(this)
+                start()
             }
         }
 
         /**
          * 启动Tab页面。
+         * @param immersion 是否启动沉浸式样式。
          * @param slideEnable ViewPager是否支持左右滑动翻页，默认为true。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
          */
-        inline fun launchTab(context: Context, slideEnable: Boolean = true, optional: TabOption.() -> Unit): TabOption {
+        inline fun launchTab(context: Context, immersion: Boolean = false, slideEnable: Boolean = true, optional: TabOption.() -> Unit): TabOption {
             return TabIntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
                 setSlideEnable(slideEnable)
-                optional(this)
-                context.startActivity(intent, launchOptions)
-            }
-        }
-
-        /**
-         * 通过配置启动Tab页面，该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param slideEnable ViewPager是否支持左右滑动翻页，默认为true。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun launchTabByOption(context: Context, slideEnable: Boolean = true, optional: TabOption.() -> Unit): TabOption {
-            return TabIntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                if (immersion) {
+                    immersion()
                 }
-                setSlideEnable(slideEnable)
                 optional(this)
+                start()
             }
         }
 
@@ -201,15 +138,12 @@ class Navigation : BasicActivity() {
          */
         fun launchTabOnly(context: Context, immersion: Boolean = false, slideEnable: Boolean = true, optional: CommonFragmentStatePagerAdapter.() -> Unit): TabOption {
             return TabIntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
                 setSlideEnable(slideEnable)
                 if (immersion) {
                     immersion()
                 }
-                configurePage(optional)
-                context.startActivity(intent, launchOptions)
+                pages(optional)
+                start()
             }
         }
 
@@ -230,7 +164,7 @@ class Navigation : BasicActivity() {
          * @param instantSearch 是否开启实时搜索，即用户每输入一个字符就触发一次搜索。
          */
         fun launchSearch(context: Context, target: Class<out SearchablePage>, initialSearch: Boolean = true, instantSearch: Boolean = true): SearchOption {
-            return launchSearch(context, target){
+            return launchSearch(context, target) {
                 initialSearch(initialSearch)
                 instantSearch(instantSearch)
             }
@@ -252,41 +186,23 @@ class Navigation : BasicActivity() {
          */
         inline fun launchSearch(context: Context, target: Class<out SearchablePage>, optional: SearchOption.() -> Unit): SearchOption {
             return SearchIntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
                 @Suppress("UNCHECKED_CAST")
                 setTarget(target as Class<out Fragment>)
                 optional(this)
-                context.startActivity(intent, launchOptions)
-            }
-        }
-
-        /**
-         * 通过配置启动搜索页面。该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param F 目标Fragment：本次要启动的Fragment。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun <reified F : SearchablePage> launchSearchByOption(context: Context, optional: SearchOption.() -> Unit): SearchOption {
-            return launchSearchByOption(context, F::class.java, optional)
-        }
-
-        /**
-         * 通过配置启动搜索页面。该方法不会自动拉起Activity，需要调用者在optional中手动调用start(onResult)方法拉起Activity，通常用于获取目标页面的返回值。
-         * @param target 目标Fragment：本次要启动的Fragment。
-         * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
-         */
-        inline fun launchSearchByOption(context: Context, target:Class<out SearchablePage>, optional: SearchOption.() -> Unit): SearchOption {
-            return SearchIntentOption(context).apply {
-                if (context !is Activity) {
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                }
-                @Suppress("UNCHECKED_CAST")
-                setTarget(target as Class<out Fragment>)
-                optional(this)
+                start()
             }
         }
     }
+
+    /**
+     * 沉浸式状态栏模式。
+     */
+    private val immersionMode: ImmersionMode by lazy { (intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE }
+
+    /**
+     * 判断当前页面是否是沉浸式状态栏。
+     */
+    val isImmersionMode: Boolean by lazy { immersionMode != ImmersionMode.NONE }
 
     private var searchDelegate: SearchPageDelegate? = null
 
@@ -358,40 +274,36 @@ class Navigation : BasicActivity() {
 
     private fun setCommonLayoutParams() {
         (getView<View>(R.id.flUiKitFragmentContainer)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
-            ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
-                if (mode == ImmersionMode.NONE) {
-                    lp.topToBottom = R.id.vUiKitToolbarLine
-                    lp.topToTop = ConstraintLayout.LayoutParams.UNSET
+            if (immersionMode == ImmersionMode.NONE) {
+                lp.topToBottom = R.id.vUiKitToolbarLine
+                lp.topToTop = ConstraintLayout.LayoutParams.UNSET
+            } else {
+                processStatusBar(Color.TRANSPARENT)
+                if (immersionMode == ImmersionMode.NO_TOOLBAR) {
+                    supportActionBar?.hide()
                 } else {
-                    processStatusBar(Color.TRANSPARENT)
-                    if (mode == ImmersionMode.NO_TOOLBAR) {
-                        supportActionBar?.hide()
-                    } else {
-                        intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                            setNavigationIcon(it)
-                        }
+                    intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                        setNavigationIcon(it)
                     }
-                    lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
-                    lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
+                lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
+                lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
             }
         }
     }
 
     private fun setSearchLayoutParams() {
         (getView<View>(R.id.flUiKitFragmentContainer)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
-            ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
-                if (mode == ImmersionMode.NONE) {
-                    lp.topToBottom = R.id.rl_my_awesome_toolbar
-                    lp.topToTop = ConstraintLayout.LayoutParams.UNSET
-                } else {
-                    processStatusBar(Color.TRANSPARENT)
-                    intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                        getView<ImageView>(R.id.ivUiKitNavigation)?.setImageResource(it)
-                    }
-                    lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
-                    lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            if (immersionMode == ImmersionMode.NONE) {
+                lp.topToBottom = R.id.rl_my_awesome_toolbar
+                lp.topToTop = ConstraintLayout.LayoutParams.UNSET
+            } else {
+                processStatusBar(Color.TRANSPARENT)
+                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                    getView<ImageView>(R.id.ivUiKitNavigation)?.setImageResource(it)
                 }
+                lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
+                lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
             }
         }
     }
@@ -400,18 +312,16 @@ class Navigation : BasicActivity() {
         getView<ViewPager>(R.id.uiKitVpPager)?.run {
             (this as? FixedViewPager)?.isUserInputEnable = TabOption.isTabSlideEnable(intent)
             (layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
-                ((intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE).also { mode ->
-                    if (mode == ImmersionMode.NONE) {
-                        lp.topToBottom = R.id.uiKitRlToolbarParent
-                        lp.topToTop = ConstraintLayout.LayoutParams.UNSET
-                    } else {
-                        processStatusBar(Color.TRANSPARENT)
-                        intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                            setNavigationIcon(it)
-                        }
-                        lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
-                        lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+                if (immersionMode == ImmersionMode.NONE) {
+                    lp.topToBottom = R.id.uiKitRlToolbarParent
+                    lp.topToTop = ConstraintLayout.LayoutParams.UNSET
+                } else {
+                    processStatusBar(Color.TRANSPARENT)
+                    intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                        setNavigationIcon(it)
                     }
+                    lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
+                    lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
             }
             val pagerAdapter = CommonFragmentStatePagerAdapter(supportFragmentManager).also {

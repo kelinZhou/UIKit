@@ -23,6 +23,11 @@ class MainActivity : AppCompatActivity() {
             Navigation.launch<PlaceholderFragment>(this, "新的页面") {
                 immersionToolbar()  //设置沉浸式Toolbar。
                 PlaceholderFragment.setName(intent, "新的页面")
+                results<String> {
+                    if (it != null) {
+                        //do something!
+                    }
+                }
             }
         }
 
@@ -35,25 +40,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnTabDemo2.setOnClickListener {
-            Navigation.launchTabByOption(this) {
+            Navigation.launchTab(this) {
                 immersion()
                 defaultIndex(1)
-                configurePage {
+                pages {
                     "生活" to PlaceholderFragment::class
                     "汽车" to PlaceholderFragment.createInstance("汽车")
                     "圈子" to PlaceholderFragment.createInstance("圈子")
                 }
-                start(null)
             }
         }
         btnTabDemo3.setOnClickListener {
-            Navigation.launchTabByOption(this, false) {
-                configurePage {
+            Navigation.launchTab(this) {
+                defaultIndex(1)
+                pages {
                     "轮播图" to BannerShowDemoFragment::class
                     "汽车" to PlaceholderFragment.createInstance("汽车")
                     "圈子" to PlaceholderFragment.createInstance("圈子")
                 }
-                start(null)
             }
         }
         btnTabDemo4.setOnClickListener {

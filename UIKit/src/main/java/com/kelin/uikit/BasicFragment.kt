@@ -10,7 +10,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.kelin.logger.Logger
 import com.kelin.uikit.annotation.SoftInputModeFlags
+import com.kelin.uikit.common.Immersive
+import com.kelin.uikit.common.Navigation
 import com.kelin.uikit.tools.statistics.StatisticsHelper
+import com.kelin.uikit.tools.statusbar.StatusBarHelper
 
 
 /**
@@ -22,7 +25,7 @@ import com.kelin.uikit.tools.statistics.StatisticsHelper
  *
  * **版本:** v 1.0.0
  */
-abstract class BasicFragment : Fragment() {
+abstract class BasicFragment : Fragment(), Immersive {
 
     private val handler by lazy { Handler() }
 
@@ -54,13 +57,25 @@ abstract class BasicFragment : Fragment() {
     @get:SoftInputModeFlags
     protected open val windowSoftInputModeFlags: Int = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED //默认实现，返回未指定任何模式的flag。
 
+    override fun onImmersion(offset: Int) {
+    }
+
+    protected open fun handImmersion(offset: Int) {
+        onImmersion(offset)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as? Navigation)?.also {
+            if (it.isImmersionMode) {
+                handImmersion(StatusBarHelper.getImmersionOffset(context))
+            }
+        }
     }
 
     protected fun setUseDefaultTransition(use: Boolean) {

@@ -17,12 +17,12 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
 import com.kelin.apiexception.ApiException
 import com.kelin.logger.Logger
 import com.kelin.proxyfactory.exception.ProxyLogicError
 import com.kelin.uikit.R
 import com.kelin.uikit.UIKit
+import com.kelin.uikit.common.Immersive
 import com.kelin.uikit.presenter.ViewPresenter
 import com.kelin.uikit.tools.DoubleClickHandler
 import com.kelin.uikit.tools.NetWorkStateUtil
@@ -37,7 +37,7 @@ import com.kelin.uikit.widget.statelayout.StatePageLayout
  * **创建时间:** 2019/3/29  1:33 PM
  * **版本:** v 1.0.0
  */
-abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> : ViewDelegate<ViewPresenter<VC>> {
+abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> : ViewDelegate<ViewPresenter<VC>>, Immersive {
 
     private val defaultLoadingOption: StateOption by lazy { LoadingStateOption() }
     private val defaultRetryOption: StateOption by lazy { RetryStateOption() }
@@ -93,9 +93,12 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
             Lifecycle.Event.ON_PAUSE -> onPause()
             Lifecycle.Event.ON_STOP -> onStop()
             Lifecycle.Event.ON_DESTROY -> onDestroy()
-            else -> {}
+            else -> {
+            }
         }
     }
+
+    override fun onImmersion(offset: Int) {}
 
     protected open fun onResume() {
     }

@@ -10,6 +10,7 @@ import com.kelin.uikit.BasicActivity
 import com.kelin.uikit.BasicFragment
 import com.kelin.uikit.delegate.BaseViewDelegate
 import com.kelin.uikit.delegate.ViewDelegate
+import com.kelin.uikit.tools.statusbar.StatusBarHelper
 import java.lang.reflect.ParameterizedType
 
 
@@ -70,6 +71,14 @@ abstract class BaseFragmentPresenter<V : BaseViewDelegate<VC>, VC : BaseViewDele
     protected open fun onResumeShowDataView() {
         if (saveDelegate) {
             viewDelegate?.showDataView()
+        }
+    }
+
+    final override fun handImmersion(offset: Int) {
+        if (hasViewDelegate) {
+            viewDelegate?.onImmersion(StatusBarHelper.getImmersionOffset(context))
+        } else {
+            super.handImmersion(offset)
         }
     }
 

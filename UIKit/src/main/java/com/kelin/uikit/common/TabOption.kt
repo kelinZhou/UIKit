@@ -53,7 +53,7 @@ interface TabOption : Option {
      * 配置页面。
      * @param configuration 页面的配置回调。
      */
-    fun configurePage(configuration: CommonFragmentStatePagerAdapter.() -> Unit) {
+    fun pages(configuration: CommonFragmentStatePagerAdapter.() -> Unit) {
         intent.putExtra(KEY_INNER_INTENT_ADAPTER_CONFIG, PageConfigurationWrapper(configuration))
     }
 }

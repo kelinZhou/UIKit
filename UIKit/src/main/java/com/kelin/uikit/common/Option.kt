@@ -70,6 +70,19 @@ interface Option {
      * @param options 配置内容。
      */
     fun options(options: Bundle.() -> Unit)
+
+    /**
+     * 设置返回结果回调。
+     * @param callback 回调函数。
+     */
+    fun<D> results(callback: ((data: D?) -> Unit)?)
+
+
+    /**
+     * 设置返回结果回调。
+     * @param callback 回调函数。
+     */
+    fun resultsForCode(callback: ((resultCode: Int) -> Unit)?)
 }
 
 /**
@@ -95,34 +108,5 @@ internal enum class ImmersionMode {
     companion object {
         internal const val KEY_IMMERSION_MODE = "key_immersion_mode"
         internal const val KEY_NAVIGATION_ICON = "key_navigation_icon"
-    }
-}
-
-
-/**
- * 启动页面。
- * @param onResult 如果需要从目标页面获取结果则需要传入回调。
- */
-fun Option.start(onResult: ((resultCode: Int) -> Unit)? = null) {
-    (this as? AbsOption)?.run {
-        if (onResult != null && isFromActivityContext) {
-            OkActivityResult.startActivity(useActivity, intent, launchOptions, onResult)
-        } else {
-            useContext.startActivity(intent, launchOptions)
-        }
-    }
-}
-
-/**
- * 启动页面。
- * @param onResult 如果需要从目标页面获取结果则需要传入回调。
- */
-fun <D> Option.start(onResult: ((resultCode: Int, data: D?) -> Unit)?) {
-    (this as? AbsOption)?.run {
-        if (onResult != null && isFromActivityContext) {
-            OkActivityResult.startActivity(useActivity, intent, launchOptions, onResult)
-        } else {
-            useContext.startActivity(intent, launchOptions)
-        }
     }
 }

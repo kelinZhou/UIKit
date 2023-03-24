@@ -304,14 +304,13 @@ public final class StatusBarHelper {
         }
         if (mOnlyImmersiveAbove6) {
             if (currentVersion >= Build.VERSION_CODES.M) {
-                process21(color);
                 process23(color);
                 processPrivateAPI();
             }
         } else {
             if (currentVersion >= Build.VERSION_CODES.M) {
-                processPrivateAPI();
                 process23(color);
+                processPrivateAPI();
             } else if (currentVersion >= Build.VERSION_CODES.LOLLIPOP) {
                 if (!processPrivateAPI()) {
                     if (lightStatusBar) {
