@@ -219,7 +219,7 @@ class Navigation : BasicActivity() {
          * @param title 页面标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面进行配置。
          */
-        fun launchH5(context: Context, url: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
+        inline fun launchH5(context: Context, url: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
             return H5IntentOption(context).apply {
                 h5url = url
                 title?.also { title(it) }
@@ -252,7 +252,7 @@ class Navigation : BasicActivity() {
          * @param title 页面标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面进行配置。
          */
-        fun launchH5ByData(context: Context, content: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
+        inline fun launchH5ByData(context: Context, content: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
             return H5IntentOption(context).apply {
                 h5Data = content
                 title?.also { title(it) }
