@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
-import com.kelin.okpermission.OkActivityResult
 import com.kelin.uikit.BasicFragment
 
 /**
@@ -18,6 +17,8 @@ import com.kelin.uikit.BasicFragment
  */
 interface Option {
     companion object {
+        private const val KEY_IMMERSION_MODE = "key_immersion_mode"
+        internal const val KEY_NAVIGATION_ICON = "key_navigation_icon"
         internal const val KEY_PAGE_MODE = "key_page_mode"
         internal const val KEY_PAGE_TITLE = "key_page_title"
         internal const val KEY_TARGET_PAGE = "key_target_fragment_class"
@@ -35,9 +36,11 @@ interface Option {
         internal fun getPageMode(intent: Intent): PageMode {
             return intent.getSerializableExtra(KEY_PAGE_MODE) as PageMode
         }
-    }
 
-    val launchOptions: Bundle?
+        internal fun getImmersionMode(intent: Intent):ImmersionMode {
+            return (intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE
+        }
+    }
 
     val intent: Intent
 
@@ -46,7 +49,7 @@ interface Option {
      * @see immersionToolbar
      */
     fun immersion() {
-        intent.putExtra(ImmersionMode.KEY_IMMERSION_MODE, ImmersionMode.NO_TOOLBAR)
+        intent.putExtra(KEY_IMMERSION_MODE, ImmersionMode.NO_TOOLBAR)
     }
 
     /**
@@ -54,9 +57,18 @@ interface Option {
      * 如不想使用Toolbar则需要调用immersion方法设置沉浸式样式。
      * @see immersion
      */
-    fun immersionToolbar(@DrawableRes navigationIcon: Int? = null) {
-        intent.putExtra(ImmersionMode.KEY_IMMERSION_MODE, ImmersionMode.HAVE_TOOLBAR)
-        intent.putExtra(ImmersionMode.KEY_NAVIGATION_ICON, navigationIcon)
+    fun immersionToolbar() {
+        intent.putExtra(KEY_IMMERSION_MODE, ImmersionMode.HAVE_TOOLBAR)
+    }
+
+    /**
+     * 设置页面返回按钮样式。
+     * @param icon 页面返回按钮的ICON。
+     */
+    fun navigationIcon(icon: Int) {
+        if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
+            intent.putExtra(KEY_NAVIGATION_ICON, icon)
+        }
     }
 
     /**
@@ -75,7 +87,7 @@ interface Option {
      * 设置返回结果回调。
      * @param callback 回调函数。
      */
-    fun<D> results(callback: ((data: D?) -> Unit)?)
+    fun <D> results(callback: ((data: D?) -> Unit)?)
 
 
     /**
@@ -104,9 +116,4 @@ internal enum class ImmersionMode {
      * 有Toolbar的。
      */
     HAVE_TOOLBAR;
-
-    companion object {
-        internal const val KEY_IMMERSION_MODE = "key_immersion_mode"
-        internal const val KEY_NAVIGATION_ICON = "key_navigation_icon"
-    }
 }

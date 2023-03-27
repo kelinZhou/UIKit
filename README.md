@@ -30,7 +30,8 @@ Navigation.launch<PlaceholderFragment>(this, "新的页面") {
     //options { //使用闭包的方式为Navigation设置启动参数。
     //    putString("testKey", "testValue")
     //}
-    immersionToolbar(R.drawable.ic_navigation_back)  //设置沉浸式Toolbar并未Toolbar设置navigationIcon。
+    immersionToolbar()  //设置沉浸式Toolbar。
+    navigationIcon(R.drawable.ic_navigation_back) //为Toolbar设置返回按钮图标
 
     //监听返回结果
     result<String>{ data ->
@@ -76,7 +77,8 @@ Navigation.launchTab(this){
     //    putString("testKey", "testValue")
     //}
     //defaultIndex(1) //设置默认打开的页面索引。
-    immersionToolbar(R.drawable.ic_navigation_back)  //设置沉浸式Toolbar并未Toolbar设置navigationIcon。
+    immersionToolbar()  //设置沉浸式Toolbar。
+    navigationIcon(R.drawable.ic_navigation_back) //为Toolbar设置返回按钮图标
     configurePage {
         "汽车" to PlaceholderFragment.createInstance("汽车")
         "生活" to PlaceholderFragment::class
@@ -110,5 +112,24 @@ Navigation.launchSearch<TestSearchFragment>(this){
     }
 }
 ````
+
+#### 启动一个H5页面
+```kotlin
+Navigation.launchH5(this, "https://www.baidu.com", "百度")
+```
+启动一个H5页面并进行配置。
+```kotlin
+Navigation.launchH5(this, "https://www.baidu.com", "百度"){
+    statusBarDark(false)  //设置状态栏颜色模式。
+    closeStyle()  //设置仅支持关闭样式。按下返回键直接退出H5页面(无论已经进入多少级页面)
+    byBrowser()  //通过浏览器打开网页
+    cookie(cookie) //设置cookie
+    setJavascriptInterface(MyJsInterface::class.java, "PaiDian") //设置Javascript接口
+}
+```
+还可以启动H5页面运行网页代码
+```kotlin
+Navigation.launchH5ByData(this, htmlData)
+```
 ### 注意：
 **启动页面后如果需要得到页面的返回数据都需要在调用optional函数中调用`results<Data>{}`方法或`resultsForCode<Data>{}`方法。还需要在需要返回结果的Fragment中调用`OkActivityResult.setResultData(requireActivity(), data)`方法设置返回结果。**

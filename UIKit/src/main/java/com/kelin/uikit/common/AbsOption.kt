@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.kelin.okpermission.OkActivityResult
+import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
 
 /**
  * **描述:** 页面启动的配置项。
@@ -17,13 +18,14 @@ import com.kelin.okpermission.OkActivityResult
  * **版本:** v 1.0.0
  */
 abstract class AbsOption(context: Context) {
-    val intent = Intent(context, Navigation::class.java)
+    open val intent = Intent(context, Navigation::class.java)
+    protected var isH5ByBrowser = false
     private var mLaunchOptions: Bundle? = null
     private var onResultInfo: OnResultInfo<*>? = null
     val launchOptions: Bundle?
         get() = mLaunchOptions
 
-    private var context: Context? = context
+    protected var context: Context? = context
 
     internal val isFromActivityContext: Boolean
         get() = context is Activity
@@ -66,8 +68,12 @@ abstract class AbsOption(context: Context) {
      * 设置返回结果回调。
      * @param callback 回调函数。
      */
-    fun<D> results(callback: ((data: D?) -> Unit)?) {
-        onResultInfo = callback?.let { OnResultInfo.create1(it) }
+    fun <D> results(callback: ((data: D?) -> Unit)?) {
+        if (isH5ByBrowser) {
+            throw IllegalCalledException("Can't work with browser!")
+        } else {
+            onResultInfo = callback?.let { OnResultInfo.create1(it) }
+        }
     }
 
     /**
@@ -75,10 +81,14 @@ abstract class AbsOption(context: Context) {
      * @param callback 回调函数。
      */
     fun resultsForCode(callback: ((resultCode: Int) -> Unit)?) {
-        onResultInfo = callback?.let { OnResultInfo.create2(it) }
+        if (isH5ByBrowser) {
+            throw IllegalCalledException("Can't work with browser!")
+        } else {
+            onResultInfo = callback?.let { OnResultInfo.create2(it) }
+        }
     }
 
-    fun start() {
+    open fun start() {
         if (onResultInfo.isNullOrEmpty || !isFromActivityContext) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             useContext.startActivity(intent, launchOptions)
@@ -98,12 +108,13 @@ abstract class AbsOption(context: Context) {
 private class OnResultInfo<D> private constructor(
     val onResult1: ((data: D?) -> Unit)?,
     val onResult2: ((resultCode: Int) -> Unit)?,
-){
+) {
 
     companion object {
         fun <D> create1(callback: (data: D?) -> Unit): OnResultInfo<D> {
             return OnResultInfo(callback, null)
         }
+
         fun create2(callback: (resultCode: Int) -> Unit): OnResultInfo<Any> {
             return OnResultInfo(null, callback)
         }
@@ -133,5 +144,10 @@ enum class PageMode {
     /**
      * 搜索。
      */
-    SEARCH
+    SEARCH,
+
+    /**
+     * H5页面。
+     */
+    H5
 }

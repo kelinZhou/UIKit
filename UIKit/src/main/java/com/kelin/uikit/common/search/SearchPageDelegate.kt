@@ -128,7 +128,7 @@ internal class SearchPageDelegate(
             val fragment = searchPage as Fragment
             if (!fragment.isAdded) {  // 如果没有搜索结果页面没有被add。
                 owner.switchSearchPage(fragment)
-                etSearch.postDelayed(300){
+                etSearch.postDelayed(300) {
                     searchPage.onSearch(key)
                 }
             } else {
@@ -137,9 +137,10 @@ internal class SearchPageDelegate(
         }
     }
 
-    fun onRecycle() {
+    fun onRecycle(): Boolean {
         KeyBordUtil.hideSoftKeyboard(etSearch)
         searchPage.onSearchCancel()
         searchHistoryPage?.onSearchCancel()
+        return false
     }
 }

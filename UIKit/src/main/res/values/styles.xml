@@ -215,4 +215,16 @@
         <item name="android:background">@drawable/selector_oval_selected_stroke_black_normal_black</item>
         <item name="android:textColor">@color/selector_selected_black_normal_white</item>
     </style>
+
+
+    <style name="web_progress_style">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/horizontal_progressbar_bg
+        </item><!-- progress_horizontal -->
+        <item name="android:indeterminateDrawable">
+            @android:drawable/progress_indeterminate_horizontal
+        </item>
+        <item name="android:minHeight">3dp</item>
+        <item name="android:maxHeight">3dp</item>
+    </style>
 </resources>

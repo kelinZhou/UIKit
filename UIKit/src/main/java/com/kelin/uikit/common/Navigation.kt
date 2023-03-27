@@ -5,15 +5,17 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.KeyEvent
 import android.view.View
+import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.kelin.uikit.*
-import com.kelin.uikit.common.ImmersionMode.Companion.KEY_IMMERSION_MODE
-import com.kelin.uikit.common.ImmersionMode.Companion.KEY_NAVIGATION_ICON
+import com.kelin.uikit.common.Option.Companion.KEY_NAVIGATION_ICON
+import com.kelin.uikit.common.h5.H5Delegate
 import com.kelin.uikit.common.search.SearchPageDelegate
 import com.kelin.uikit.core.SystemError
 import com.kelin.uikit.flyweight.adapter.CommonFragmentStatePagerAdapter
@@ -106,7 +108,7 @@ class Navigation : BasicActivity() {
          */
         inline fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, optional: Option.() -> Unit): Option {
             return IntentOption(context).apply {
-                title?.also { title(title) }
+                title?.also { title(it) }
                 setTarget(target)
                 optional(this)
                 start()
@@ -192,12 +194,78 @@ class Navigation : BasicActivity() {
                 start()
             }
         }
+
+        /**
+         * 启动一个H5页面。
+         * @param url H5地址。
+         * @param title 页面标题。
+         */
+        fun launchH5(context: Context, url: String, @StringRes title: Int): H5Option {
+            return launchH5(context, url, getString(title))
+        }
+
+        /**
+         * 启动一个H5页面。
+         * @param url H5地址。
+         * @param title 页面标题。
+         */
+        fun launchH5(context: Context, url: String, title: CharSequence? = null): H5Option {
+            return launchH5(context, url, title) {}
+        }
+
+        /**
+         * 启动一个H5页面。
+         * @param url H5地址。
+         * @param title 页面标题。
+         * @param optional 页面的配置函数，用于在启动页面前对目标页面进行配置。
+         */
+        fun launchH5(context: Context, url: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
+            return H5IntentOption(context).apply {
+                h5url = url
+                title?.also { title(it) }
+                optional(this)
+                start()
+            }
+        }
+
+        /**
+         * 启动一个H5页面。
+         * @param content H5页面的内容。
+         * @param title 页面标题。
+         */
+        fun launchH5ByData(context: Context, content: String, @StringRes title: Int): H5Option {
+            return launchH5ByData(context, content, getString(title))
+        }
+
+        /**
+         * 启动一个H5页面。
+         * @param content H5页面的内容。
+         * @param title 页面标题。
+         */
+        fun launchH5ByData(context: Context, content: String, title: CharSequence? = null): H5Option {
+            return launchH5ByData(context, content, title) {}
+        }
+
+        /**
+         * 启动一个H5页面。
+         * @param content H5页面的内容。
+         * @param title 页面标题。
+         * @param optional 页面的配置函数，用于在启动页面前对目标页面进行配置。
+         */
+        fun launchH5ByData(context: Context, content: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
+            return H5IntentOption(context).apply {
+                h5Data = content
+                title?.also { title(it) }
+                optional(this)
+                start()
+            }
+        }
     }
 
     /**
      * 沉浸式状态栏模式。
      */
-    private val immersionMode: ImmersionMode by lazy { (intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE }
+    private val immersionMode: ImmersionMode by lazy { Option.getImmersionMode(intent) }
 
     /**
      * 判断当前页面是否是沉浸式状态栏。
@@ -205,6 +273,8 @@ class Navigation : BasicActivity() {
     val isImmersionMode: Boolean by lazy { immersionMode != ImmersionMode.NONE }
 
     private var searchDelegate: SearchPageDelegate? = null
+
+    private var h5Delegate: H5Delegate? = null
 
     private fun getCurrentFragment(intent: Intent): Fragment {
         return Option.getTargetFragment(intent) ?: onJumpError(SystemError.TARGET_PAGE_TYPE_NOT_HANDLER)
@@ -269,7 +339,36 @@ class Navigation : BasicActivity() {
                     getView<View>(R.id.ivUiKitClear)!!
                 )
             }
+            PageMode.H5 -> {
+                setContentView(R.layout.kelin_ui_kit_activity_web_h5)
+                initTitleBar(getView(R.id.my_awesome_toolbar), getView(R.id.toolbar_center_title), getView(R.id.toolbar_sub_title))
+                setWebLayoutParams()
+                title = intent.getCharSequenceExtra(Option.KEY_PAGE_TITLE)
+                val webView = getView<WebView>(R.id.wbUiKitCommonWebView)!!
+                h5Delegate = H5Delegate(
+                    this,
+                    webView,
+                    H5Option.isCloseStyle(intent),
+                    getView<View>(R.id.clUiKitCommonStateLayout)!!,
+                    H5Option.getJavascriptInterface(intent)
+                ) { view, request, error ->
+                    processStatusBar(Color.WHITE, false)
+                    getView<View>(R.id.rlToolbarParent)?.visibility = View.VISIBLE
+                }
+                H5Option.getH5Data(intent).takeIf { !it.isNullOrBlank() }?.also { htmlContent ->
+                    webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+                } ?: webView.loadUrl(H5Option.getH5Url(intent)!!)
+                if (H5Option.isStatusBarDark(intent)) {
+                    StatusBarHelper.setStatusBarDarkMode(this)
+                } else {
+                    StatusBarHelper.setStatusBarLightMode(this)
+                }
+            }
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return h5Delegate?.onKeyDown(keyCode, event) == true || super.onKeyDown(keyCode, event)
     }
 
     private fun setCommonLayoutParams() {
@@ -279,15 +378,35 @@ class Navigation : BasicActivity() {
                 lp.topToTop = ConstraintLayout.LayoutParams.UNSET
             } else {
                 processStatusBar(Color.TRANSPARENT)
-                if (immersionMode == ImmersionMode.NO_TOOLBAR) {
-                    supportActionBar?.hide()
-                } else {
-                    intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                        setNavigationIcon(it)
-                    }
-                }
                 lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
                 lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            }
+            if (immersionMode == ImmersionMode.NO_TOOLBAR) {
+                supportActionBar?.hide()
+            } else {
+                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                    setNavigationIcon(it)
+                }
+            }
+        }
+    }
+
+    private fun setWebLayoutParams() {
+        (getView<View>(R.id.rlUiKitWebViewContainer)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
+            if (immersionMode == ImmersionMode.NONE) {
+                lp.topToBottom = R.id.rlToolbarParent
+                lp.topToTop = ConstraintLayout.LayoutParams.UNSET
+            } else {
+                processStatusBar(Color.TRANSPARENT)
+                lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
+                lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            }
+            if (immersionMode == ImmersionMode.NO_TOOLBAR) {
+                supportActionBar?.hide()
+            } else {
+                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                    setNavigationIcon(it)
+                }
             }
         }
     }
@@ -317,12 +436,13 @@ class Navigation : BasicActivity() {
                     lp.topToTop = ConstraintLayout.LayoutParams.UNSET
                 } else {
                     processStatusBar(Color.TRANSPARENT)
-                    intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                        setNavigationIcon(it)
-                    }
+
                     lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
                     lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
+            }
+            intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                setNavigationIcon(it)
             }
             val pagerAdapter = CommonFragmentStatePagerAdapter(supportFragmentManager).also {
                 TabOption.getTabPageConfig(intent)?.optional?.invoke(it) ?: NullPointerException("The configurePage method must called!").printStackTrace()
@@ -371,7 +491,8 @@ class Navigation : BasicActivity() {
     }
 
     override fun onBackPressed() {
-        searchDelegate?.onRecycle()
-        super.onBackPressed()
+        if ((searchDelegate?.onRecycle() ?: h5Delegate?.onPackPressed()) != true) {
+            super.onBackPressed()
+        }
     }
 }

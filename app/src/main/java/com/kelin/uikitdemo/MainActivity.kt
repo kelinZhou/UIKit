@@ -7,7 +7,6 @@ import com.kelin.apiexception.ApiException
 import com.kelin.proxyfactory.Toaster
 import com.kelin.uikit.UIKit
 import com.kelin.uikit.common.*
-import com.kelin.uikit.tools.statusbar.StatusBarHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -69,7 +68,9 @@ class MainActivity : AppCompatActivity() {
                 historyPage(TestHistoryFragment::class.java)
             }
         }
-        StatusBarHelper.getImmersionOffset(this)
+        btnTabDemo6.setOnClickListener {
+            Navigation.launchH5(this, "https://www.baidu.com", "百度")
+        }
     }
 
     private class MyToaster : Toaster {
