@@ -4,8 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.kelin.okpermission.OkActivityResult
+import com.kelin.uikit.UIKit
+import com.kelin.uikit.common.Option.Companion.getImmersionMode
 import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
 
 /**
@@ -39,6 +44,24 @@ abstract class AbsOption(context: Context) {
             context = null
             return contextTemp ?: throw NullPointerException("The context used early!")
         }
+
+
+    /**
+     * 工具栏背景色。
+     */
+    fun toolbarBgRes(@ColorRes color: Int) {
+        toolbarBg(ContextCompat.getColor(context ?: UIKit.getContext(), color))
+    }
+
+
+    /**
+     * 工具栏背景色。
+     */
+    fun toolbarBg(@ColorInt color: Int) {
+        if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
+            intent.putExtra(Option.KEY_TOOL_BAT_BG, color)
+        }
+    }
 
     fun setPageMode(mode: PageMode) {
         intent.putExtra(Option.KEY_PAGE_MODE, mode)

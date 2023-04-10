@@ -2,7 +2,8 @@ package com.kelin.uikit.common
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.DrawableRes
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.kelin.uikit.BasicFragment
@@ -22,6 +23,7 @@ interface Option {
         private const val KEY_IMMERSION_MODE = "key_immersion_mode"
         internal const val KEY_NAVIGATION_ICON = "key_navigation_icon"
         internal const val KEY_NAVIGATION_TEXT = "key_navigation_text"
+        internal const val KEY_TOOL_BAT_BG = "key_tool_bat_bg"
         internal const val KEY_PAGE_MODE = "key_page_mode"
         internal const val KEY_PAGE_TITLE = "key_page_title"
         internal const val KEY_TARGET_PAGE = "key_target_fragment_class"
@@ -40,8 +42,13 @@ interface Option {
             return intent.getSerializableExtra(KEY_PAGE_MODE) as PageMode
         }
 
-        internal fun getImmersionMode(intent: Intent):ImmersionMode {
+        internal fun getImmersionMode(intent: Intent): ImmersionMode {
             return (intent.getSerializableExtra(KEY_IMMERSION_MODE) as? ImmersionMode) ?: ImmersionMode.NONE
+        }
+
+        @ColorInt
+        internal fun getToolbarBg(intent: Intent): Int? {
+            return intent.getIntExtra(KEY_TOOL_BAT_BG, -1).takeIf { it >= 0 }
         }
     }
 
@@ -77,18 +84,28 @@ interface Option {
     /**
      * 设置页面返回按钮为文字样式。
      */
-    fun navigationText(@StringRes text: Int){
+    fun navigationText(@StringRes text: Int) {
         navigationText(getString(text))
     }
 
     /**
      * 设置页面返回按钮为文字样式。
      */
-    fun navigationText(text: CharSequence){
+    fun navigationText(text: CharSequence) {
         if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
             intent.putExtra(KEY_NAVIGATION_TEXT, text)
         }
     }
+
+    /**
+     * 工具栏背景色。
+     */
+    fun toolbarBgRes(@ColorRes color: Int)
+
+    /**
+     * 工具栏背景色。
+     */
+    fun toolbarBg(@ColorInt color: Int)
 
 
     /**

@@ -295,6 +295,9 @@ class Navigation : BasicActivity() {
             PageMode.NORMAL -> {
                 setContentView(R.layout.kelin_ui_kit_activity_common)
                 initTitleBar(getView(R.id.my_awesome_toolbar), getView(R.id.toolbar_center_title), getView(R.id.toolbar_sub_title))
+                Option.getToolbarBg(intent)?.also {
+                    getView<View>(R.id.rlUiKitToolbarParent)?.setBackgroundColor(it)
+                }
                 setCommonLayoutParams()
                 title = intent.getCharSequenceExtra(Option.KEY_PAGE_TITLE)
                 getCurrentFragment(intent).also {
@@ -312,12 +315,18 @@ class Navigation : BasicActivity() {
             PageMode.TAB -> {
                 setContentView(R.layout.kelin_ui_kit_activity_tablayout_toolbar)
                 initTitleBar(getView(R.id.my_awesome_toolbar), null, null)
+                Option.getToolbarBg(intent)?.also {
+                    getView<View>(R.id.uiKitRlToolbarParent)?.setBackgroundColor(it)
+                }
                 setTabLayoutParamsAndAdapter()
             }
             PageMode.SEARCH -> {
                 setContentView(R.layout.kelin_ui_kit_activity_search)
                 window.setSoftInputMode(SearchOption.getSoftInputMode(intent))
                 setActionBarView(getView(R.id.rl_my_awesome_toolbar))
+                Option.getToolbarBg(intent)?.also {
+                    getView<View>(R.id.rl_my_awesome_toolbar)?.setBackgroundColor(it)
+                }
                 setSearchLayoutParams()
                 val searchPage = Option.getTargetFragment(intent) as SearchablePage
                 (searchPage as? BasicFragment)?.isDarkMode?.also { isDark ->
@@ -354,7 +363,10 @@ class Navigation : BasicActivity() {
                     H5Option.getJavascriptInterface(intent)
                 ) { view, request, error ->
                     processStatusBar(Color.WHITE, false)
-                    getView<View>(R.id.rlToolbarParent)?.visibility = View.VISIBLE
+                    getView<View>(R.id.rlUiKitToolbarParent)?.visibility = View.VISIBLE
+                }
+                Option.getToolbarBg(intent)?.also {
+                    getView<View>(R.id.rlUiKitToolbarParent)?.setBackgroundColor(it)
                 }
                 H5Option.getH5Data(intent).takeIf { !it.isNullOrBlank() }?.also { htmlContent ->
                     webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
@@ -393,7 +405,7 @@ class Navigation : BasicActivity() {
     private fun setWebLayoutParams() {
         (getView<View>(R.id.rlUiKitWebViewContainer)?.layoutParams as? ConstraintLayout.LayoutParams)?.also { lp ->
             if (immersionMode == ImmersionMode.NONE) {
-                lp.topToBottom = R.id.rlToolbarParent
+                lp.topToBottom = R.id.rlUiKitToolbarParent
                 lp.topToTop = ConstraintLayout.LayoutParams.UNSET
             } else {
                 processStatusBar(Color.TRANSPARENT)
