@@ -1,6 +1,7 @@
 package com.kelin.uikit.common.h5
 
 import android.app.Activity
+import android.webkit.WebView
 
 /**
  * **描述:** Javascript接口的基本实现。
@@ -15,15 +16,23 @@ abstract class AbsJsInterface : JsInterface {
     protected var activity: Activity? = null
         private set
 
+    protected var webView: WebView? = null
+
     protected fun requireActivity(): Activity {
         return activity ?: throw NullPointerException("The activity is null early!")
     }
 
-    override fun onInit(activity: Activity) {
+    protected fun requireWebView(): WebView {
+        return webView ?: throw NullPointerException("The webView is null early!")
+    }
+
+    override fun onInit(activity: Activity, webView: WebView) {
         this.activity = activity
+        this.webView = webView
     }
 
     override fun onDestroy() {
         this.activity = null
+        this.webView = null
     }
 }

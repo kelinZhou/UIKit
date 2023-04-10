@@ -1,6 +1,7 @@
 package com.kelin.uikit.common.h5
 
 import android.app.Activity
+import android.webkit.WebView
 
 /**
  * **描述:** 定义Javascript接口规范。
@@ -12,6 +13,6 @@ import android.app.Activity
  * **版本:** v 1.0.0
  */
 interface JsInterface {
-    fun onInit(activity: Activity)
+    fun onInit(activity: Activity, webView: WebView)
     fun onDestroy()
 }
