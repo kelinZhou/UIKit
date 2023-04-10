@@ -43,10 +43,6 @@ abstract class BaseFragmentActivity : BasicActivity() {
     protected open val toolbarSubTitleViewId: Int
         get() = R.id.toolbar_sub_title
 
-    @get:IdRes
-    protected open val leftButtonViewId: Int
-        get() = R.id.toolbar_title_left_but
-
     override fun onCreate(savedInstanceState: Bundle?) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             window.requestFeature(Window.FEATURE_CONTENT_TRANSITIONS)
@@ -63,36 +59,6 @@ abstract class BaseFragmentActivity : BasicActivity() {
                     StatusBarHelper.setStatusBarLightMode(this)
                 }
             }
-        }
-        getView<View>(leftButtonViewId)?.setOnClickListener { onBackPressed() }
-    }
-
-    /**
-     * 显示文字导航按钮。
-     */
-    protected fun showTextNavigation(@StringRes btnText: Int) {
-        disableHomeAsUp()
-        getView<TextView>(leftButtonViewId)?.run {
-            visibility = View.VISIBLE
-            text = getString(btnText)
-        }
-    }
-
-    /**
-     * 显示文字导航按钮。
-     */
-    protected fun showTextNavigation(btnText: CharSequence) {
-        disableHomeAsUp()
-        getView<TextView>(leftButtonViewId)?.run {
-            visibility = View.VISIBLE
-            text = btnText
-        }
-    }
-
-    protected fun hideTextNavigation(@DrawableRes iconId: Int? = null) {
-        getView<TextView>(leftButtonViewId)?.visibility = View.GONE
-        if (iconId != null) {
-            setNavigationIcon(iconId)
         }
     }
 

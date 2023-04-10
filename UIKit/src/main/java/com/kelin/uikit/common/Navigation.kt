@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.kelin.uikit.*
 import com.kelin.uikit.common.Option.Companion.KEY_NAVIGATION_ICON
+import com.kelin.uikit.common.Option.Companion.KEY_NAVIGATION_TEXT
 import com.kelin.uikit.common.h5.H5Delegate
 import com.kelin.uikit.common.search.SearchPageDelegate
 import com.kelin.uikit.core.SystemError
@@ -384,9 +385,7 @@ class Navigation : BasicActivity() {
             if (immersionMode == ImmersionMode.NO_TOOLBAR) {
                 supportActionBar?.hide()
             } else {
-                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                    setNavigationIcon(it)
-                }
+                setNavigationIcon()
             }
         }
     }
@@ -404,9 +403,7 @@ class Navigation : BasicActivity() {
             if (immersionMode == ImmersionMode.NO_TOOLBAR) {
                 supportActionBar?.hide()
             } else {
-                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                    setNavigationIcon(it)
-                }
+                setNavigationIcon()
             }
         }
     }
@@ -418,7 +415,7 @@ class Navigation : BasicActivity() {
                 lp.topToTop = ConstraintLayout.LayoutParams.UNSET
             } else {
                 processStatusBar(Color.TRANSPARENT)
-                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
+                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it >= 0 }?.also {
                     getView<ImageView>(R.id.ivUiKitNavigation)?.setImageResource(it)
                 }
                 lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
@@ -441,9 +438,7 @@ class Navigation : BasicActivity() {
                     lp.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
                 }
             }
-            intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it > 0 }?.also {
-                setNavigationIcon(it)
-            }
+            setNavigationIcon()
             val pagerAdapter = CommonFragmentStatePagerAdapter(supportFragmentManager).also {
                 TabOption.getTabPageConfig(intent)?.optional?.invoke(it) ?: NullPointerException("The configurePage method must called!").printStackTrace()
                 offscreenPageLimit = it.count
@@ -471,6 +466,14 @@ class Navigation : BasicActivity() {
                 }
             })
             initStatusBarMode(currentItem)
+        }
+    }
+
+    private fun setNavigationIcon() {
+        intent.getStringExtra(KEY_NAVIGATION_TEXT)?.takeIf { it.isNotBlank() }?.also {
+            showTextNavigation(it)
+        } ?: intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it >= 0 }?.also {
+            setNavigationIcon(it)
         }
     }
 

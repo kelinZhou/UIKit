@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.TaskStackBuilder
@@ -75,6 +76,10 @@ abstract class BasicActivity : AppCompatActivity() {
         }
 
     var useDefaultTransition: Boolean = true
+
+    @get:IdRes
+    protected open val leftButtonViewId: Int
+        get() = R.id.toolbar_title_left_but
 
     val isActivityDestroyed: Boolean
         get() = (isDestroyed) || isFinishing
@@ -188,12 +193,43 @@ abstract class BasicActivity : AppCompatActivity() {
         if (hasFullScreen) {
             AndroidBug5497Workaround.assistActivity(this)
         }
+        getView<View>(leftButtonViewId)?.setOnClickListener { onBackPressed() }
     }
 
     override fun setContentView(view: View?) {
         super.setContentView(view)
         if (hasFullScreen) {
             AndroidBug5497Workaround.assistActivity(this)
+        }
+        getView<View>(leftButtonViewId)?.setOnClickListener { onBackPressed() }
+    }
+
+    /**
+     * 显示文字导航按钮。
+     */
+    protected fun showTextNavigation(@StringRes btnText: Int) {
+        disableHomeAsUp()
+        getView<TextView>(leftButtonViewId)?.run {
+            visibility = View.VISIBLE
+            text = getString(btnText)
+        }
+    }
+
+    /**
+     * 显示文字导航按钮。
+     */
+    protected fun showTextNavigation(btnText: CharSequence) {
+        disableHomeAsUp()
+        getView<TextView>(leftButtonViewId)?.run {
+            visibility = View.VISIBLE
+            text = btnText
+        }
+    }
+
+    protected fun hideTextNavigation(@DrawableRes iconId: Int? = null) {
+        getView<TextView>(leftButtonViewId)?.visibility = View.GONE
+        if (iconId != null) {
+            setNavigationIcon(iconId)
         }
     }
 

@@ -2,6 +2,7 @@ package com.kelin.uikit.common
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.kelin.uikit.common.search.SearchableHistoryPage
@@ -88,5 +89,10 @@ interface SearchOption : Option {
      */
     fun setSoftInputMode(inputMode: Int) {
         intent.putExtra(KEY_SOFT_INPUT_MODE, inputMode)
+    }
+
+    override fun navigationText(text: CharSequence) {
+        //搜索页面暂不支持文字导航
+        Log.e("SearchOption", "The search option not support navigationText now!")
     }
 }

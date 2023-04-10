@@ -25,8 +25,8 @@ interface H5Option : Option {
         internal const val KEY_H5_CLOSE_STYLE = "key_h5_close_style"
         internal const val KEY_STATUS_BAR_DARK = "key_status_bar_dark"
 
-        internal fun getH5Url(intent: Intent): String? {
-            return intent.getStringExtra(KEY_INTENT_URL)
+        internal fun getH5Url(intent: Intent): String {
+            return intent.getStringExtra(KEY_INTENT_URL) ?: ""
         }
 
         internal fun getH5Data(intent: Intent): String? {
