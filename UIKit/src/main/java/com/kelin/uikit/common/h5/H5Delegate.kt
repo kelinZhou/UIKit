@@ -98,7 +98,7 @@ internal class H5Delegate(
 
     @SuppressLint("JavascriptInterface")
     fun initJavascriptInterface(javascriptInterface: JavascriptInterfaceWrapper, activity: Activity) {
-        jsInterface = javascriptInterface.interfaceClass.newInstance().apply { onInit(activity) }
+        jsInterface = javascriptInterface.interfaceClass.newInstance().apply { onInit(activity, webView) }
         webView.addJavascriptInterface(jsInterface!!, javascriptInterface.interfaceName)
     }
 
