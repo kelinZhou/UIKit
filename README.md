@@ -45,9 +45,9 @@ Navigation.launch<PlaceholderFragment>(context, "新的页面") {
 #### 启动一个TabLayout+ViewPager的页面需要调用launchTab方法。
 ```kotlin
 Navigation.launchTabOnly(context) {
-    "生活" to PlaceholderFragment::class
-    "汽车" to PlaceholderFragment.createInstance("汽车")
-    "圈子" to PlaceholderFragment.createInstance("圈子")
+    page("生活", PlaceholderFragment::class)
+    page("汽车", PlaceholderFragment.createInstance("汽车"))
+    page("圈子", PlaceholderFragment.createInstance("圈子"))
 }
 ```
 ![TabLayout+ViewPager](ReadmeRes/Tab_ViewPager1.png)
@@ -55,17 +55,17 @@ Navigation.launchTabOnly(context) {
 启动一个沉浸式状态栏的TabLayout+ViewPager页面。
 ```kotlin
 Navigation.launchTabOnly(context, immersion = true) {
-    "汽车" to PlaceholderFragment.createInstance("汽车")
-    "生活" to PlaceholderFragment::class
-    "圈子" to PlaceholderFragment.createInstance("圈子")
+    PlaceholderFragment.createInstance("汽车") to "汽车"
+    PlaceholderFragment::class to "生活"
+    PlaceholderFragment.createInstance("圈子") to "圈子"
 }
 ```
 禁用ViewPager的滑动翻页
 ```kotlin
 Navigation.launchTabOnly(context, scrollEnable = false) {
-    "生活" to PlaceholderFragment::class
-    "汽车" to PlaceholderFragment.createInstance("汽车")
-    "圈子" to PlaceholderFragment.createInstance("圈子")
+    PlaceholderFragment::class to "生活"
+    PlaceholderFragment.createInstance("汽车") to "汽车"
+    PlaceholderFragment.createInstance("圈子") to "圈子"
 }
 ```
 也可以在启动页面时对Navigation进行配置。
@@ -80,9 +80,9 @@ Navigation.launchTab(context){
     immersionToolbar()  //设置沉浸式Toolbar。
     navigationIcon(R.drawable.ic_navigation_back) //为Toolbar设置返回按钮图标
     configurePage {
-        "汽车" to PlaceholderFragment.createInstance("汽车")
-        "生活" to PlaceholderFragment::class
-        "圈子" to PlaceholderFragment.createInstance("圈子")
+        PlaceholderFragment.createInstance("汽车") to "汽车"
+        PlaceholderFragment::class to "生活"
+        PlaceholderFragment.createInstance("圈子") to "圈子"
     }
     //监听返回结果。
     resultForCode { resultCode ->

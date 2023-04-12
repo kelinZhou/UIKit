@@ -11,6 +11,7 @@ import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.kelin.uikit.*
@@ -285,19 +286,17 @@ class Navigation : BasicActivity() {
         val pageMode = Option.getPageMode(intent)
         if (pageMode == PageMode.SEARCH && savedInstanceState != null) {
             // 不通过Android的自动恢复，因为onInitSearchKey,这个不会自动调用
-            val p = savedInstanceState.getParcelable<Parcelable>("android:support:fragments")
-            if (p != null) {
+            if (savedInstanceState.getParcelable<Parcelable>("android:support:fragments") != null) {
                 savedInstanceState.remove("android:support:fragments")
             }
         }
         super.onCreate(savedInstanceState)
+        //根据不同的页面模式处理不用的UI布局及样式。
         when (pageMode) {
             PageMode.NORMAL -> {
                 setContentView(R.layout.kelin_ui_kit_activity_common)
                 initTitleBar(getView(R.id.my_awesome_toolbar), getView(R.id.toolbar_center_title), getView(R.id.toolbar_sub_title))
-                Option.getToolbarBg(intent)?.also {
-                    getView<View>(R.id.rlUiKitToolbarParent)?.setBackgroundColor(it)
-                }
+                setToolbarStyle(getView(R.id.rlUiKitToolbarParent))
                 setCommonLayoutParams()
                 title = intent.getCharSequenceExtra(Option.KEY_PAGE_TITLE)
                 getCurrentFragment(intent).also {
@@ -315,18 +314,14 @@ class Navigation : BasicActivity() {
             PageMode.TAB -> {
                 setContentView(R.layout.kelin_ui_kit_activity_tablayout_toolbar)
                 initTitleBar(getView(R.id.my_awesome_toolbar), null, null)
-                Option.getToolbarBg(intent)?.also {
-                    getView<View>(R.id.uiKitRlToolbarParent)?.setBackgroundColor(it)
-                }
+                setToolbarStyle(getView(R.id.uiKitRlToolbarParent))
                 setTabLayoutParamsAndAdapter()
             }
             PageMode.SEARCH -> {
                 setContentView(R.layout.kelin_ui_kit_activity_search)
                 window.setSoftInputMode(SearchOption.getSoftInputMode(intent))
                 setActionBarView(getView(R.id.rl_my_awesome_toolbar))
-                Option.getToolbarBg(intent)?.also {
-                    getView<View>(R.id.rl_my_awesome_toolbar)?.setBackgroundColor(it)
-                }
+                setToolbarStyle(getView(R.id.rl_my_awesome_toolbar))
                 setSearchLayoutParams()
                 val searchPage = Option.getTargetFragment(intent) as SearchablePage
                 (searchPage as? BasicFragment)?.isDarkMode?.also { isDark ->
@@ -365,16 +360,30 @@ class Navigation : BasicActivity() {
                     processStatusBar(Color.WHITE, false)
                     getView<View>(R.id.rlUiKitToolbarParent)?.visibility = View.VISIBLE
                 }
-                Option.getToolbarBg(intent)?.also {
-                    getView<View>(R.id.rlUiKitToolbarParent)?.setBackgroundColor(it)
-                }
+                setToolbarStyle(getView(R.id.rlUiKitToolbarParent))
                 H5Option.getH5Data(intent).takeIf { !it.isNullOrBlank() }?.also { htmlContent ->
                     webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
-                } ?: webView.loadUrl(H5Option.getH5Url(intent)!!)
+                } ?: webView.loadUrl(H5Option.getH5Url(intent))
                 if (H5Option.isStatusBarDark(intent)) {
                     StatusBarHelper.setStatusBarDarkMode(this)
                 } else {
                     StatusBarHelper.setStatusBarLightMode(this)
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置状态栏样式。
+     * @param toolbarContainer 状态栏的容器。
+     */
+    private fun setToolbarStyle(toolbarContainer: View?) {
+        if (immersionMode != ImmersionMode.NO_TOOLBAR) {
+            toolbarContainer?.also { v ->
+                Option.getToolbarColor(intent)?.also {
+                    v.setBackgroundColor(it)
+                } ?: Option.getToolbarBackground(intent)?.also { bgRes ->
+                    v.setBackgroundResource(bgRes)
                 }
             }
         }

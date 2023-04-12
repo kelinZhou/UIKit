@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
 
         btnTabDemo.setOnClickListener {
             Navigation.launchTabOnly(this) {
-                "生活" to PlaceholderFragment::class
-                "汽车" to PlaceholderFragment.createInstance("汽车")
-                "圈子" to PlaceholderFragment.createInstance("圈子")
+                page("生活", PlaceholderFragment::class)
+                page("汽车", PlaceholderFragment.createInstance("汽车"))
+                page("圈子", PlaceholderFragment.createInstance("圈子"))
             }
         }
 
@@ -43,9 +43,9 @@ class MainActivity : AppCompatActivity() {
                 immersion()
                 defaultIndex(1)
                 pages {
-                    "生活" to PlaceholderFragment::class
-                    "汽车" to PlaceholderFragment.createInstance("汽车")
-                    "圈子" to PlaceholderFragment.createInstance("圈子")
+                    PlaceholderFragment::class to "生活"
+                    PlaceholderFragment.createInstance("汽车") to "汽车"
+                    PlaceholderFragment.createInstance("圈子") to "圈子"
                 }
             }
         }
@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
             Navigation.launchTab(this) {
                 defaultIndex(1)
                 pages {
-                    "轮播图" to BannerShowDemoFragment::class
-                    "汽车" to PlaceholderFragment.createInstance("汽车")
-                    "圈子" to PlaceholderFragment.createInstance("圈子")
+                    BannerShowDemoFragment::class to "轮播图"
+                    PlaceholderFragment.createInstance("汽车") to "汽车"
+                    PlaceholderFragment.createInstance("圈子") to "圈子"
                 }
             }
         }

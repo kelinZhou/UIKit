@@ -3,11 +3,14 @@ package com.kelin.uikit.flyweight.adapter
 import android.os.Parcelable
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.kelin.uikit.BasicFragment
+import com.kelin.uikit.UIKit
 import com.kelin.uikit.common.CommonErrorFragment
 import com.kelin.uikit.core.SystemError
+import com.kelin.uikit.getString
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -16,7 +19,7 @@ import kotlin.reflect.KClass
  * 创建人 kelin
  * 创建时间 16/9/18  上午11:44
  */
-class CommonFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class CommonFragmentStatePagerAdapter constructor (fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
     /**
      * 当前{ViewPager}的所有页面的[Class]对象。
      */
@@ -66,8 +69,19 @@ class CommonFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerA
      * {TabLayout 页签}中。
      * @param cls  要添加的页面的[Class]对象。
      */
-    fun page(name: String, cls: Class<out BasicFragment>) {
-        addPager(name, cls)
+    fun page(name: String, cls: KClass<out BasicFragment>) {
+        addPager(name, cls.java)
+    }
+
+    /**
+     * 添加页面。
+     *
+     * @param name     要添加的页面的名字。这个名字将会显示在
+     * {TabLayout 页签}中,如果你的页面中有的话。
+     * @param fragment 要添加的页面的[BasicFragment]对象。
+     */
+    fun page(name: String, fragment: BasicFragment){
+        addPager(name, fragment)
     }
 
     /**
@@ -195,11 +209,19 @@ class CommonFragmentStatePagerAdapter(fm: FragmentManager) : FragmentStatePagerA
         }
     }
 
-    infix fun String.to(cls: KClass<out BasicFragment>) {
-        addPager(this, cls.java)
+    infix fun KClass<out BasicFragment>.to(@StringRes name: Int) {
+        addPager(UIKit.getContext().getString(name), java)
     }
 
-    infix fun <F : BasicFragment> String.to(fragment: F) {
-        addPager(this, fragment)
+    infix fun KClass<out BasicFragment>.to(name: String) {
+        addPager(name, java)
+    }
+
+    infix fun <F : BasicFragment> F.to(@StringRes name: Int) {
+        addPager(UIKit.getContext().getString(name), this)
+    }
+
+    infix fun <F : BasicFragment> F.to(name: String) {
+        addPager(name, this)
     }
 }

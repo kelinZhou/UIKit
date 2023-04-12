@@ -6,11 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.kelin.okpermission.OkActivityResult
 import com.kelin.uikit.UIKit
 import com.kelin.uikit.common.Option.Companion.getImmersionMode
+import com.kelin.uikit.common.Option.Companion.getToolbarBackground
+import com.kelin.uikit.common.Option.Companion.getToolbarColor
 import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
 
 /**
@@ -49,17 +52,28 @@ abstract class AbsOption(context: Context) {
     /**
      * 工具栏背景色。
      */
-    fun toolbarBgRes(@ColorRes color: Int) {
-        toolbarBg(ContextCompat.getColor(context ?: UIKit.getContext(), color))
+    fun toolbarColorRes(@ColorRes color: Int) {
+        toolbarColor(ContextCompat.getColor(context ?: UIKit.getContext(), color))
     }
 
 
     /**
      * 工具栏背景色。
      */
-    fun toolbarBg(@ColorInt color: Int) {
+    fun toolbarColor(@ColorInt color: Int) {
         if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
-            intent.putExtra(Option.KEY_TOOL_BAT_BG, color)
+            intent.removeExtra(Option.KEY_TOOL_BAT_BACKGROUND)  //颜色与背景图片互斥，先移除背景图。
+            intent.putExtra(Option.KEY_TOOL_BAT_COLOR, color)
+        }
+    }
+
+    /**
+     * 工具栏背景色图。
+     */
+    fun toolbarBackground(@DrawableRes drawable: Int) {
+        if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
+            intent.removeExtra(Option.KEY_TOOL_BAT_COLOR)  //颜色与背景图片互斥，先移除背景色。
+            intent.putExtra(Option.KEY_TOOL_BAT_BACKGROUND, drawable)
         }
     }
 
@@ -92,7 +106,7 @@ abstract class AbsOption(context: Context) {
      * @param callback 回调函数。
      */
     fun <D> results(callback: ((data: D?) -> Unit)?) {
-        if (isH5ByBrowser) {
+        if (isH5ByBrowser && callback != null) {
             throw IllegalCalledException("Can't work with browser!")
         } else {
             onResultInfo = callback?.let { OnResultInfo.create1(it) }
