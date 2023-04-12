@@ -118,7 +118,7 @@ abstract class AbsOption(context: Context) {
      * @param callback 回调函数。
      */
     fun resultsForCode(callback: ((resultCode: Int) -> Unit)?) {
-        if (isH5ByBrowser) {
+        if (isH5ByBrowser && callback != null) {
             throw IllegalCalledException("Can't work with browser!")
         } else {
             onResultInfo = callback?.let { OnResultInfo.create2(it) }
