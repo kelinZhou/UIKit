@@ -1,6 +1,8 @@
 package com.kelin.uikitdemo
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kelin.apiexception.ApiException
@@ -69,7 +71,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         btnTabDemo6.setOnClickListener {
-            Navigation.launchH5(this, "https://www.baidu.com", "百度")
+            Navigation.launchH5(this, "https://www.baidu.com", "百度"){
+                byBrowser()
+            }
         }
     }
 

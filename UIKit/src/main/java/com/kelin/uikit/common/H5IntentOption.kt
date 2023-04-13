@@ -22,11 +22,14 @@ import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
  */
 class H5IntentOption(context: Context) : AbsOption(context), H5Option {
 
-    override val intent: Intent = Intent()
-
     init {
         setPageMode(PageMode.H5)
     }
+
+    private var byBrowserIntent: Intent? = null
+
+    override val isH5ByBrowser: Boolean
+        get() = byBrowserIntent != null
 
     override fun setTarget(target: Class<out Fragment>) {
         throw IllegalCalledException("Can't set target Fragment with h5 page !")
@@ -49,7 +52,6 @@ class H5IntentOption(context: Context) : AbsOption(context), H5Option {
     var h5Data: String? = null
         set(value) {
             field = value
-            intent.setClass(context!!, Navigation::class.java)
             intent.putExtra(KEY_HTML_CONTENT, value)
         }
 
@@ -62,23 +64,23 @@ class H5IntentOption(context: Context) : AbsOption(context), H5Option {
     }
 
     override fun byBrowser(optional: (Intent.() -> Unit)?) {
-        h5url.takeIf { it.isNotBlank() }?.also {
-            isH5ByBrowser = true
-            intent.apply {
+        h5url.takeIf { it.isNotBlank() }?.also { url ->
+            byBrowserIntent = Intent().apply {
                 action = Intent.ACTION_VIEW
-                data = Uri.parse(h5url)
+                data = Uri.parse(url)
                 addCategory(Intent.CATEGORY_BROWSABLE)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                optional?.invoke(this)
             }
-            optional?.invoke(intent)
         } ?: throw NullPointerException("You must launch with url!")
     }
 
     override fun start() {
-        if (h5url.isNotBlank() && !isH5ByBrowser) {
-            intent.setClass(context!!, Navigation::class.java)
+        try {
+            useContext.startActivity(byBrowserIntent ?: intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        useContext.startActivity(intent)
     }
 
     private fun syncCookie(context: Context, url: String, cookie: String) {

@@ -12,8 +12,6 @@ import androidx.fragment.app.Fragment
 import com.kelin.okpermission.OkActivityResult
 import com.kelin.uikit.UIKit
 import com.kelin.uikit.common.Option.Companion.getImmersionMode
-import com.kelin.uikit.common.Option.Companion.getToolbarBackground
-import com.kelin.uikit.common.Option.Companion.getToolbarColor
 import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
 
 /**
@@ -27,7 +25,7 @@ import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
  */
 abstract class AbsOption(context: Context) {
     open val intent = Intent(context, Navigation::class.java)
-    protected var isH5ByBrowser = false
+    open val isH5ByBrowser: Boolean = false
     private var mLaunchOptions: Bundle? = null
     private var onResultInfo: OnResultInfo<*>? = null
     val launchOptions: Bundle?
@@ -128,7 +126,11 @@ abstract class AbsOption(context: Context) {
     open fun start() {
         if (onResultInfo.isNullOrEmpty || !isFromActivityContext) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            useContext.startActivity(intent, launchOptions)
+            try {
+                useContext.startActivity(intent, launchOptions)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         } else {
             when {
                 onResultInfo!!.onResult1 != null -> {

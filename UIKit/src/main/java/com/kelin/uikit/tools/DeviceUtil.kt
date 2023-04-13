@@ -154,8 +154,12 @@ object DeviceUtil {
     }
 
     fun callPhone(context: Context, phoneNumber: String) {
-        context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${phoneNumber}")).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        })
+        try {
+            context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${phoneNumber}")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
