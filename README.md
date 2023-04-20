@@ -30,6 +30,9 @@ Navigation.launch<PlaceholderFragment>(context, "新的页面") {
     //options { //使用闭包的方式为Navigation设置启动参数。
     //    putString("testKey", "testValue")
     //}
+    //toolbarBackground(drawable)  //设置标题栏背景图。
+    //toolbarColor(Color.Red)  //设置标题栏背景色。
+    //toolbarColorRes(R.color.red)  //设置标题栏背景色。
     immersionToolbar()  //设置沉浸式Toolbar。
     navigationIcon(R.drawable.ic_navigation_back) //为Toolbar设置返回按钮图标
 
