@@ -18,9 +18,6 @@ import android.content.SharedPreferences.Editor
  */
 object SpUtil {
 
-    private const val CONFIG_NAME = "com_kelin_ui_kit_SharedPreferencesConfigs"
-    private const val SECURE_CONFIG_NAME = "com_kelin_ui_kit_SecureSharedPreferencesConfigs"
-
     /**
      * 保存一个boolean值到配置文件中
      *
@@ -52,7 +49,7 @@ object SpUtil {
      * @return 返回指定key所对应的值
      */
     fun getBoolean(context: Context, key: String, def: Boolean): Boolean {
-        return context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE).getBoolean(key, def)
+        return getSp(context).getBoolean(key, def)
     }
 
     /**
@@ -85,8 +82,7 @@ object SpUtil {
      * @return 返回指定key所对应的值
      */
     fun getString(context: Context, key: String): String {
-        return context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE).getString(key, "")
-            ?: ""
+        return getSp(context).getString(key, "") ?: ""
     }
 
     fun putSecureString(context: Context, key: String, value: String) {
@@ -124,7 +120,7 @@ object SpUtil {
      * @return 返回指定key所对应的值
      */
     fun getInt(context: Context, key: String, defValue: Int): Int {
-        return context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE).getInt(key, defValue)
+        return getSp(context).getInt(key, defValue)
     }
 
     /**
@@ -135,8 +131,7 @@ object SpUtil {
      * @return 返回指定key所对应的值
      */
     fun getLong(context: Context, key: String, defValue: Long): Long {
-        return context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE)
-            .getLong(key, defValue)
+        return getSp(context).getLong(key, defValue)
     }
 
     /**
@@ -146,7 +141,7 @@ object SpUtil {
      * @return 返回一个Map集合
      */
     fun getAll(context: Context): Map<String, *> {
-        return context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE).all
+        return getSp(context).all
     }
 
     /**
@@ -157,8 +152,7 @@ object SpUtil {
      * @return 返回一个 Set<String> 集合
     </String> */
     fun getStringSet(context: Context, key: String): Set<String>? {
-        val sp = context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE)
-        return sp.getStringSet(key, null)
+        return getSp(context).getStringSet(key, null)
     }
 
 
@@ -189,8 +183,7 @@ object SpUtil {
      * @return 存在返回true, 不存在返回false
      */
     fun contains(context: Context, key: String): Boolean {
-        val sp = context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE)
-        return sp.contains(key)
+        return getSp(context).contains(key)
     }
 
     /**
@@ -200,15 +193,16 @@ object SpUtil {
      * @return 返回一个Edit编辑器。
      */
     private fun getEdit(context: Context): Editor {
-        val sp = context.getSharedPreferences(CONFIG_NAME, Context.MODE_PRIVATE)
-        return sp.edit()
+        return getSp(context).edit()
     }
+
+    private fun getSp(context: Context) = context.getSharedPreferences("${context.packageName}.SharedPreferences", Context.MODE_PRIVATE)
 
     private fun getSecureSp(context: Context): SecurePreferences {
         return SecurePreferences(
             context,
-            "com.kelin.gitHub_kelin410@163.com",
-            SECURE_CONFIG_NAME
+            context.packageName,
+            "${context.packageName}.SecureSharedPreferences"
         )
     }
 }
