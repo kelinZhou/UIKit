@@ -20,6 +20,12 @@ class DialogHelper(
         }
     }
 
+    override fun show() {
+        if ((context as? Activity)?.isDestroyed != true) {
+            super.show()
+        }
+    }
+
     override fun dismiss() {
         try {
             super.dismiss()
