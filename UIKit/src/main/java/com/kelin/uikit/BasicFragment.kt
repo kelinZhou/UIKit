@@ -223,6 +223,10 @@ abstract class BasicFragment : Fragment(), Immersive {
         return resources.getColor(color)
     }
 
+    open fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean{
+        return false
+    }
+
     companion object {
         fun newInstance(clazz: Class<out Fragment>, args: Bundle?): Fragment {
             try {

@@ -137,6 +137,10 @@ abstract class BaseFragmentPresenter<V : BaseViewDelegate<VC>, VC : BaseViewDele
         }
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return viewDelegate?.onKeyDown(keyCode, event) ?: super.onKeyDown(keyCode, event)
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         if (this.viewDelegate != null) {
             this.viewDelegate!!.saveInstanceState(outState)

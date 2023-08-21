@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -389,6 +390,10 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
     }
 
     protected fun isNotFastClick(v: View, duration: Long? = null) = doubleClickHandler.isNotFastClick(v, duration)
+
+    internal open fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return false
+    }
 
     interface BaseViewDelegateCallback : ViewDelegate.ViewDelegateCallback
 

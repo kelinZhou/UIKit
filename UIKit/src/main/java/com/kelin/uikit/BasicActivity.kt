@@ -84,6 +84,10 @@ abstract class BasicActivity : AppCompatActivity() {
     val isActivityDestroyed: Boolean
         get() = (isDestroyed) || isFinishing
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        return supportFragmentManager.fragments.any { if (it is BasicFragment) it.onKeyDown(keyCode, event) else false } || super.onKeyDown(keyCode, event)
+    }
+
     fun setDarkMode(isDark: Boolean, refreshNavigationIcon: Boolean = false) {
         if (isDark) {
             StatusBarHelper.setStatusBarDarkMode(this)
