@@ -391,7 +391,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
 
     protected fun isNotFastClick(v: View, duration: Long? = null) = doubleClickHandler.isNotFastClick(v, duration)
 
-    internal open fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+    open fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         return false
     }
 
