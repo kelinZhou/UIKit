@@ -1,5 +1,6 @@
 package com.kelin.uikit.delegate
 
+import android.os.Bundle
 import androidx.annotation.ColorRes
 import androidx.viewpager.widget.ViewPager
 import com.kelin.uikit.R
@@ -25,8 +26,8 @@ abstract class BaseViewPagerWrapperDelegate<VC : BaseViewPagerWrapperDelegate.Ba
 
     private var lastPageNumber = 0
 
-    override fun bindView(viewPresenter: ViewPresenter<VC>) {
-        super.bindView(viewPresenter)
+    override fun bindView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {
+        super.bindView(viewPresenter, savedInstanceState)
         vpViewPage.run {
             addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
                 override fun onPageSelected(position: Int) {

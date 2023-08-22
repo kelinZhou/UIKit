@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.kelin.okpermission.OkActivityResult
 import com.kelin.uikit.UIKit
-import com.kelin.uikit.common.Option.Companion.getImmersionMode
+import com.kelin.uikit.common.IOption.Companion.getImmersionMode
 import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
 
 /**
@@ -60,8 +60,8 @@ abstract class AbsOption(context: Context) {
      */
     fun toolbarColor(@ColorInt color: Int) {
         if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
-            intent.removeExtra(Option.KEY_TOOL_BAT_BACKGROUND)  //颜色与背景图片互斥，先移除背景图。
-            intent.putExtra(Option.KEY_TOOL_BAT_COLOR, color)
+            intent.removeExtra(IOption.KEY_TOOL_BAT_BACKGROUND)  //颜色与背景图片互斥，先移除背景图。
+            intent.putExtra(IOption.KEY_TOOL_BAT_COLOR, color)
         }
     }
 
@@ -70,17 +70,17 @@ abstract class AbsOption(context: Context) {
      */
     fun toolbarBackground(@DrawableRes drawable: Int) {
         if (getImmersionMode(intent) != ImmersionMode.NO_TOOLBAR) {
-            intent.removeExtra(Option.KEY_TOOL_BAT_COLOR)  //颜色与背景图片互斥，先移除背景色。
-            intent.putExtra(Option.KEY_TOOL_BAT_BACKGROUND, drawable)
+            intent.removeExtra(IOption.KEY_TOOL_BAT_COLOR)  //颜色与背景图片互斥，先移除背景色。
+            intent.putExtra(IOption.KEY_TOOL_BAT_BACKGROUND, drawable)
         }
     }
 
     fun setPageMode(mode: PageMode) {
-        intent.putExtra(Option.KEY_PAGE_MODE, mode)
+        intent.putExtra(IOption.KEY_PAGE_MODE, mode)
     }
 
     open fun setTarget(target: Class<out Fragment>) {
-        intent.putExtra(Option.KEY_TARGET_PAGE, target)
+        intent.putExtra(IOption.KEY_TARGET_PAGE, target)
     }
 
     /**

@@ -12,7 +12,7 @@ import com.kelin.uikit.flyweight.adapter.CommonFragmentStatePagerAdapter
  *
  * **版本:** v 1.0.0
  */
-interface TabOption : Option {
+interface TabOption : IOption {
 
     companion object{
         internal const val KEY_INNER_INTENT_DEF_INDEX = "key_inner_intent_def_index"
@@ -23,7 +23,7 @@ interface TabOption : Option {
          * 判断ViewPage的滑动翻页是否可用。
          */
         internal fun isTabSlideEnable(intent: Intent): Boolean {
-            return Option.getPageMode(intent) == PageMode.TAB && intent.getBooleanExtra(KEY_INNER_INTENT_IS_FOR_TAB_MODE_SLIDE_ENABLE, false)
+            return IOption.getPageMode(intent) == PageMode.TAB && intent.getBooleanExtra(KEY_INNER_INTENT_IS_FOR_TAB_MODE_SLIDE_ENABLE, false)
         }
 
         /**

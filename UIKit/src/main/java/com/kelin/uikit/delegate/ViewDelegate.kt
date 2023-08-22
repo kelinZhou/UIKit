@@ -22,7 +22,7 @@ interface ViewDelegate<P : ViewPresenter<out ViewDelegate.ViewDelegateCallback>>
 
     fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View
 
-    fun bindView(viewPresenter: P)
+    fun bindView(viewPresenter: P, savedInstanceState: Bundle?)
 
     fun restoreInstanceState(savedInstanceState: Bundle?)
 

@@ -1,5 +1,6 @@
 package com.kelin.uikit.delegate
 
+import android.os.Bundle
 import android.text.Editable
 import android.widget.TextView
 import androidx.annotation.CallSuper
@@ -30,8 +31,8 @@ abstract class BaseSearchDelegate<VC : BaseSearchDelegate.BaseSearchDelegateCall
 
     abstract val inputHint: String
 
-    override fun bindView(viewPresenter: ViewPresenter<VC>) {
-        super.bindView(viewPresenter)
+    override fun bindView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {
+        super.bindView(viewPresenter, savedInstanceState)
         etSearchKey.hint = inputHint
         listenerTextChanged(etSearchKey)
     }

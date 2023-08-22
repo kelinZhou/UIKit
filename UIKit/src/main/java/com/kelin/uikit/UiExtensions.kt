@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.media.MediaScannerConnection
@@ -17,6 +18,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -62,6 +65,23 @@ fun Any?.getString(@StringRes stringResId: Int, vararg formatArgs: Any): String 
                 res.getString(stringResId, *formatArgs)
             }
         }
+    }
+}
+
+@ColorInt
+fun Any?.getColor(@ColorRes colorResId: Int): Int {
+    return if (this == null) {
+        UIKit.getContext()
+    } else {
+        when (this) {
+            is Context -> this
+            is Fragment -> this.context
+            is Dialog -> this.context
+            is View -> this.context
+            else -> UIKit.getContext()
+        }
+    }.let {
+        ContextCompat.getColor(it ?: UIKit.getContext(), colorResId)
     }
 }
 

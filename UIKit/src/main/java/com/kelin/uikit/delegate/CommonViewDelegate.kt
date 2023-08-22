@@ -39,8 +39,8 @@ abstract class CommonViewDelegate<VC : CommonViewDelegate.CommonViewDelegateCall
     protected open val refreshLayoutId: Int
         get() = R.id.swipe_refresh_layout
 
-    override fun bindView(viewPresenter: ViewPresenter<VC>) {
-        super.bindView(viewPresenter)
+    override fun bindView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {
+        super.bindView(viewPresenter, savedInstanceState)
         refreshLayout?.run {
             setColorSchemeResources(R.color.theme_color)
             setOnRefreshListener {

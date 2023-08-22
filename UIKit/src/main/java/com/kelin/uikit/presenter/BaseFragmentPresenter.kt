@@ -118,8 +118,8 @@ abstract class BaseFragmentPresenter<V : BaseViewDelegate<VC>, VC : BaseViewDele
                     container,
                     this.getSavedInstanceState(savedInstanceState)
                 ).also { rootView = it }
-                vd.bindView(this)
-                this.onViewDelegateBound(vd)
+                vd.bindView(this, savedInstanceState)
+                this.onViewDelegateBound(vd, savedInstanceState)
                 return view
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -207,5 +207,11 @@ abstract class BaseFragmentPresenter<V : BaseViewDelegate<VC>, VC : BaseViewDele
     /**
      * 当Delegate被创建并bindView之后调用。
      */
-    protected open fun onViewDelegateBound(vd: V) {}
+    protected open fun onViewDelegateBound(vd: V, savedInstanceState: Bundle?) {}
+
+    abstract inner class BaseDelegateCallbackImpl : BaseViewDelegate.BaseViewDelegateCallback {
+        override fun finish() {
+            finishActivity()
+        }
+    }
 }

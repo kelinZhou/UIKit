@@ -1,5 +1,6 @@
 package com.kelin.uikit.delegate
 
+import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
@@ -155,8 +156,8 @@ abstract class CommonListWrapperDelegate<VC : CommonListWrapperDelegate.CommonLi
     }
 
 
-    override fun bindView(viewPresenter: ViewPresenter<VC>) {
-        super.bindView(viewPresenter)
+    override fun bindView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {
+        super.bindView(viewPresenter, savedInstanceState)
         setupRecyclerView(recyclerView)
     }
 

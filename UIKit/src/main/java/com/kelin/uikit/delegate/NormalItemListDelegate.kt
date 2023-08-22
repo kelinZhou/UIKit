@@ -1,5 +1,6 @@
 package com.kelin.uikit.delegate
 
+import android.os.Bundle
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
@@ -47,8 +48,8 @@ abstract class NormalItemListDelegate<VC : NormalItemListDelegate.NormalItemList
     protected val recyclerView: RecyclerView?
         get() = containerView?.findViewById(recyclerViewId)
 
-    override fun bindView(viewPresenter: ViewPresenter<VC>) {
-        super.bindView(viewPresenter)
+    override fun bindView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {
+        super.bindView(viewPresenter, savedInstanceState)
         val listView = containerView?.findViewById<RecyclerView>(recyclerViewId)
         listView?.layoutManager = onCreateLayoutManager()
         listView?.adapter = adapter

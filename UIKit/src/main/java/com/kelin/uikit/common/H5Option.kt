@@ -2,7 +2,7 @@ package com.kelin.uikit.common
 
 import android.content.Intent
 import com.kelin.uikit.R
-import com.kelin.uikit.common.Option.Companion.KEY_NAVIGATION_ICON
+import com.kelin.uikit.common.IOption.Companion.KEY_NAVIGATION_ICON
 import com.kelin.uikit.common.h5.JavascriptInterfaceWrapper
 import com.kelin.uikit.common.h5.JsInterface
 

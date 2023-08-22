@@ -9,14 +9,14 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.widget.*
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.kelin.uikit.*
-import com.kelin.uikit.common.Option.Companion.KEY_NAVIGATION_ICON
-import com.kelin.uikit.common.Option.Companion.KEY_NAVIGATION_TEXT
+import com.kelin.uikit.common.IOption.Companion.KEY_NAVIGATION_ICON
+import com.kelin.uikit.common.IOption.Companion.KEY_NAVIGATION_TEXT
 import com.kelin.uikit.common.h5.H5Delegate
 import com.kelin.uikit.common.search.SearchPageDelegate
 import com.kelin.uikit.core.SystemError
@@ -45,8 +45,8 @@ class Navigation : BasicActivity() {
          * 启动页面，通过泛型指定要启动的页面。
          * @param title 页面的标题。
          */
-        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int): Option {
-            return launch(context, F::class.java, getString(title)) {}
+        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int, @ColorInt titleColor: Int? = null): Option {
+            return launch(context, F::class.java, getString(title), titleColor) {}
         }
 
         /**
@@ -54,8 +54,8 @@ class Navigation : BasicActivity() {
          * @param target 目标Fragment：本次要启动的Fragment。
          * @param title 页面的标题。
          */
-        fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int): Option {
-            return launch(context, target, getString(title)) {}
+        fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int, @ColorInt titleColor: Int? = null): Option {
+            return launch(context, target, getString(title), titleColor) {}
         }
 
         /**
@@ -63,8 +63,8 @@ class Navigation : BasicActivity() {
          * @param title 页面的标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
          */
-        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int, optional: Option.() -> Unit): Option {
-            return launch(context, F::class.java, getString(title), optional)
+        inline fun <reified F : Fragment> launch(context: Context, @StringRes title: Int, @ColorInt titleColor: Int? = null, optional: Option.() -> Unit): Option {
+            return launch(context, F::class.java, getString(title), titleColor, optional)
         }
 
         /**
@@ -73,24 +73,24 @@ class Navigation : BasicActivity() {
          * @param title 页面的标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
          */
-        inline fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int, optional: Option.() -> Unit): Option {
-            return launch(context, target, getString(title), optional)
+        inline fun launch(context: Context, target: Class<out Fragment>, @StringRes title: Int, @ColorInt titleColor: Int? = null, optional: Option.() -> Unit): Option {
+            return launch(context, target, getString(title), titleColor, optional)
         }
 
         /**
          * 启动页面，通过泛型指定要启动的页面。
          * @param title 页面的标题。
          */
-        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null): Option {
-            return launch(context, F::class.java, title)
+        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null, @ColorInt titleColor: Int? = null): Option {
+            return launch(context, F::class.java, title, titleColor)
         }
 
         /**
          * 启动页面。
          * @param title 页面的标题。
          */
-        fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null): Option {
-            return launch(context, target, title) {}
+        fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, @ColorInt titleColor: Int? = null): Option {
+            return launch(context, target, title, titleColor) {}
         }
 
         /**
@@ -98,8 +98,8 @@ class Navigation : BasicActivity() {
          * @param title 页面的标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
          */
-        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null, optional: Option.() -> Unit): Option {
-            return launch(context, F::class.java, title, optional)
+        inline fun <reified F : Fragment> launch(context: Context, title: CharSequence? = null, @ColorInt titleColor: Int? = null, optional: Option.() -> Unit): Option {
+            return launch(context, F::class.java, title, titleColor, optional)
         }
 
         /**
@@ -108,9 +108,9 @@ class Navigation : BasicActivity() {
          * @param title 页面的标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面配置及传参。
          */
-        inline fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, optional: Option.() -> Unit): Option {
+        inline fun launch(context: Context, target: Class<out Fragment>, title: CharSequence? = null, @ColorInt titleColor: Int? = null, optional: Option.() -> Unit): Option {
             return IntentOption(context).apply {
-                title?.also { title(it) }
+                title?.also { title(it, titleColor) }
                 setTarget(target)
                 optional(this)
                 start()
@@ -202,8 +202,8 @@ class Navigation : BasicActivity() {
          * @param url H5地址。
          * @param title 页面标题。
          */
-        fun launchH5(context: Context, url: String, @StringRes title: Int): H5Option {
-            return launchH5(context, url, getString(title))
+        fun launchH5(context: Context, url: String, @StringRes title: Int, @ColorInt titleColor: Int? = null): H5Option {
+            return launchH5(context, url, getString(title), titleColor)
         }
 
         /**
@@ -211,8 +211,8 @@ class Navigation : BasicActivity() {
          * @param url H5地址。
          * @param title 页面标题。
          */
-        fun launchH5(context: Context, url: String, title: CharSequence? = null): H5Option {
-            return launchH5(context, url, title) {}
+        fun launchH5(context: Context, url: String, title: CharSequence? = null, @ColorInt titleColor: Int? = null): H5Option {
+            return launchH5(context, url, title, titleColor) {}
         }
 
         /**
@@ -221,10 +221,10 @@ class Navigation : BasicActivity() {
          * @param title 页面标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面进行配置。
          */
-        inline fun launchH5(context: Context, url: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
+        inline fun launchH5(context: Context, url: String, title: CharSequence? = null, @ColorInt titleColor: Int? = null, optional: H5Option.() -> Unit): H5Option {
             return H5IntentOption(context).apply {
                 h5url = url
-                title?.also { title(it) }
+                title?.also { title(it, titleColor) }
                 optional(this)
                 start()
             }
@@ -235,8 +235,8 @@ class Navigation : BasicActivity() {
          * @param content H5页面的内容。
          * @param title 页面标题。
          */
-        fun launchH5ByData(context: Context, content: String, @StringRes title: Int): H5Option {
-            return launchH5ByData(context, content, getString(title))
+        fun launchH5ByData(context: Context, content: String, @StringRes title: Int, @ColorInt titleColor: Int? = null): H5Option {
+            return launchH5ByData(context, content, getString(title), titleColor)
         }
 
         /**
@@ -244,8 +244,8 @@ class Navigation : BasicActivity() {
          * @param content H5页面的内容。
          * @param title 页面标题。
          */
-        fun launchH5ByData(context: Context, content: String, title: CharSequence? = null): H5Option {
-            return launchH5ByData(context, content, title) {}
+        fun launchH5ByData(context: Context, content: String, title: CharSequence? = null, @ColorInt titleColor: Int? = null): H5Option {
+            return launchH5ByData(context, content, title, titleColor) {}
         }
 
         /**
@@ -254,10 +254,10 @@ class Navigation : BasicActivity() {
          * @param title 页面标题。
          * @param optional 页面的配置函数，用于在启动页面前对目标页面进行配置。
          */
-        inline fun launchH5ByData(context: Context, content: String, title: CharSequence? = null, optional: H5Option.() -> Unit): H5Option {
+        inline fun launchH5ByData(context: Context, content: String, title: CharSequence? = null, @ColorInt titleColor: Int? = null, optional: H5Option.() -> Unit): H5Option {
             return H5IntentOption(context).apply {
                 h5Data = content
-                title?.also { title(it) }
+                title?.also { title(it, titleColor) }
                 optional(this)
                 start()
             }
@@ -267,7 +267,7 @@ class Navigation : BasicActivity() {
     /**
      * 沉浸式状态栏模式。
      */
-    private val immersionMode: ImmersionMode by lazy { Option.getImmersionMode(intent) }
+    private val immersionMode: ImmersionMode by lazy { IOption.getImmersionMode(intent) }
 
     /**
      * 判断当前页面是否是沉浸式状态栏。
@@ -279,11 +279,11 @@ class Navigation : BasicActivity() {
     private var h5Delegate: H5Delegate? = null
 
     private fun getCurrentFragment(intent: Intent): Fragment {
-        return Option.getTargetFragment(intent) ?: onJumpError(SystemError.TARGET_PAGE_TYPE_NOT_HANDLER)
+        return IOption.getTargetFragment(intent) ?: onJumpError(SystemError.TARGET_PAGE_TYPE_NOT_HANDLER)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val pageMode = Option.getPageMode(intent)
+        val pageMode = IOption.getPageMode(intent)
         if (pageMode == PageMode.SEARCH && savedInstanceState != null) {
             // 不通过Android的自动恢复，因为onInitSearchKey,这个不会自动调用
             if (savedInstanceState.getParcelable<Parcelable>("android:support:fragments") != null) {
@@ -295,10 +295,23 @@ class Navigation : BasicActivity() {
         when (pageMode) {
             PageMode.NORMAL -> {
                 setContentView(R.layout.kelin_ui_kit_activity_common)
-                initTitleBar(getView(R.id.my_awesome_toolbar), getView(R.id.toolbar_center_title), getView(R.id.toolbar_sub_title))
+                val titleView = getView<TextView>(R.id.toolbar_center_title)
+                initTitleBar(getView(R.id.my_awesome_toolbar), titleView, getView(R.id.toolbar_sub_title))
                 setToolbarStyle(getView(R.id.rlUiKitToolbarParent))
                 setCommonLayoutParams()
-                title = intent.getCharSequenceExtra(Option.KEY_PAGE_TITLE)
+                val centerTitle = intent.getBooleanExtra(IOption.KEY_PAGE_TITLE_CENTER, true)
+                setTitle(intent.getCharSequenceExtra(IOption.KEY_PAGE_TITLE), centerTitle)
+                try {
+                    intent.getIntExtra(IOption.KEY_PAGE_TITLE_COLOR, -1).takeIf { it >= 0 }?.also {
+                        if (centerTitle) {
+                            titleView?.setTextColor(it)
+                        } else {
+                            titleColor = it
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 getCurrentFragment(intent).also {
                     replaceFragment(R.id.flUiKitFragmentContainer, it)
                     (it as? BasicFragment)?.isDarkMode?.also { isDark ->
@@ -323,7 +336,7 @@ class Navigation : BasicActivity() {
                 setActionBarView(getView(R.id.rl_my_awesome_toolbar))
                 setToolbarStyle(getView(R.id.rl_my_awesome_toolbar))
                 setSearchLayoutParams()
-                val searchPage = Option.getTargetFragment(intent) as SearchablePage
+                val searchPage = IOption.getTargetFragment(intent) as SearchablePage
                 (searchPage as? BasicFragment)?.isDarkMode?.also { isDark ->
                     if (isDark) {
                         StatusBarHelper.setStatusBarDarkMode(this)
@@ -346,9 +359,22 @@ class Navigation : BasicActivity() {
             }
             PageMode.H5 -> {
                 setContentView(R.layout.kelin_ui_kit_activity_web_h5)
-                initTitleBar(getView(R.id.my_awesome_toolbar), getView(R.id.toolbar_center_title), getView(R.id.toolbar_sub_title))
+                val titleView = getView<TextView>(R.id.toolbar_center_title)
+                initTitleBar(getView(R.id.my_awesome_toolbar), titleView, getView(R.id.toolbar_sub_title))
                 setWebLayoutParams()
-                title = intent.getCharSequenceExtra(Option.KEY_PAGE_TITLE)
+                val centerTitle = intent.getBooleanExtra(IOption.KEY_PAGE_TITLE_CENTER, true)
+                setTitle(intent.getCharSequenceExtra(IOption.KEY_PAGE_TITLE), centerTitle)
+                try {
+                    intent.getIntExtra(IOption.KEY_PAGE_TITLE_COLOR, -1).takeIf { it >= 0 }?.also {
+                        if (centerTitle) {
+                            titleView?.setTextColor(it)
+                        } else {
+                            titleColor = it
+                        }
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 val webView = getView<WebView>(R.id.wbUiKitCommonWebView)!!
                 h5Delegate = H5Delegate(
                     this,
@@ -380,9 +406,9 @@ class Navigation : BasicActivity() {
     private fun setToolbarStyle(toolbarContainer: View?) {
         if (immersionMode != ImmersionMode.NO_TOOLBAR) {
             toolbarContainer?.also { v ->
-                Option.getToolbarColor(intent)?.also {
+                IOption.getToolbarColor(intent)?.also {
                     v.setBackgroundColor(it)
-                } ?: Option.getToolbarBackground(intent)?.also { bgRes ->
+                } ?: IOption.getToolbarBackground(intent)?.also { bgRes ->
                     v.setBackgroundResource(bgRes)
                 }
             }

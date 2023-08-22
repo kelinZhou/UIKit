@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
+import androidx.annotation.ColorInt
 import androidx.fragment.app.Fragment
 import com.kelin.uikit.common.H5Option.Companion.KEY_HTML_CONTENT
 import com.kelin.uikit.common.H5Option.Companion.KEY_INTENT_URL
@@ -38,9 +39,21 @@ class H5IntentOption(context: Context) : AbsOption(context), H5Option {
     /**
      * 为新的页面设置标题，仅在没有调用immersion或immersionToolbar方法时生效。
      * @param title 页面的标题。
+     * @param color 页面标题的颜色。
      */
-    fun title(title: CharSequence) {
-        intent.putExtra(Option.KEY_PAGE_TITLE, title)
+    fun title(title: CharSequence, @ColorInt color: Int?) {
+        intent.putExtra(IOption.KEY_PAGE_TITLE, title)
+        intent.putExtra(IOption.KEY_PAGE_TITLE_CENTER, color)
+    }
+
+    /**
+     * 为新的页面设置标题是否居中显示，仅在没有调用immersion或immersionToolbar方法时生效。
+     * @param center 标题是否居中显示。
+     * @see immersion
+     * @see immersionToolbar
+     */
+    override fun titleCenter(center: Boolean) {
+        intent.putExtra(IOption.KEY_PAGE_TITLE_CENTER, center)
     }
 
     var h5url: String = ""

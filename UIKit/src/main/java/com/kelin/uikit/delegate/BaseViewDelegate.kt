@@ -177,7 +177,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
     override fun presentView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {}
 
     @CallSuper
-    override fun bindView(viewPresenter: ViewPresenter<VC>) {
+    override fun bindView(viewPresenter: ViewPresenter<VC>, savedInstanceState: Bundle?) {
     }
 
     @CallSuper
@@ -395,7 +395,9 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
         return false
     }
 
-    interface BaseViewDelegateCallback : ViewDelegate.ViewDelegateCallback
+    interface BaseViewDelegateCallback : ViewDelegate.ViewDelegateCallback {
+        fun finish() {}
+    }
 
     companion object {
         fun refreshStatePageView(stateView: View, option: StateOption) {

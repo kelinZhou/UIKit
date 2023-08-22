@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.kelin.uikit.common.search.SearchableHistoryPage
-import com.kelin.uikit.common.search.SearchablePage
 
 
 /**
@@ -18,7 +17,7 @@ import com.kelin.uikit.common.search.SearchablePage
  *
  * **版本:** v 1.0.0
  */
-interface SearchOption : Option {
+interface SearchOption : IOption {
 
     companion object {
         private const val KEY_INITIAL_SEARCH = "key_initial_search"
