@@ -233,7 +233,7 @@ abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : Comm
         return if (data is Collection<*>) data.isEmpty() else false
     }
 
-    abstract inner class CommonDelegateCallbackImpl : CommonViewDelegate.CommonViewDelegateCallback {
+    abstract inner class CommonDelegateCallbackImpl : BaseDelegateCallbackImpl(), CommonViewDelegate.CommonViewDelegateCallback {
 
         override fun onRetry() {
             val v = viewDelegate

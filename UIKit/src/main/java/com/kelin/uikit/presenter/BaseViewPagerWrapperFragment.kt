@@ -20,7 +20,7 @@ abstract class BaseViewPagerWrapperFragment<V : BaseViewPagerWrapperDelegate<VC>
 
     protected open fun onPagerNumberChanged(position: Int) {}
 
-    open inner class BaseViewPagerWrapperDelegateCallbackImpl : BaseViewPagerWrapperDelegate.BaseViewPagerWrapperDelegateCallback {
+    open inner class BaseViewPagerWrapperDelegateCallbackImpl : BaseDelegateCallbackImpl(), BaseViewPagerWrapperDelegate.BaseViewPagerWrapperDelegateCallback {
         override fun onPagerNumberChanged(position: Int) {
             this@BaseViewPagerWrapperFragment.onPagerNumberChanged(position)
         }

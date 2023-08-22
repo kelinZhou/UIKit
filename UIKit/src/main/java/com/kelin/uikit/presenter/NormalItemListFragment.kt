@@ -42,7 +42,7 @@ abstract class NormalItemListFragment<V : NormalItemListDelegate<VC, I>, VC : No
         return false
     }
 
-    open inner class NormalItemListDelegateCallbackImpl : NormalItemListDelegate.NormalItemListDelegateCallback<I> {
+    open inner class NormalItemListDelegateCallbackImpl : BaseDelegateCallbackImpl(), NormalItemListDelegate.NormalItemListDelegateCallback<I> {
         override fun onListItemClick(position: Int, item: I) {
             if (!onInterceptListItemClick(position, item)) {
                 item.onItemClick(requireActivity(), position)
