@@ -365,7 +365,7 @@ class Navigation : BasicActivity() {
                 val centerTitle = intent.getBooleanExtra(IOption.KEY_PAGE_TITLE_CENTER, true)
                 setTitle(intent.getCharSequenceExtra(IOption.KEY_PAGE_TITLE), centerTitle)
                 try {
-                    intent.getIntExtra(IOption.KEY_PAGE_TITLE_COLOR, -1).takeIf { it <= 0 }?.also {
+                    intent.getIntExtra(IOption.KEY_PAGE_TITLE_COLOR, 1).takeIf { it <= 0 }?.also {
                         if (centerTitle) {
                             titleView?.setTextColor(it)
                         } else {
@@ -462,7 +462,7 @@ class Navigation : BasicActivity() {
                 lp.topToTop = ConstraintLayout.LayoutParams.UNSET
             } else {
                 processStatusBar(Color.TRANSPARENT)
-                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it >= 0 }?.also {
+                intent.getIntExtra(KEY_NAVIGATION_ICON, 1).takeIf { it >= 0 }?.also {
                     getView<ImageView>(R.id.ivUiKitNavigation)?.setImageResource(it)
                 }
                 lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
