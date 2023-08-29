@@ -65,15 +65,22 @@ class MainActivity : AppCompatActivity() {
             Navigation.launchSearch<TestSearchFragment>(this)
         }
         btnTabDemo5.setOnClickListener {
-            Navigation.launchSearch<TestSearchFragment>(this){
+            Navigation.launchSearch<TestSearchFragment>(this) {
                 immersion()
                 historyPage(TestHistoryFragment::class.java)
             }
         }
         btnTabDemo6.setOnClickListener {
-            Navigation.launchH5(this, "https://www.baidu.com", "百度"){
+            Navigation.launchH5(this, "https://www.baidu.com", "百度") {
                 byBrowser()
             }
+        }
+        btnTabDemo7.setOnClickListener {
+            Navigation.launchH5(
+                this,
+                "https://test.chengmandian.com.cn/mos/mobile/merchants/user/index?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QifQ.eyJpZCI6MjM1MSwibmFtZSI6IktlbGluIiwiZXhwIjoxNjk1ODc5NTA1MjM0LCJ0ZW5hbnRJZCI6MSwiY2xpZW50IjoiTUVNQkVSIiwiYXR0cnMiOnsiQVBQX01FUkNIQU5UU19JRCI6MjAyMn19.sGLfuPAN3K501JiIacqR6OfxJR-WBXW52RrxJMAL4AY",
+                "城满电"
+            )
         }
     }
 

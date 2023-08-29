@@ -6,12 +6,13 @@ import android.content.Intent
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
-import android.view.KeyEvent
 import android.view.View
 import android.webkit.*
+import android.widget.ProgressBar
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import com.kelin.logger.Logger
 
 /**
  * **描述:** H5页面的代理。
@@ -25,12 +26,31 @@ import androidx.lifecycle.LifecycleOwner
 internal class H5Delegate(
     owner: LifecycleOwner,
     private val webView: WebView,
+    private val progressView: ProgressBar,
     private val closeStyle: Boolean,
     private val stateView: View,
     javascriptInterface: JavascriptInterfaceWrapper?,
     private val onReceivedErrorCallback: (view: WebView, request: WebResourceRequest, error: WebResourceError) -> Unit
 ) : LifecycleEventObserver {
+
+    companion object{
+        private const val TAG = "H5Delegate"
+    }
+
+    private var homePagePath: String? = null
     private var jsInterface: JsInterface? = null
+
+    /**
+     * 当前页面Path。
+     */
+    private val currentPagePath: String?
+        get() = webView.url?.let {
+            if (it.contains("?")) {
+                it.split("?").first()
+            } else {
+                it
+            }
+        }
 
     init {
         owner.lifecycle.addObserver(this)
@@ -38,8 +58,23 @@ internal class H5Delegate(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
         }
+        webView.webChromeClient = object : WebChromeClient() {
+            override fun onProgressChanged(view: WebView, newProgress: Int) {
+                progressView.run {
+                    progress = newProgress
+                    visibility = if (newProgress == 100) {
+                        if (homePagePath == null) {
+                            homePagePath = currentPagePath
+                            Logger.system(TAG)?.i("页面加载完毕，当前Path:${homePagePath}")
+                        }
+                        View.GONE
+                    } else {
+                        View.VISIBLE
+                    }
+                }
+            }
+        }
         webView.webViewClient = object : WebViewClient() {
-
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
                 super.onReceivedSslError(view, handler, error)
                 handler.proceed()
@@ -119,21 +154,15 @@ internal class H5Delegate(
         }
     }
 
-    fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return if (!closeStyle && event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
-            webView.goBack()//返回上一页面
-            true
-        } else {
-            false
-        }
-    }
-
     fun onPackPressed(): Boolean {
         //处理closeableStyle
-        return if (!closeStyle && webView.canGoBack()) {
+        return if (!closeStyle && currentPagePath != homePagePath) {
+            Logger.system(TAG)?.i("拦截页面返回，当前Path:${homePagePath}")
             webView.goBack()//返回上一页面
             true
         } else {
+            Logger.system(TAG)?.i("当前为首页，不拦截页面返回，退出H5页面。Path:${homePagePath}")
+            homePagePath = null
             false
         }
     }

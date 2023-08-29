@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.widget.*
@@ -379,6 +378,7 @@ class Navigation : BasicActivity() {
                 h5Delegate = H5Delegate(
                     this,
                     webView,
+                    getView<ProgressBar>(R.id.pbWebProgressBar)!!,
                     H5Option.isCloseStyle(intent),
                     getView<View>(R.id.clUiKitCommonStateLayout)!!,
                     H5Option.getJavascriptInterface(intent)
@@ -413,10 +413,6 @@ class Navigation : BasicActivity() {
                 }
             }
         }
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return h5Delegate?.onKeyDown(keyCode, event) == true || super.onKeyDown(keyCode, event)
     }
 
     private fun setCommonLayoutParams() {
