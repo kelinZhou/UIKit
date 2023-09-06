@@ -3,9 +3,11 @@ package com.kelin.uikit.common
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
+import android.view.WindowManager
 import android.webkit.WebView
 import android.widget.*
 import androidx.annotation.ColorInt
@@ -269,6 +271,11 @@ class Navigation : BasicActivity() {
     private val immersionMode: ImmersionMode by lazy { IOption.getImmersionMode(intent) }
 
     /**
+     * 状态栏模式。
+     */
+    private val statusBarMode: StatusBarMode? by lazy { IOption.getStatusBarMode(intent) }
+
+    /**
      * 判断当前页面是否是沉浸式状态栏。
      */
     val isImmersionMode: Boolean by lazy { immersionMode != ImmersionMode.NONE }
@@ -290,6 +297,20 @@ class Navigation : BasicActivity() {
             }
         }
         super.onCreate(savedInstanceState)
+        //处理状态栏模式
+        statusBarMode?.also { mode ->
+            when (mode) {
+                StatusBarMode.Gone -> {  //完全全屏，不显示状态栏。
+                    window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        window.attributes.layoutInDisplayCutoutMode =
+                            WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+                    }
+                }
+                StatusBarMode.Light -> StatusBarHelper.setStatusBarLightMode(this)  //白底黑字
+                StatusBarMode.Dark -> StatusBarHelper.setStatusBarDarkMode(this)  //黑底白字
+            }
+        }
         //根据不同的页面模式处理不用的UI布局及样式。
         when (pageMode) {
             PageMode.NORMAL -> {
@@ -313,11 +334,13 @@ class Navigation : BasicActivity() {
                 }
                 getCurrentFragment(intent).also {
                     replaceFragment(R.id.flUiKitFragmentContainer, it)
-                    (it as? BasicFragment)?.isDarkMode?.also { isDark ->
-                        if (isDark) {
-                            StatusBarHelper.setStatusBarDarkMode(this)
-                        } else {
-                            StatusBarHelper.setStatusBarLightMode(this)
+                    if (statusBarMode == null) {
+                        (it as? BasicFragment)?.isDarkMode?.also { isDark ->
+                            if (isDark) {
+                                StatusBarHelper.setStatusBarDarkMode(this)
+                            } else {
+                                StatusBarHelper.setStatusBarLightMode(this)
+                            }
                         }
                     }
                 }
@@ -336,11 +359,13 @@ class Navigation : BasicActivity() {
                 setToolbarStyle(getView(R.id.rl_my_awesome_toolbar))
                 setSearchLayoutParams()
                 val searchPage = IOption.getTargetFragment(intent) as SearchablePage
-                (searchPage as? BasicFragment)?.isDarkMode?.also { isDark ->
-                    if (isDark) {
-                        StatusBarHelper.setStatusBarDarkMode(this)
-                    } else {
-                        StatusBarHelper.setStatusBarLightMode(this)
+                if (statusBarMode == null) {
+                    (searchPage as? BasicFragment)?.isDarkMode?.also { isDark ->
+                        if (isDark) {
+                            StatusBarHelper.setStatusBarDarkMode(this)
+                        } else {
+                            StatusBarHelper.setStatusBarLightMode(this)
+                        }
                     }
                 }
                 getView<View>(R.id.tvUiKitCancelButton)?.setOnClickListener {
@@ -382,7 +407,7 @@ class Navigation : BasicActivity() {
                     H5Option.isCloseStyle(intent),
                     getView<View>(R.id.clUiKitCommonStateLayout)!!,
                     H5Option.getJavascriptInterface(intent)
-                ) { view, request, error ->
+                ) { _, _, _ ->
                     processStatusBar(Color.WHITE, false)
                     getView<View>(R.id.rlUiKitToolbarParent)?.visibility = View.VISIBLE
                 }
@@ -390,11 +415,6 @@ class Navigation : BasicActivity() {
                 H5Option.getH5Data(intent).takeIf { !it.isNullOrBlank() }?.also { htmlContent ->
                     webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
                 } ?: webView.loadUrl(H5Option.getH5Url(intent))
-                if (H5Option.isStatusBarDark(intent)) {
-                    StatusBarHelper.setStatusBarDarkMode(this)
-                } else {
-                    StatusBarHelper.setStatusBarLightMode(this)
-                }
             }
         }
     }
@@ -458,7 +478,7 @@ class Navigation : BasicActivity() {
                 lp.topToTop = ConstraintLayout.LayoutParams.UNSET
             } else {
                 processStatusBar(Color.TRANSPARENT)
-                intent.getIntExtra(KEY_NAVIGATION_ICON, 1).takeIf { it >= 0 }?.also {
+                intent.getIntExtra(KEY_NAVIGATION_ICON, -1).takeIf { it >= 0 }?.also {
                     getView<ImageView>(R.id.ivUiKitNavigation)?.setImageResource(it)
                 }
                 lp.topToBottom = ConstraintLayout.LayoutParams.UNSET
@@ -521,12 +541,14 @@ class Navigation : BasicActivity() {
     }
 
     private fun ViewPager.initStatusBarMode(position: Int) {
-        (adapter as? CommonFragmentStatePagerAdapter)?.also {
-            it.getItem(position).isDarkMode?.also { dark ->
-                if (dark) {
-                    StatusBarHelper.setStatusBarDarkMode(this@Navigation)
-                } else {
-                    StatusBarHelper.setStatusBarLightMode(this@Navigation)
+        if (statusBarMode == null) {
+            (adapter as? CommonFragmentStatePagerAdapter)?.also {
+                it.getItem(position).isDarkMode?.also { dark ->
+                    if (dark) {
+                        StatusBarHelper.setStatusBarDarkMode(this@Navigation)
+                    } else {
+                        StatusBarHelper.setStatusBarLightMode(this@Navigation)
+                    }
                 }
             }
         }

@@ -23,7 +23,6 @@ interface H5Option : Option {
         internal const val KEY_HTML_CONTENT = "key_html_content"
         internal const val KEY_JAVASCRIPT_INTERFACE = "key_javascript_interface"
         internal const val KEY_H5_CLOSE_STYLE = "key_h5_close_style"
-        internal const val KEY_STATUS_BAR_DARK = "key_status_bar_dark"
 
         internal fun getH5Url(intent: Intent): String {
             return intent.getStringExtra(KEY_INTENT_URL) ?: ""
@@ -40,10 +39,6 @@ interface H5Option : Option {
         internal fun isCloseStyle(intent: Intent): Boolean {
             return intent.getBooleanExtra(KEY_H5_CLOSE_STYLE, false)
         }
-
-        internal fun isStatusBarDark(intent: Intent): Boolean {
-            return intent.getBooleanExtra(KEY_STATUS_BAR_DARK, false)
-        }
     }
 
     /**
@@ -56,14 +51,6 @@ interface H5Option : Option {
      * @param optional 默认是通过手机自带浏览器打开的，如需设置指定浏览器可通过配置回调自行设置。
      */
     fun byBrowser(optional: (Intent.() -> Unit)? = null)
-
-    /**
-     * 设置状态颜色模式。
-     * @param dark true表示为状态栏底色为深色，状态栏文字颜色为白色。false表示状态栏文字颜色为黑色。默认为false。
-     */
-    fun statusBarDark(dark: Boolean) {
-        intent.putExtra(KEY_STATUS_BAR_DARK, dark)
-    }
 
     /**
      * 设置页面为关闭样式。

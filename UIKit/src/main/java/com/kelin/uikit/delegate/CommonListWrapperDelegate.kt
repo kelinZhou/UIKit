@@ -177,7 +177,7 @@ abstract class CommonListWrapperDelegate<VC : CommonListWrapperDelegate.CommonLi
     }
 
     @CallSuper
-    fun addMoreData(data: D) {
+    open fun addMoreData(data: D) {
         adapter.addAll(extractInitialDataList(data), true)
     }
 

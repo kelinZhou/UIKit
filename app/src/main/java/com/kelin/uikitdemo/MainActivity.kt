@@ -1,19 +1,19 @@
 package com.kelin.uikitdemo
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kelin.apiexception.ApiException
 import com.kelin.proxyfactory.Toaster
 import com.kelin.uikit.UIKit
 import com.kelin.uikit.common.*
+import com.kelin.uikit.tools.statusbar.StatusBarHelper
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        StatusBarHelper.setStatusBarLightMode(this)
         UIKit.init(application, MyToaster(), true)
         setContentView(R.layout.activity_main)
         btnCommonDemo.setOnClickListener {

@@ -31,6 +31,7 @@ interface IOption {
         internal const val KEY_PAGE_TITLE_COLOR = "key_page_title_color"
         internal const val KEY_PAGE_TITLE_CENTER = "key_page_title_center"
         internal const val KEY_TARGET_PAGE = "key_target_fragment_class"
+        internal const val KEY_STATUS_BAR_MODE = "key_status_bar_mode"
 
         @Suppress("UNCHECKED_CAST")
         internal fun getTargetFragment(intent: Intent): Fragment? {
@@ -59,9 +60,23 @@ interface IOption {
         internal fun getToolbarBackground(intent: Intent): Int? {
             return intent.getIntExtra(KEY_TOOL_BAT_BACKGROUND, -1).takeIf { it >= 0 }
         }
+
+        internal fun getStatusBarMode(intent: Intent): StatusBarMode? {
+            return intent.getIntExtra(KEY_STATUS_BAR_MODE, -1).let { code ->
+                StatusBarMode.values.find { it.code == code }
+            }
+        }
     }
 
     val intent: Intent
+
+    /**
+     * 设置状态栏模式。
+     * @param mode 状态栏的模式。
+     */
+    fun statusBarMode(mode: StatusBarMode) {
+        intent.putExtra(KEY_STATUS_BAR_MODE, mode.code)
+    }
 
     /**
      * 为新的页面设置沉浸式样式，设置沉浸式样式后在非Tab样式下会隐藏默认的Toolbar，如希望显示Toolbar请调用immersionToolbar方法设置沉浸式样式。
