@@ -1,6 +1,7 @@
 package com.kelin.uikit.common
 
 import android.content.Intent
+import android.view.WindowManager
 import com.kelin.uikit.R
 import com.kelin.uikit.common.IOption.Companion.KEY_NAVIGATION_ICON
 import com.kelin.uikit.common.h5.JavascriptInterfaceWrapper
@@ -23,6 +24,7 @@ interface H5Option : Option {
         internal const val KEY_HTML_CONTENT = "key_html_content"
         internal const val KEY_JAVASCRIPT_INTERFACE = "key_javascript_interface"
         internal const val KEY_H5_CLOSE_STYLE = "key_h5_close_style"
+        internal const val WINDOW_SOFT_INPUT_MODE_FLAGS = "window_soft_input_mode_flags"
 
         internal fun getH5Url(intent: Intent): String {
             return intent.getStringExtra(KEY_INTENT_URL) ?: ""
@@ -30,6 +32,10 @@ interface H5Option : Option {
 
         internal fun getH5Data(intent: Intent): String? {
             return intent.getStringExtra(KEY_HTML_CONTENT)
+        }
+
+        internal fun getWindowSoftInputModeFlags(intent: Intent): Int {
+            return intent.getIntExtra(WINDOW_SOFT_INPUT_MODE_FLAGS, WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED)
         }
 
         internal fun getJavascriptInterface(intent: Intent): JavascriptInterfaceWrapper? {

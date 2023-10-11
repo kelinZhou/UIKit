@@ -382,6 +382,11 @@ class Navigation : BasicActivity() {
                 )
             }
             PageMode.H5 -> {
+                H5Option.getWindowSoftInputModeFlags(intent).also { flags ->
+                    if (flags != WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
+                        window.setSoftInputMode(flags)
+                    }
+                }
                 setContentView(R.layout.kelin_ui_kit_activity_web_h5)
                 val titleView = getView<TextView>(R.id.toolbar_center_title)
                 initTitleBar(getView(R.id.my_awesome_toolbar), titleView, getView(R.id.toolbar_sub_title))
