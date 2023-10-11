@@ -48,6 +48,13 @@ interface H5Option : Option {
     }
 
     /**
+     * 设置键盘弹出模式。
+     */
+    fun setWindowSoftInputModeFlags(flags: Int) {
+        intent.putExtra(WINDOW_SOFT_INPUT_MODE_FLAGS, flags)
+    }
+
+    /**
      * 设置Cookie。
      */
     fun cookie(cookie: String)

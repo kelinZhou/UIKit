@@ -4,14 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.view.WindowManager
 import android.webkit.CookieManager
 import android.webkit.CookieSyncManager
 import androidx.annotation.ColorInt
 import androidx.fragment.app.Fragment
 import com.kelin.uikit.common.H5Option.Companion.KEY_HTML_CONTENT
 import com.kelin.uikit.common.H5Option.Companion.KEY_INTENT_URL
-import com.kelin.uikit.common.H5Option.Companion.WINDOW_SOFT_INPUT_MODE_FLAGS
 import com.kelin.uikit.widget.optionsmenu.exception.IllegalCalledException
 
 /**
@@ -57,12 +55,6 @@ class H5IntentOption(context: Context) : AbsOption(context), H5Option {
     override fun titleCenter(center: Boolean) {
         intent.putExtra(IOption.KEY_PAGE_TITLE_CENTER, center)
     }
-
-    var windowSoftInputModeFlags: Int = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED
-        set(value) {
-            field = value
-            intent.putExtra(WINDOW_SOFT_INPUT_MODE_FLAGS, value)
-        }
 
     var h5url: String = ""
         set(value) {
