@@ -57,6 +57,10 @@ abstract class BasicFragment : Fragment(), Immersive {
     @get:SoftInputModeFlags
     protected open val windowSoftInputModeFlags: Int = WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED //默认实现，返回未指定任何模式的flag。
 
+    /**
+     * 当前Fragment如果是通过Navigation启动的并且设置了沉浸式样式，那么在需要处理沉浸式样式时调用。
+     * @param offset 沉浸式样式需要偏移的量，单位px。
+     */
     override fun onImmersion(offset: Int) {
     }
 
@@ -129,6 +133,7 @@ abstract class BasicFragment : Fragment(), Immersive {
         handler.removeCallbacksAndMessages(null)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
 

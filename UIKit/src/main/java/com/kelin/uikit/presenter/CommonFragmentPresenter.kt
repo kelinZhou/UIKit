@@ -68,17 +68,13 @@ abstract class CommonFragmentPresenter<V : CommonViewDelegate<VC, VD>, VC : Comm
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         onBindInitProxy()
+        if (setupMode != SETUP_NO_PROXY) {
+            onSetup()
+        }
     }
 
     protected open fun onBindInitProxy() {
         initialDataProxy.bind(viewLifecycleOwner, onCreateDataCallback())
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (setupMode != SETUP_NO_PROXY) {
-            onSetup()
-        }
     }
 
     protected open fun onSetup() {

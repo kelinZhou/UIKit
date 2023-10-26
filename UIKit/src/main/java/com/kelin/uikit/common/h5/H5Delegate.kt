@@ -75,11 +75,13 @@ internal class H5Delegate(
             }
         }
         webView.webViewClient = object : WebViewClient() {
+            @SuppressLint("WebViewClientOnReceivedSslError")
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
                 super.onReceivedSslError(view, handler, error)
                 handler.proceed()
             }
 
+            @Deprecated("Deprecated in Java")
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 if (url.startsWith("http:") || url.startsWith("https:")) {
                     //对http或者https协议的链接进行加载
@@ -91,6 +93,7 @@ internal class H5Delegate(
                         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         view.context.startActivity(intent)
                     } catch (e: Exception) {
+                        e.printStackTrace()
                     }
                 }
                 return true
@@ -105,7 +108,6 @@ internal class H5Delegate(
             }
         }
         webView.settings.run {
-            setAppCacheEnabled(false)
             cacheMode = WebSettings.LOAD_NO_CACHE
             @SuppressLint("SetJavaScriptEnabled")
             javaScriptEnabled = true

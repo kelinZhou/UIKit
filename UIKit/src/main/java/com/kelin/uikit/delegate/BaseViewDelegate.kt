@@ -28,6 +28,7 @@ import com.kelin.uikit.presenter.ViewPresenter
 import com.kelin.uikit.tools.DoubleClickHandler
 import com.kelin.uikit.tools.NetWorkStateUtil
 import com.kelin.uikit.tools.text.SimpleTextWatch
+import com.kelin.uikit.widget.statelayout.StateFlags
 import com.kelin.uikit.widget.statelayout.StatePage
 import com.kelin.uikit.widget.statelayout.StatePageLayout
 
@@ -71,6 +72,7 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
      *
      * @see StatePage.HAVE_LOADING_STATE
      */
+    @get:StateFlags
     open val pageStateFlags: Int
         get() = StatePage.NOTHING_STATE
 
@@ -99,6 +101,10 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
         }
     }
 
+    /**
+     * 当前Fragment如果是通过Navigation启动的并且设置了沉浸式样式，那么在需要处理沉浸式样式时调用。
+     * @param offset 沉浸式样式需要偏移的量，单位px。
+     */
     override fun onImmersion(offset: Int) {}
 
     protected open fun onResume() {
@@ -237,14 +243,14 @@ abstract class BaseViewDelegate<VC : BaseViewDelegate.BaseViewDelegateCallback> 
         refreshEmptyView()
         refreshLoadingView()
         statePageLayout.loadingView?.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View?) {
+            override fun onViewAttachedToWindow(v: View) {
                 val loadingIcon = statePageLayout.loadingView?.findViewById<ImageView>(R.id.ivStatePageIcon)?.drawable
                 if (loadingIcon != null && loadingIcon is AnimationDrawable) {
                     loadingIcon.start()
                 }
             }
 
-            override fun onViewDetachedFromWindow(v: View?) {
+            override fun onViewDetachedFromWindow(v: View) {
                 val loadingIcon = statePageLayout.loadingView?.findViewById<ImageView>(R.id.ivStatePageIcon)?.drawable
                 if (loadingIcon != null && loadingIcon is AnimationDrawable) {
                     loadingIcon.stop()

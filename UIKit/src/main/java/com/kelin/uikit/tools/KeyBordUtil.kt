@@ -91,7 +91,6 @@ object KeyBordUtil {
     /**
      * 底部虚拟按键栏的高度
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun getSoftButtonsBarHeight(activity: Activity): Int {
         val metrics = DisplayMetrics()
         //这个方法获取可能不是真实屏幕的高度

@@ -104,7 +104,8 @@ abstract class BasicActivity : AppCompatActivity() {
         overrideStartTransition()
     }
 
-    override fun startActivityForResult(intent: Intent?, requestCode: Int, options: Bundle?) {
+    @Deprecated("Deprecated in Java")
+    override fun startActivityForResult(intent: Intent, requestCode: Int, options: Bundle?) {
         super.startActivityForResult(intent, requestCode, options)
         overrideStartTransition()
     }

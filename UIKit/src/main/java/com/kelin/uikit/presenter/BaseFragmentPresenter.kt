@@ -76,7 +76,7 @@ abstract class BaseFragmentPresenter<V : BaseViewDelegate<VC>, VC : BaseViewDele
 
     final override fun handImmersion(offset: Int) {
         if (hasViewDelegate) {
-            viewDelegate?.onImmersion(StatusBarHelper.getImmersionOffset(context))
+            viewDelegate?.onImmersion(offset)
         } else {
             super.handImmersion(offset)
         }
