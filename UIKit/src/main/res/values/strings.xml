@@ -16,4 +16,5 @@
     <string name="yesterday">昨天</string>
     <string name="tomorrow_s">明天 %s</string>
     <string name="d_day_ago">%d天前</string>
+    <string name="ui_kit_operation_failed">操作失败</string>
 </resources>

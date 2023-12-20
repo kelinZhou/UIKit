@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kelin.apiexception.ApiException
+import com.kelin.photoselector.PhotoSelector
 import com.kelin.proxyfactory.Toaster
 import com.kelin.uikit.UIKit
 import com.kelin.uikit.common.*
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         StatusBarHelper.setStatusBarLightMode(this)
         UIKit.init(application, MyToaster(), true)
+        PhotoSelector.init(this, "${packageName}.fileProvider", true, albumTakePictureEnable = false)
         setContentView(R.layout.activity_main)
         btnCommonDemo.setOnClickListener {
             Navigation.launch<PlaceholderFragment>(this, "新的页面")
@@ -78,8 +80,8 @@ class MainActivity : AppCompatActivity() {
         btnTabDemo7.setOnClickListener {
             Navigation.launchH5(
                 this,
-                "https://test.chengmandian.com.cn/mos/mobile/merchants/user/index?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsIlR5cGUiOiJKd3QifQ.eyJpZCI6MjM1MSwibmFtZSI6IktlbGluIiwiZXhwIjoxNjk1ODc5NTA1MjM0LCJ0ZW5hbnRJZCI6MSwiY2xpZW50IjoiTUVNQkVSIiwiYXR0cnMiOnsiQVBQX01FUkNIQU5UU19JRCI6MjAyMn19.sGLfuPAN3K501JiIacqR6OfxJR-WBXW52RrxJMAL4AY",
-                "城满电"
+                "http://rna.lenovoconnect.com/home",
+                "懂得物联"
             )
         }
     }

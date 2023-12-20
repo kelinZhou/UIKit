@@ -13,6 +13,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.kelin.logger.Logger
+import com.kelin.okpermission.OkPermission
+import com.kelin.photoselector.PhotoSelector
+import com.kelin.photoselector.model.toUri
+import com.kelin.uikit.R
+import com.kelin.uikit.tools.ToastUtil
 
 /**
  * **描述:** H5页面的代理。
@@ -33,9 +38,11 @@ internal class H5Delegate(
     private val onReceivedErrorCallback: (view: WebView, request: WebResourceRequest, error: WebResourceError) -> Unit
 ) : LifecycleEventObserver {
 
-    companion object{
+    companion object {
         private const val TAG = "H5Delegate"
     }
+
+    private val activity: Activity = owner as Activity
 
     private var homePagePath: String? = null
     private var jsInterface: JsInterface? = null
@@ -59,6 +66,50 @@ internal class H5Delegate(
             CookieManager.getInstance().setAcceptThirdPartyCookies(webView, true)
         }
         webView.webChromeClient = object : WebChromeClient() {
+
+            //支持相册选择。
+            override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    fileChooserParams?.acceptTypes?.firstOrNull()?.also { accept ->
+                        Logger.system(javaClass.simpleName)?.i("accept:${accept}")
+                        when (accept) {
+                            "image/*" -> {
+                                OkPermission.with(activity).addDefaultPermissions(*OkPermission.permission_group.CAMERA_FOR_PICTURE_OR_VIDEO).checkAndApply { granted, _ ->
+                                    if (granted) {
+                                        PhotoSelector.takePhoto(activity, PhotoSelector.ID_REPEATABLE) { file ->
+                                            if (file != null) {
+                                                filePathCallback?.onReceiveValue(arrayOf(file.toUri(activity)))
+                                            } else {
+                                                filePathCallback?.onReceiveValue(emptyArray())
+                                            }
+                                        }
+                                    } else {
+                                        ToastUtil.showShortToast(R.string.ui_kit_operation_failed)
+                                    }
+                                }
+                            }
+
+                            "video/*" -> {
+                                OkPermission.with(activity).addDefaultPermissions(*OkPermission.permission_group.CAMERA_FOR_PICTURE_OR_VIDEO).checkAndApply { granted, _ ->
+                                    if (granted) {
+                                        PhotoSelector.takeVideo(activity, PhotoSelector.ID_REPEATABLE) {
+                                            if (it != null) {
+                                                filePathCallback?.onReceiveValue(arrayOf(it.toUri(activity)))
+                                            } else {
+                                                filePathCallback?.onReceiveValue(emptyArray())
+                                            }
+                                        }
+                                    } else {
+                                        ToastUtil.showShortToast(R.string.ui_kit_operation_failed)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return true
+            }
+
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 progressView.run {
                     progress = newProgress
@@ -144,13 +195,16 @@ internal class H5Delegate(
             Lifecycle.Event.ON_PAUSE -> {
                 webView.onPause()
             }
+
             Lifecycle.Event.ON_RESUME -> {
                 webView.onResume()
             }
+
             Lifecycle.Event.ON_DESTROY -> {
                 jsInterface?.onDestroy()
                 jsInterface = null
             }
+
             else -> {
             }
         }

@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.kelin.apiexception.ApiException
 import com.kelin.logger.LogOption
+import com.kelin.photoselector.PhotoSelector
 import com.kelin.proxyfactory.ProxyFactory
 import com.kelin.proxyfactory.Toaster
 

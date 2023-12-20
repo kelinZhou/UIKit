@@ -57,9 +57,12 @@ dependencies {
     //popupWindow
     implementation 'com.github.razerdp:BasePopup:2.2.20'
 
+    //自定义相册、图片视频预览库。
+    api 'com.github.kelinZhou:PhotoSelector:3.0.0.2'
+
 
     //动态权限
-    api 'com.github.kelinZhou:OkPermission:3.3.6'
+    api 'com.github.kelinZhou:OkPermission:3.3.6.1'
 
     //异步任务代理框架
     api 'com.github.kelinZhou:ProxyFactory:1.3.3'
